@@ -5,7 +5,7 @@
         "fields": {
             "order": 1,
             "key": "problems",
-            "label": "PRoblems",
+            "label": "Problems",
             "path": "/problems/",
             "regex": "^/problem",
             "parent": null,
@@ -52,10 +52,10 @@
         "pk": 4,
         "fields": {
             "order": 4,
-            "key": "contest",
-            "label": "Contests",
-            "path": "/contests/",
-            "regex": "^/contest",
+            "key": "organizations",
+            "label": "Organizations",
+            "path": "/organizations/",
+            "regex": "^/organizations",
             "parent": null,
             "lft": 1,
             "rght": 2,
@@ -68,13 +68,13 @@
         "pk": 5,
         "fields": {
             "order": 5,
-            "key": "about",
-            "label": "About",
-            "path": "/about/",
-            "regex": "^/about/$",
+            "key": "contest",
+            "label": "Contests",
+            "path": "/contests/",
+            "regex": "^/contest",
             "parent": null,
             "lft": 1,
-            "rght": 8,
+            "rght": 2,
             "tree_id": 5,
             "level": 0
         }
@@ -84,15 +84,15 @@
         "pk": 6,
         "fields": {
             "order": 6,
-            "key": "status",
-            "label": "Judges",
-            "path": "/status/",
-            "regex": "^/status/$|^/judge/",
-            "parent": 5,
-            "lft": 2,
-            "rght": 3,
-            "tree_id": 5,
-            "level": 1
+            "key": "about",
+            "label": "About",
+            "path": "/about/",
+            "regex": "^/about/$",
+            "parent": null,
+            "lft": 1,
+            "rght": 6,
+            "tree_id": 6,
+            "level": 0
         }
     },
     {
@@ -100,14 +100,14 @@
         "pk": 7,
         "fields": {
             "order": 7,
-            "key": "checkers",
-            "label": "Custom Checkers",
-            "path": "/custom_checkers/",
-            "regex": "^/custom_checkers/$",
-            "parent": 5,
-            "lft": 4,
-            "rght": 5,
-            "tree_id": 5,
+            "key": "status",
+            "label": "Judges",
+            "path": "/status/",
+            "regex": "^/status/$|^/judge/",
+            "parent": 6,
+            "lft": 2,
+            "rght": 3,
+            "tree_id": 6,
             "level": 1
         }
     },
@@ -116,14 +116,14 @@
         "pk": 8,
         "fields": {
             "order": 8,
-            "key": "github",
-            "label": "Github",
-            "path": "https://github.com/VNOI-Admin/OJ",
-            "regex": "^https://github.com/VNOI-Admin/OJ$",
-            "parent": 5,
-            "lft": 6,
-            "rght": 7,
-            "tree_id": 5,
+            "key": "checkers",
+            "label": "Custom Checkers",
+            "path": "/custom_checkers/",
+            "regex": "^/custom_checkers/$",
+            "parent": 6,
+            "lft": 4,
+            "rght": 5,
+            "tree_id": 6,
             "level": 1
         }
     }
