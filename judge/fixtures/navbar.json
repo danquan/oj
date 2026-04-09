@@ -52,7 +52,7 @@
         "pk": 4,
         "fields": {
             "order": 4,
-            "key": "organizations",
+            "key": "org",
             "label": "Organizations",
             "path": "/organizations/",
             "regex": "^/organizations",
