@@ -53,7 +53,7 @@
         }
 
         // Numeric columns are center-aligned
-        &.solved, &.points, &.ac-rate, &.editorial, &.users {
+        &.problem-number, &.solved, &.points, &.ac-rate, &.editorial, &.users {
             padding: 0 10px;
             white-space: nowrap;
         }
@@ -134,9 +134,47 @@ label[for="category"], label[for="type"] {
     width: 100%;
 }
 
-// span.type-tag {
-//     white-space: nowrap;
-// }
+td.types {
+    max-width: 150px;
+}
+
+.type-tag-wrapper {
+    position: relative;
+    width: max-content;
+    max-width: 100%;
+    margin: 2px 0;
+    user-select: none;
+    cursor: default;
+}
+
+.type-tag-text {
+    display: block;
+    background-color: $color_primary25;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 0.85em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.type-tag-full {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: $color_primary33;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 0.85em;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.type-tag-wrapper:hover .type-tag-full {
+    display: block;
+}
 
 ul.problem-list {
     list-style: none;
