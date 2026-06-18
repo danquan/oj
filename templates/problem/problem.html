@@ -281,7 +281,7 @@
         {% endcache %}
     {% endif %}
 
-    {% if problem.source %}
+    {% if problem.source and (not contest_problem or not contest_problem.contest.hide_problem_source) %}
         <div class="problem-info-entry">
             <i class="fa fa-pencil-square-o fa-fw"></i><span
                 class="pi-name">{{ _('Problem source:') }}</span>
