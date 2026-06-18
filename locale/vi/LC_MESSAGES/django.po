@@ -1351,6 +1351,10 @@ msgstr "Ẩn tags của bài tập"
 msgid "hide problem authors"
 msgstr "ẩn tác giả"
 
+#: judge/models/contest.py:137
+msgid "hide problem source"
+msgstr "ẩn nguồn bài tập"
+
 #: judge/models/contest.py:136
 msgid "Whether problem authors should be hidden by default."
 msgstr "Ẩn tác giả của bài tập"
