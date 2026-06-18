@@ -34,7 +34,7 @@
                                     <i class="attempted-problem-color fa fa-frown-o"></i>
                                 </a>
                             {% endif %}
-                            <a href="{{ url('problem_detail', problem.code) }}">{{ problem.i18n_name or problem.name }}</a>
+                            <a href="{{ url('problem_detail', problem.code) }}">{{ problem.label }} - {{ problem.i18n_name or problem.name }}</a>
                         </h2>
                         <a href="{{ url('problem_submit', problem.code) }}" class="button" style="display: inline; margin: auto 0;">
                             {{ _('Submit') }}
