@@ -351,10 +351,9 @@ class ProblemList(QueryStringSortMixin, TitleMixin, SolvedProblemMixin, ListView
                 queryset = list(queryset)
                 queryset.sort(key=_solved_sort_order, reverse=self.order.startswith('-'))
         elif sort_key == 'type':
-            if self.show_types:
-                queryset = list(queryset)
-                queryset.sort(key=lambda problem: problem.types_list[0] if problem.types_list else '',
-                              reverse=self.order.startswith('-'))
+            queryset = list(queryset)
+            queryset.sort(key=lambda problem: problem.types_list[0] if problem.types_list else '',
+                          reverse=self.order.startswith('-'))
         paginator.object_list = queryset
         return paginator
 
@@ -388,8 +387,7 @@ class ProblemList(QueryStringSortMixin, TitleMixin, SolvedProblemMixin, ListView
             queryset = queryset.exclude(id__in=Submission.objects
                                         .filter(user=self.profile, result='AC', case_points__gte=F('case_total'))
                                         .values_list('problem_id', flat=True))
-        if self.show_types:
-            queryset = queryset.prefetch_related('types')
+        queryset = queryset.prefetch_related('types')
         queryset = queryset.annotate(has_public_editorial=Case(
             When(solution__is_public=True, solution__publish_on__lte=timezone.now(), then=True),
             default=False,
@@ -426,7 +424,6 @@ class ProblemList(QueryStringSortMixin, TitleMixin, SolvedProblemMixin, ListView
     def get_context_data(self, **kwargs):
         context = super(ProblemList, self).get_context_data(**kwargs)
         context['hide_solved'] = int(self.hide_solved)
-        context['show_types'] = int(self.show_types)
         context['has_public_editorial'] = int(self.has_public_editorial)
         context['full_text'] = int(self.full_text)
         context['category'] = self.category
@@ -470,7 +467,6 @@ class ProblemList(QueryStringSortMixin, TitleMixin, SolvedProblemMixin, ListView
 
     def setup_problem_list(self, request):
         self.hide_solved = self.GET_with_session(request, 'hide_solved')
-        self.show_types = self.GET_with_session(request, 'show_types')
         self.full_text = self.GET_with_session(request, 'full_text')
         self.has_public_editorial = self.GET_with_session(request, 'has_public_editorial')
 
@@ -480,8 +476,6 @@ class ProblemList(QueryStringSortMixin, TitleMixin, SolvedProblemMixin, ListView
 
         # This actually copies into the instance dictionary...
         self.all_sorts = set(self.all_sorts)
-        if not self.show_types:
-            self.all_sorts.discard('type')
 
         self.category = safe_int_or_none(request.GET.get('category'))
         if 'type' in request.GET:
@@ -502,7 +496,7 @@ class ProblemList(QueryStringSortMixin, TitleMixin, SolvedProblemMixin, ListView
             return generic_message(request, 'FTS syntax error', e.args[1], status=400)
 
     def post(self, request, *args, **kwargs):
-        to_update = ('hide_solved', 'show_types', 'has_public_editorial', 'full_text')
+        to_update = ('hide_solved', 'has_public_editorial', 'full_text')
         for key in to_update:
             if key in request.GET:
                 val = request.GET.get(key) == '1'

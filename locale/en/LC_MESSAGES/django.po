@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-07 11:24+0000\n"
+"POT-Creation-Date: 2026-06-18 15:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -130,8 +130,8 @@ msgstr ""
 
 #: judge/admin/contest.py:67 judge/forms.py:644
 #: templates/contest/contest.html:200 templates/contest/contest.html:310
-#: templates/contest/moss.html:40 templates/problem/list.html:162
-#: templates/user/user-problems.html:58 templates/user/user-problems.html:102
+#: templates/contest/moss.html:40 templates/problem/list.html:166
+#: templates/user/user-problems.html:58 templates/user/user-problems.html:109
 msgid "Problem"
 msgstr ""
 
@@ -317,7 +317,7 @@ msgstr ""
 #: templates/contest/contest.html:202 templates/contest/edit.html:116
 #: templates/contest/official-ranking-table.html:12
 #: templates/organization/list.html:24 templates/problem/data.html:727
-#: templates/problem/list.html:173 templates/user/base-users-table.html:12
+#: templates/problem/list.html:172 templates/user/base-users-table.html:12
 #: templates/user/user-problems.html:60
 msgid "Points"
 msgstr ""
@@ -3500,8 +3500,8 @@ msgstr ""
 
 #: judge/views/blog.py:296 judge/views/contests.py:1272
 #: judge/views/organization.py:387 judge/views/organization.py:640
-#: judge/views/organization.py:664 judge/views/problem.py:814
-#: judge/views/problem.py:854 judge/views/tag.py:182
+#: judge/views/organization.py:664 judge/views/problem.py:808
+#: judge/views/problem.py:848 judge/views/tag.py:182
 msgid "Created on site"
 msgstr ""
 
@@ -3523,7 +3523,7 @@ msgstr ""
 
 #: judge/views/blog.py:341 judge/views/comment.py:142
 #: judge/views/contests.py:1344 judge/views/organization.py:433
-#: judge/views/problem.py:1008
+#: judge/views/problem.py:1002
 msgid "Edited from site"
 msgstr ""
 
@@ -3995,85 +3995,85 @@ msgstr ""
 msgid "Problem list"
 msgstr ""
 
-#: judge/views/problem.py:516
+#: judge/views/problem.py:510
 msgid "Suggested problem list"
 msgstr ""
 
-#: judge/views/problem.py:590 judge/views/problem.py:598
+#: judge/views/problem.py:584 judge/views/problem.py:592
 #, python-format
 msgid "Submit to %s"
 msgstr ""
 
-#: judge/views/problem.py:643
+#: judge/views/problem.py:637
 msgid "You submitted too many submissions."
 msgstr ""
 
-#: judge/views/problem.py:647
+#: judge/views/problem.py:641
 msgid "Banned from submitting"
 msgstr ""
 
-#: judge/views/problem.py:648
+#: judge/views/problem.py:642
 msgid ""
 "You have been declared persona non grata for this problem. You are "
 "permanently barred from submitting to this problem."
 msgstr ""
 
-#: judge/views/problem.py:652
+#: judge/views/problem.py:646
 msgid "Too many submissions"
 msgstr ""
 
-#: judge/views/problem.py:653
+#: judge/views/problem.py:647
 msgid "You have exceeded the submission limit for this problem."
 msgstr ""
 
-#: judge/views/problem.py:723
+#: judge/views/problem.py:717
 msgid "You are not allowed to submit to this problem."
 msgstr ""
 
-#: judge/views/problem.py:744
+#: judge/views/problem.py:738
 msgid "Clone Problem"
 msgstr ""
 
-#: judge/views/problem.py:772
+#: judge/views/problem.py:766
 #, python-format
 msgid "Cloned problem from %s"
 msgstr ""
 
-#: judge/views/problem.py:795 judge/views/problem.py:798
+#: judge/views/problem.py:789 judge/views/problem.py:792
 msgid "Creating new problem"
 msgstr ""
 
-#: judge/views/problem.py:840 judge/views/problem.py:843
+#: judge/views/problem.py:834 judge/views/problem.py:837
 msgid "Suggesting new problem"
 msgstr ""
 
-#: judge/views/problem.py:862 templates/problem/suggest.html:18
+#: judge/views/problem.py:856 templates/problem/suggest.html:18
 msgid "Import problem from Codeforces Polygon package"
 msgstr ""
 
-#: judge/views/problem.py:917
+#: judge/views/problem.py:911
 msgid "Failed to import problem"
 msgstr ""
 
-#: judge/views/problem.py:925 templates/problem/editor.html:99
+#: judge/views/problem.py:919 templates/problem/editor.html:99
 msgid "Update problem from Codeforces Polygon package"
 msgstr ""
 
-#: judge/views/problem.py:949
+#: judge/views/problem.py:943
 #, python-brace-format
 msgid "Editing problem {0}"
 msgstr ""
 
-#: judge/views/problem.py:952
+#: judge/views/problem.py:946
 #, python-format
 msgid "Editing problem %s"
 msgstr ""
 
-#: judge/views/problem.py:1019
+#: judge/views/problem.py:1013
 msgid "Can't edit problem"
 msgstr ""
 
-#: judge/views/problem.py:1020
+#: judge/views/problem.py:1014
 msgid "You are not allowed to edit this problem."
 msgstr ""
 
@@ -4666,12 +4666,12 @@ msgstr ""
 
 #: templates/base.html:363
 #, python-format
-msgid "proudly powered by %(dmoj)s"
+msgid "proudly powered by %(vnoj)s"
 msgstr ""
 
 #: templates/base.html:364
 #, python-format
-msgid "follow us on %(github)s and %(facebook)s"
+msgid "follow us on %(github)s"
 msgstr ""
 
 #: templates/blog/blog-list-tabs.html:4
@@ -4926,7 +4926,7 @@ msgstr ""
 msgid "Voter"
 msgstr ""
 
-#: templates/comments/votes.html:6 templates/user/user-problems.html:103
+#: templates/comments/votes.html:6 templates/user/user-problems.html:110
 msgid "Score"
 msgstr ""
 
@@ -5277,7 +5277,7 @@ msgid "Editorials"
 msgstr ""
 
 #: templates/contest/contest.html:257 templates/problem/editor.html:132
-#: templates/problem/list.html:181
+#: templates/problem/list.html:180
 msgid "Editorial"
 msgstr ""
 
@@ -6132,34 +6132,30 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: templates/problem/list.html:50
+#: templates/problem/list.html:52
 msgid "Filter by type..."
 msgstr ""
 
-#: templates/problem/list.html:135
+#: templates/problem/list.html:137
 msgid "Hot problems"
 msgstr ""
 
-#: templates/problem/list.html:159 templates/problem/submission-diff.html:111
+#: templates/problem/list.html:163 templates/problem/submission-diff.html:111
 #: templates/status/language-list.html:34 templates/ticket/list.html:198
 msgid "ID"
 msgstr ""
 
-#: templates/problem/list.html:165 templates/problem/search-form.html:35
+#: templates/problem/list.html:169 templates/problem/search-form.html:45
 #: templates/user/user-problems.html:59
-msgid "Category"
+msgid "Problem types"
 msgstr ""
 
-#: templates/problem/list.html:169
-msgid "Types"
-msgstr ""
-
-#: templates/problem/list.html:176
+#: templates/problem/list.html:175
 #, python-format
 msgid "%% AC"
 msgstr ""
 
-#: templates/problem/list.html:179
+#: templates/problem/list.html:178
 msgid "# AC"
 msgstr ""
 
@@ -6412,30 +6408,26 @@ msgstr ""
 msgid "Has editorial"
 msgstr ""
 
-#: templates/problem/search-form.html:32
-msgid "Show problem types"
+#: templates/problem/search-form.html:30
+msgid "Category"
 msgstr ""
 
-#: templates/problem/search-form.html:38 templates/problem/search-form.html:40
+#: templates/problem/search-form.html:33 templates/problem/search-form.html:35
 #: templates/submission/list.html:339
 #: templates/submission/submission-list-tabs.html:4
 msgid "All"
 msgstr ""
 
-#: templates/problem/search-form.html:50
-msgid "Problem types"
-msgstr ""
-
-#: templates/problem/search-form.html:60
+#: templates/problem/search-form.html:55
 msgid "Point range"
 msgstr ""
 
-#: templates/problem/search-form.html:66 templates/submission/list.html:349
+#: templates/problem/search-form.html:61 templates/submission/list.html:349
 #: templates/tag/search-form.html:21 templates/ticket/list.html:187
 msgid "Go"
 msgstr ""
 
-#: templates/problem/search-form.html:67 templates/tag/search-form.html:22
+#: templates/problem/search-form.html:62 templates/tag/search-form.html:22
 msgid "Random"
 msgstr ""
 
@@ -7662,16 +7654,16 @@ msgstr ""
 msgid "Authored problems"
 msgstr ""
 
-#: templates/user/user-problems.html:85
+#: templates/user/user-problems.html:92
 msgid "Hide problems I've solved"
 msgstr ""
 
-#: templates/user/user-problems.html:96
+#: templates/user/user-problems.html:103
 #, python-format
 msgid "%(group)s (%(val)s points)"
 msgstr ""
 
-#: templates/user/user-problems.html:115
+#: templates/user/user-problems.html:122
 #, python-format
 msgid "%(points)s / %(total)s"
 msgstr ""
