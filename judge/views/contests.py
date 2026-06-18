@@ -363,6 +363,7 @@ class ContestAllProblems(ContestMixin, TitleMixin, DetailView):
         points_list = list(self.object.contest_problems.values_list('points').order_by('order'))
         for idx, p in enumerate(context['contest_problems']):
             p.points = points_list[idx][0]
+            p.label = self.object.get_label_for_problem(idx)
 
         authenticated = self.request.user.is_authenticated
         context['completed_problem_ids'] = user_completed_ids(self.request.profile) if authenticated else []

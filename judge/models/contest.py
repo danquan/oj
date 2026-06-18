@@ -378,8 +378,12 @@ class Contest(models.Model):
 
     @cached_property
     def editor_ids(self):
+        from judge.models.profile import Profile
         return self.author_ids.union(
-            Contest.curators.through.objects.filter(contest=self).values_list('profile_id', flat=True))
+            Contest.curators.through.objects.filter(contest=self).values_list('profile_id', flat=True)
+        ).union(
+            Profile.objects.filter(admin_of__in=self.organizations.all()).values_list('id', flat=True)
+        )
 
     @cached_property
     def tester_ids(self):
