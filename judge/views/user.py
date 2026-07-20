@@ -341,7 +341,7 @@ class UserProblemsPage(UserPage):
         result = Submission.objects.filter(user=self.object, points__gt=0, problem__is_public=True,
                                            problem__is_organization_private=False) \
             .exclude(problem__in=self.get_completed_problems() if self.hide_solved else []) \
-            .values('problem__id', 'problem__code', 'problem__name', 'problem__points', 'problem__group__full_name') \
+            .values('problem__id', 'problem__code', 'problem__name', 'problem__source', 'problem__points', 'problem__group__full_name') \
             .distinct().annotate(points=Max('points')).order_by('problem__group__full_name', 'problem__code')
 
         def process_group(group, problems_iter):
@@ -352,7 +352,7 @@ class UserProblemsPage(UserPage):
         context['best_submissions'] = [
             process_group(group, problems) for group, problems in itertools.groupby(
                 remap_keys(result, {
-                    'problem__code': 'code', 'problem__name': 'name', 'problem__points': 'total',
+                    'problem__code': 'code', 'problem__name': 'name', 'problem__source': 'source', 'problem__points': 'total',
                     'problem__group__full_name': 'group',
                 }), itemgetter('group'))
         ]

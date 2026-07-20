@@ -313,7 +313,7 @@ class ProblemList(QueryStringSortMixin, TitleMixin, SolvedProblemMixin, ListView
     context_object_name = 'problems'
     template_name = 'problem/list.html'
     paginate_by = 50
-    sql_sort = frozenset(('points', 'ac_rate', 'user_count', 'code', 'date'))
+    sql_sort = frozenset(('points', 'ac_rate', 'user_count', 'code', 'date', 'source'))
     manual_sort = frozenset(('name', 'group', 'solved', 'type', 'editorial'))
     all_sorts = sql_sort | manual_sort
     default_desc = frozenset(('points', 'ac_rate', 'user_count'))
