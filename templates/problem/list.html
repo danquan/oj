@@ -148,6 +148,7 @@
         </div>
     </div>
     <div id="content-left" class="problems h-scrollable-table">
+        {% block before_problem_table %}{% endblock %}
         <table id="problem-table" class="table striped">
             <thead>
                 <tr>
@@ -167,6 +168,9 @@
                     </th>
                     <th class="types">
                         <a href="{{ sort_links.type }}">{{ _('Problem types') }}{{ sort_order.type }}</a>
+                    </th>
+                    <th class="source">
+                        <a href="{{ sort_links.source }}">{{ _('Source') }}{{ sort_order.source }}</a>
                     </th>
                     <th class="points">
                         <a href="{{ sort_links.points }}">{{ _('Points') }}{{ sort_order.points }}</a>
@@ -234,6 +238,9 @@
                             <span class="type-tag-full">{{ type }}</span>
                         </div>
                         {% endfor %}
+                    </td>
+                    <td class="source">
+                        {{ problem.source }}
                     </td>
                     <td class="p">{{ problem.points|floatformat(2) }}</td>
                     {# <td class="ac-rate">{{ problem.ac_rate|floatformat(1) }}%</td>

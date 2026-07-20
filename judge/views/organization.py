@@ -21,7 +21,7 @@ from django.views.generic.detail import SingleObjectMixin, SingleObjectTemplateR
 from reversion import revisions
 
 from judge.forms import OrganizationForm
-from judge.models import BlogPost, Comment, Contest, Language, Organization, OrganizationRequest, \
+from judge.models import BlogPost, Comment, Contest, ContestProblem, Language, Organization, OrganizationRequest, \
     Problem, Profile
 from judge.tasks import on_new_problem
 from judge.utils.infinite_paginator import InfinitePaginationMixin
@@ -575,6 +575,41 @@ class ProblemListOrganization(PrivateOrganizationMixin, ProblemList):
             _filter |= Q(testers=self.profile)
 
         return _filter & Q(organizations=self.organization)
+
+
+class UsedProblemListOrganization(PrivateOrganizationMixin, ProblemList):
+    """List problems that have been used in at least one contest belonging to this organization."""
+    context_object_name = 'problems'
+    template_name = 'organization/used-problem-list.html'
+    permission_bypass = ['judge.see_organization_problem', 'judge.edit_all_problem']
+
+    def get_hot_problems(self):
+        return None
+
+    def get_context_data(self, **kwargs):
+        context = super(UsedProblemListOrganization, self).get_context_data(**kwargs)
+        if not self.is_in_organization_subdomain():
+            context['title'] = self.organization.name
+        return context
+
+    def get_filter(self):
+        """Return problems that appear in any contest of this organization."""
+        used_problem_ids = ContestProblem.objects.filter(
+            contest__organizations=self.organization,
+            contest__is_organization_private=True,
+        ).values_list('problem_id', flat=True).distinct()
+
+        if self.request.user.has_perm('judge.see_private_problem'):
+            return Q(id__in=used_problem_ids)
+
+        _filter = Q(is_public=True)
+
+        if self.profile is not None:
+            _filter |= Q(authors=self.profile)
+            _filter |= Q(curators=self.profile)
+            _filter |= Q(testers=self.profile)
+
+        return _filter & Q(id__in=used_problem_ids)
 
 
 class ContestListOrganization(PrivateOrganizationMixin, ContestList):
