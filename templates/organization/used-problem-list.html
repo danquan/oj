@@ -8,11 +8,11 @@
 {% block before_problem_table %}
 <div class="problem-list-mode-toggle">
     <a href="{{ url('problem_list_organization', organization.slug) }}"
-       class="toggle-btn active" id="btn-own-problems">
+       class="toggle-btn" id="btn-own-problems">
         <i class="fa fa-puzzle-piece"></i> {{ _('Problems') }}
     </a>
     <a href="{{ url('used_problem_list_organization', organization.slug) }}"
-       class="toggle-btn" id="btn-used-problems">
+       class="toggle-btn active" id="btn-used-problems">
         <i class="fa fa-list-alt"></i> {{ _('Used problems') }}
     </a>
 </div>
