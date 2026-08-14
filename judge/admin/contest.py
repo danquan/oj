@@ -58,6 +58,11 @@ class ContestTagAdmin(admin.ModelAdmin):
 
 
 class ContestProblemInlineForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if 'problem' in self.fields:
+            self.fields['problem'].label_from_instance = lambda obj: f'[{obj.code}] {obj.name}'
+
     class Meta:
         widgets = {'problem': AdminHeavySelect2Widget(data_view='problem_select2')}
 

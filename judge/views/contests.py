@@ -872,8 +872,21 @@ def make_contest_ranking_profile(contest, participation, contest_problems, first
     )
 
 
-def base_contest_ranking_list(contest, problems, queryset, frozen=False):
-    queryset = queryset.select_related('user__user', 'rating').defer('user__about', 'user__organizations__about')
+def base_contest_ranking_list(contest, problems, queryset, frozen=False, time_offset=None):
+    queryset = list(queryset.select_related('user__user', 'rating').defer('user__about', 'user__organizations__about'))
+
+    if time_offset is not None:
+        end_time = contest.start_time + timedelta(minutes=time_offset)
+        for participation in queryset:
+            info = contest.format.calculate_participation_info(participation, end_time=end_time)
+            if info:
+                participation.score = info.score
+                participation.cumtime = info.cumtime
+                participation.tiebreaker = info.tiebreaker
+                participation.format_data = info.format_data
+        # When time_offset is present, we compute actual score up to end_time, so we don't display 'frozen' pending state
+        frozen = False
+
     first_solves, total_ac = contest.format.get_first_solves_and_total_ac(problems, queryset, frozen)
     users = [make_contest_ranking_profile(contest, participation, problems, first_solves, frozen) for participation
              in queryset]
@@ -896,13 +909,21 @@ def base_contest_frozen_ranking_queryset(contest):
         .order_by('is_disqualified', '-frozen_score', 'frozen_cumtime', 'frozen_tiebreaker', '-submission_count')
 
 
-def contest_ranking_list(contest, problems, frozen=False):
-    return base_contest_ranking_list(contest, problems, base_contest_ranking_queryset(contest), frozen=frozen)
+def contest_ranking_list(contest, problems, frozen=False, time_offset=None):
+    return base_contest_ranking_list(contest, problems, base_contest_ranking_queryset(contest), frozen=frozen, time_offset=time_offset)
 
 
 def get_contest_ranking_list(request, contest, participation=None, ranking_list=contest_ranking_list, ranker=ranker):
     problems = list(contest.contest_problems.select_related('problem').defer('problem__description').order_by('order'))
-    users, total_ac = ranking_list(contest, problems)
+
+    time_offset = request.GET.get('time')
+    if time_offset is not None:
+        try:
+            time_offset = int(time_offset)
+        except ValueError:
+            time_offset = None
+
+    users, total_ac = ranking_list(contest, problems, time_offset=time_offset)
     users = ranker(users, key=attrgetter('points', 'cumtime', 'tiebreaker'))
 
     return users, problems, total_ac
@@ -979,8 +1000,9 @@ class ContestRanking(ContestRankingBase):
 
     @property
     def cache_key(self):
+        time_offset = self.request.GET.get('time', '')
         return f'contest_ranking_cache_{self.object.key}_{self.show_virtual}_{self.is_frozen}_' \
-               f'{self.request.LANGUAGE_CODE}'
+               f'{self.request.LANGUAGE_CODE}_{time_offset}'
 
     @property
     def bypass_cache_ranking(self):

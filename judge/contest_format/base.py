@@ -1,4 +1,7 @@
 from abc import ABCMeta, abstractmethod
+from collections import namedtuple
+
+ParticipationInfo = namedtuple('ParticipationInfo', 'cumtime score tiebreaker format_data')
 
 
 class abstractclassmethod(classmethod):
@@ -46,6 +49,19 @@ class BaseContestFormat(metaclass=ABCMeta):
         :return: None
         """
         raise NotImplementedError()
+
+    def calculate_participation_info(self, participation, end_time=None):
+        """
+        Calculates participation info in memory without saving to the database.
+        Optionally supports calculating up to `end_time` (datetime object).
+        Returns a `ParticipationInfo` object.
+        If not implemented, returns None.
+
+        :param participation: A ContestParticipation object.
+        :param end_time: Optional datetime object to calculate up to.
+        :return: A ParticipationInfo object or None.
+        """
+        return None
 
     @abstractmethod
     def get_first_solves_and_total_ac(self, problems, participations, frozen=False):

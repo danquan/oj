@@ -45,7 +45,8 @@ class ICPCContestFormat(DefaultContestFormat):
         self.config.update(config or {})
         self.contest = contest
 
-    def update_participation(self, participation):
+    def calculate_participation_info(self, participation, end_time=None):
+        from judge.contest_format.base import ParticipationInfo
         cumtime = 0
         last = 0
         penalty = 0
@@ -75,9 +76,16 @@ class ICPCContestFormat(DefaultContestFormat):
 
             for points, time, prob in cursor.fetchall():
                 time = from_database_time(time)
+
+                if end_time is not None and time > end_time:
+                    points = 0
+                    time = end_time  # Not AC yet at end_time
+
                 dt_second = (time - participation.start).total_seconds()
                 dt = int(dt_second // 60)
                 is_frozen_sub = (participation.is_frozen and time >= frozen_time)
+                if end_time is not None:
+                    is_frozen_sub = False
 
                 frozen_points = 0
                 frozen_tries = 0
@@ -87,6 +95,9 @@ class ICPCContestFormat(DefaultContestFormat):
                     subs = participation.submissions.exclude(submission__result__isnull=True) \
                                                     .exclude(submission__result__in=['IE', 'CE']) \
                                                     .filter(problem_id=prob)
+                    if end_time is not None:
+                        subs = subs.filter(submission__date__lte=end_time)
+
                     if points:
                         # Submissions after the first AC does not count toward number of tries
                         tries = subs.filter(submission__date__lte=time).count()
@@ -109,6 +120,8 @@ class ICPCContestFormat(DefaultContestFormat):
                         time = subs.aggregate(time=Max('submission__date'))['time']
                         # time can be None if there all of submissions are CE or IE.
                         is_frozen_sub = (participation.is_frozen and time and time >= frozen_time)
+                        if end_time is not None:
+                            is_frozen_sub = False
                 else:
                     tries = 0
                     # Don't need to set frozen_tries = 0 because we've initialized it with 0
@@ -133,15 +146,32 @@ class ICPCContestFormat(DefaultContestFormat):
                     'is_frozen': is_frozen_sub,
                 }
 
-        participation.cumtime = max(cumtime + penalty, 0)
-        participation.score = round(score, self.contest.points_precision)
-        participation.tiebreaker = last  # field is sorted from least to greatest
+        # For calculate_participation_info API, we return the non-frozen score
+        # since if end_time was passed, we've already computed it as normal score.
+        # But we also return frozen_score in format_data so update_participation can use it.
+        format_data['_frozen_cumtime'] = max(frozen_cumtime + frozen_penalty, 0)
+        format_data['_frozen_score'] = round(frozen_score, self.contest.points_precision)
+        format_data['_frozen_tiebreaker'] = frozen_last
 
-        participation.frozen_cumtime = max(frozen_cumtime + frozen_penalty, 0)
-        participation.frozen_score = round(frozen_score, self.contest.points_precision)
-        participation.frozen_tiebreaker = frozen_last
+        return ParticipationInfo(
+            cumtime=max(cumtime + penalty, 0),
+            score=round(score, self.contest.points_precision),
+            tiebreaker=last,
+            format_data=format_data
+        )
 
-        participation.format_data = format_data
+    def update_participation(self, participation):
+        info = self.calculate_participation_info(participation)
+
+        participation.cumtime = info.cumtime
+        participation.score = info.score
+        participation.tiebreaker = info.tiebreaker  # field is sorted from least to greatest
+
+        participation.frozen_cumtime = info.format_data.pop('_frozen_cumtime')
+        participation.frozen_score = info.format_data.pop('_frozen_score')
+        participation.frozen_tiebreaker = info.format_data.pop('_frozen_tiebreaker')
+
+        participation.format_data = info.format_data
         participation.save()
 
     def get_first_solves_and_total_ac(self, problems, participations, frozen=False):
