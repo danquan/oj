@@ -25,12 +25,17 @@ class DefaultContestFormat(BaseContestFormat):
     def __init__(self, contest, config):
         super(DefaultContestFormat, self).__init__(contest, config)
 
-    def update_participation(self, participation):
+    def calculate_participation_info(self, participation, end_time=None):
+        from judge.contest_format.base import ParticipationInfo
         cumtime = 0
         points = 0
         format_data = {}
 
-        for result in participation.submissions.values('problem_id').annotate(
+        subs = participation.submissions
+        if end_time is not None:
+            subs = subs.filter(submission__date__lte=end_time)
+
+        for result in subs.values('problem_id').annotate(
                 time=Max('submission__date'), points=Max('points'),
         ):
             dt = (result['time'] - participation.start).total_seconds()
@@ -39,10 +44,19 @@ class DefaultContestFormat(BaseContestFormat):
             format_data[str(result['problem_id'])] = {'time': dt, 'points': result['points']}
             points += result['points']
 
-        participation.cumtime = max(cumtime, 0)
-        participation.score = round(points, self.contest.points_precision)
-        participation.tiebreaker = 0
-        participation.format_data = format_data
+        return ParticipationInfo(
+            cumtime=max(cumtime, 0),
+            score=round(points, self.contest.points_precision),
+            tiebreaker=0,
+            format_data=format_data
+        )
+
+    def update_participation(self, participation):
+        info = self.calculate_participation_info(participation)
+        participation.cumtime = info.cumtime
+        participation.score = info.score
+        participation.tiebreaker = info.tiebreaker
+        participation.format_data = info.format_data
         participation.save()
 
     def get_first_solves_and_total_ac(self, problems, participations, frozen=False):

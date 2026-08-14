@@ -14,7 +14,7 @@ from judge.contest_format.registry import register_contest_format
 from judge.timezone import from_database_time, to_database_time
 from judge.utils.timedelta import nice_repr
 
-ParticipationInfo = namedtuple('ParticipationInfo', 'cumtime score tiebreaker format_data')
+from judge.contest_format.base import BaseContestFormat, ParticipationInfo
 
 DEFAULT_RANKING_SQL = """
 SELECT MAX(cs.points) as `points`, (
@@ -76,14 +76,18 @@ class VNOJContestFormat(DefaultContestFormat):
         self.config.update(config or {})
         self.contest = contest
 
-    def calculate_participation_info(self, participation, frozen=False) -> ParticipationInfo:
+    def calculate_participation_info(self, participation, end_time=None, frozen=False) -> ParticipationInfo:
         cumtime = 0
         last = 0
         penalty = 0
         score = 0
         format_data = {}
 
-        frozen_time = participation.contest.frozen_time
+        if end_time is not None:
+            frozen = True
+            frozen_time = end_time
+        else:
+            frozen_time = participation.contest.frozen_time
 
         with connection.cursor() as cursor:
             if not frozen:
