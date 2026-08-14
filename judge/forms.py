@@ -638,6 +638,7 @@ class ProposeContestProblemForm(ModelForm):
         super(ProposeContestProblemForm, self).__init__(*args, **kwargs)
 
         self.fields['problem'].queryset = Problem.get_visible_problems(self.user)
+        self.fields['problem'].label_from_instance = lambda obj: f'[{obj.code}] {obj.name}'
 
     class Meta:
         model = ContestProblem
@@ -703,10 +704,19 @@ class BlogPostForm(ModelForm):
 class ContestForm(ModelForm):
     required_css_class = 'required'
 
+    use_access_code = forms.BooleanField(
+        label=_('Use access code'),
+        required=False,
+        help_text=_('Check this to require an access code to join the contest.')
+    )
+
     def __init__(self, *args, **kwargs):
         self.org_pk = org_pk = kwargs.pop('org_pk', None)
         self.user = kwargs.pop('user', None)
         super(ContestForm, self).__init__(*args, **kwargs)
+
+        if self.instance and self.instance.access_code:
+            self.fields['use_access_code'].initial = True
 
         # cannot use fields[].widget = ...
         # because it will remove the old values
@@ -724,6 +734,13 @@ class ContestForm(ModelForm):
         cleaned_data = super().clean()
         start_time = cleaned_data.get('start_time')
         end_time = cleaned_data.get('end_time')
+        use_access_code = cleaned_data.get('use_access_code')
+        access_code = cleaned_data.get('access_code')
+
+        if use_access_code and not access_code:
+            self.add_error('access_code', _('Access code is required if "Use access code" is checked.'))
+        elif not use_access_code:
+            cleaned_data['access_code'] = ''
 
         has_long_perm = self.user and self.user.has_perm('judge.long_contest_duration')
         if end_time and start_time and \
@@ -759,6 +776,8 @@ class ContestForm(ModelForm):
             'description',
             'is_private',
             'private_contestants',
+            'use_access_code',
+            'access_code',
         ]
 
         widgets = {

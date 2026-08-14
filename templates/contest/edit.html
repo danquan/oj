@@ -19,11 +19,43 @@
         });
     </script>
 
+    <script type="text/javascript" src="{{ static('vnoj/jquery-ui/jquery-ui.min.js') }}"></script>
     <script src="{{ static('vnoj/jquery.formset.js') }}"></script>
     <script type="text/javascript">
         $(function() {
             $('#form_set tr').formset({
                 prefix: '{{ contest_problem_formset.prefix }}'
+            });
+
+            $('#form_set').sortable({
+                items: 'tr:has(input[name$="-order"])',
+                handle: '.drag-handle',
+                cursor: 'move',
+                placeholder: 'sortable-placeholder',
+                forcePlaceholderSize: true,
+                helper: function(e, tr) {
+                    var $originals = tr.children();
+                    var $helper = tr.clone();
+                    $helper.children().each(function(index) {
+                        $(this).width($originals.eq(index).width());
+                    });
+                    $helper.css('background-color', 'white');
+                    return $helper;
+                },
+                update: function(event, ui) {
+                    var orderIndex = 0;
+                    $('#form_set tr:has(input[name$="-order"])').each(function() {
+                        var orderInput = $(this).find('input[name$="-order"]');
+                        var problemSelect = $(this).find('select[name$="-problem"]');
+                        
+                        if (problemSelect.val()) {
+                            orderInput.val(orderIndex);
+                            orderIndex++;
+                        } else {
+                            orderInput.val('');
+                        }
+                    });
+                }
             });
 
             var noResults = function () {
@@ -68,6 +100,12 @@
     <link rel="stylesheet" href="/static/vnoj/flatpickr/dist/flatpickr.min.css">
     {{ form.media.css }}
     <link rel="stylesheet" type="text/css" href="{{ static('ui_form.css') }}">
+    <style>
+        .sortable-placeholder {
+            background-color: #f9f9f9;
+            border: 1px dashed #ccc;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -75,10 +113,13 @@
 {% macro form_as_row(form) -%}
     {% if form.non_field_errors() %}
     <tr>
-        <td colspan="6">{{ form.non_field_errors() }}</td>
+        <td colspan="7">{{ form.non_field_errors() }}</td>
     </tr>
     {% endif %}
     <tr>
+        <td class="drag-handle" style="cursor: grab; width: 2em; text-align: center; vertical-align: middle;">
+            <i class="fa fa-bars"></i>
+        </td>
         <td>{{ form.id }} {{ form.problem.errors }}{{ form.problem }}</td>
         <td class="points-column">{{ form.points.errors }}{{ form.points }}</td>
         <td>{{ form.order.errors }}{{ form.order }}</td>
@@ -112,6 +153,7 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th style="width: 2em;"></th>
                     <th class="problem-column" style="width: 20em;"> {{ _('Problems') }} </th>
                     <th class="points-column"> {{ _('Points') }} </th>
                     <th> {{ _('Order in contest') }} </th>
