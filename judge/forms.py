@@ -175,10 +175,10 @@ class ProblemEditForm(ModelForm):
         self.user = kwargs.pop('user', None)
         super(ProblemEditForm, self).__init__(*args, **kwargs)
 
-        # Only allow to public/private problem in organization
-        if org_pk is None:
+        # Only allow to public/private problem in organization or if user has perm
+        if org_pk is None and not (self.user and self.user.has_perm('judge.change_public_visibility')):
             self.fields.pop('is_public')
-        else:
+        elif org_pk is not None:
             self.fields['testers'].label = _('Private users')
             self.fields['testers'].help_text = _('If private, only these users may see the problem.')
             self.fields['testers'].widget.data_view = None
