@@ -7974,3 +7974,13 @@ msgstr "Chọn tất cả"
 
 #~ msgid "Maximum single-case runtime:"
 #~ msgstr "Thời gian chạy test lâu nhất:"
+
+msgid "Zoom Out"
+msgstr "Thu nhỏ"
+
+msgid "Zoom In"
+msgstr "Phóng to"
+
+msgid "Auto"
+msgstr "Tự động"
+

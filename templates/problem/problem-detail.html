@@ -1,7 +1,68 @@
 {% with pdf_url=problem.absolute_pdf_url %}
 {% if pdf_url %}
     <p>{{ _("In case the statement didn't load correctly, you can download the statement here: ") }}<a href="{{ pdf_url }}">{{ _("Statement") }}</a></p>
-    <object id="pdfContainer" data="{{ pdf_url }}" type="application/pdf" height="1000" style="width: 100%;" ></object>
+    <div id="pdf-toolbar" style="margin-bottom: 10px; display: none; position: relative;">
+        <div style="text-align: center; font-weight: bold; line-height: 30px;">
+            <span id="pdf-zoom-level">{{ _("Auto") }}</span>
+        </div>
+        <div style="position: absolute; right: 0; top: 0; display: flex; flex-direction: row; flex-wrap: nowrap; gap: 8px;">
+            <button id="pdf-zoom-out" class="btn btn-default btn-sm"><i class="fa fa-search-minus"></i> {{ _("Zoom Out") }}</button>
+            <button id="pdf-zoom-in" class="btn btn-default btn-sm"><i class="fa fa-search-plus"></i> {{ _("Zoom In") }}</button>
+        </div>
+    </div>
+    
+    <div style="position: relative; width: 100%; height: 80vh; margin-bottom: 20px;">
+        <div id="pdf-container" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: auto; background-color: #525659; border-radius: 4px;">
+            <div id="viewer" class="pdfViewer"></div>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf_viewer.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf_viewer.min.js"></script>
+    <script>
+        var url = '{{ pdf_url }}';
+        var pdfjsLib = window['pdfjs-dist/build/pdf'] || window.pdfjsLib;
+        var pdfjsViewer = window['pdfjs-dist/web/pdf_viewer'] || window.pdfjsViewer;
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+        var container = document.getElementById('pdf-container');
+        var eventBus = new pdfjsViewer.EventBus();
+
+        var pdfViewer = new pdfjsViewer.PDFViewer({
+            container: container,
+            eventBus: eventBus,
+            textLayerMode: 2 // 2 corresponds to ENABLE
+        });
+
+        eventBus.on('pagesinit', function () {
+            // Fit to page width by default
+            pdfViewer.currentScaleValue = 'page-width';
+            document.getElementById('pdf-zoom-level').innerText = Math.round(pdfViewer.currentScale * 100) + '%';
+        });
+
+        eventBus.on('scalechanged', function (evt) {
+            document.getElementById('pdf-zoom-level').innerText = Math.round(evt.scale * 100) + '%';
+        });
+
+        var loadingTask = pdfjsLib.getDocument(url);
+        loadingTask.promise.then(function(pdfDocument) {
+            document.getElementById('pdf-toolbar').style.display = 'block';
+            pdfViewer.setDocument(pdfDocument);
+        }).catch(function (reason) {
+            container.innerHTML += '<p style="color:red; background:white; padding: 10px;">Error loading PDF: ' + reason.message + '</p>';
+        });
+
+        document.getElementById('pdf-zoom-in').addEventListener('click', function() {
+            pdfViewer.currentScale += 0.25;
+        });
+        document.getElementById('pdf-zoom-out').addEventListener('click', function() {
+            if (pdfViewer.currentScale > 0.5) {
+                pdfViewer.currentScale -= 0.25;
+            }
+        });
+    </script>
 {% endif %}
 {% endwith %}
 
