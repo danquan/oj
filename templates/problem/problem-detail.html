@@ -7,10 +7,10 @@
         <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf_viewer.min.css">
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf_viewer.min.js"></script>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="{{ static('libs/pdfjs/pdf_viewer.min.css') }}">
+            <script src="{{ static('libs/pdfjs/pdf.min.js') }}"></script>
+            <script src="{{ static('libs/pdfjs/pdf_viewer.min.js') }}"></script>
+            <link rel="stylesheet" href="{{ static('libs/fontawesome/font-awesome.css') }}">
             <style>
                 body { margin: 0; background-color: #525659; overflow: hidden; font-family: sans-serif; }
                 #pdf-toolbar {
@@ -42,7 +42,7 @@
                 var url = "{{ pdf_url|escapejs }}";
                 var pdfjsLib = window["pdfjs-dist/build/pdf"];
                 var pdfjsViewer = window["pdfjs-dist/web/pdf_viewer"];
-                pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+                pdfjsLib.GlobalWorkerOptions.workerSrc = "{{ static('libs/pdfjs/pdf.worker.min.js') }}";
                 
                 var container = document.getElementById("pdf-container");
                 var eventBus = new pdfjsViewer.EventBus();
