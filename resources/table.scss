@@ -19,7 +19,7 @@
 
     th {
         height: 2.4em;
-        color: var(--oj-th-text);        // bold, clearly dark text (see tokens)
+        color: var(--oj-th-text); // bold, clearly dark text (see tokens)
         background-color: var(--oj-th-bg);
         border-color: var(--oj-border);
         border-width: 0 1px 1px 0;
@@ -28,10 +28,10 @@
         vertical-align: middle;
         text-align: center;
         white-space: nowrap;
-        font-weight: 700;                // bolder than before
-        font-size: 0.82em;
-        letter-spacing: 0.03em;
-        text-transform: none;            // drop all-caps — easier to read
+        font-weight: 700; // bolder than before
+        font-size: 1.1em;
+        letter-spacing: 0.02em;
+        text-transform: none; // drop all-caps — easier to read
     }
 
     td {
@@ -44,11 +44,13 @@
     }
 
     // Border fixes
-    th:first-child, td:first-child {
+    th:first-child,
+    td:first-child {
         border-left-width: 1px;
     }
 
-    tr:first-child th, tr:first-child td {
+    tr:first-child th,
+    tr:first-child td {
         border-top-width: 1px;
     }
 
