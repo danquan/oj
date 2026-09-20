@@ -10,33 +10,35 @@
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0.5em;
-    background: rgba($color_primary100, 0.01);
-    backdrop-filter: blur(3px);
+    background: var(--oj-surface);
 
+    // No alternating stripe — single solid surface for all rows
     &.striped tr:nth-child(2n) {
-        background: rgba($color_primary100, 0.03);
+        background: var(--oj-surface);
     }
 
     th {
-        height: 2em;
-        color: $color_primary0;
-        background-color: $color_primary75;
-        border-color: $color_primary50;
+        height: 2.4em;
+        color: var(--oj-th-text);        // bold, clearly dark text (see tokens)
+        background-color: var(--oj-th-bg);
+        border-color: var(--oj-border);
         border-width: 0 1px 1px 0;
         border-style: solid;
-        padding: 4px 10px;
+        padding: 8px 10px;
         vertical-align: middle;
         text-align: center;
         white-space: nowrap;
-        font-weight: 600;
-        font-size: 1.1em;
+        font-weight: 700;                // bolder than before
+        font-size: 0.82em;
+        letter-spacing: 0.03em;
+        text-transform: none;            // drop all-caps — easier to read
     }
 
     td {
-        border-color: $color_primary25;
+        border-color: var(--oj-border);
         border-width: 0 1px 1px 0;
         border-style: solid;
-        padding: 7px 5px;
+        padding: 8px 5px;
         vertical-align: middle;
         text-align: center;
     }
@@ -61,5 +63,14 @@
 
     tbody tr:last-child th:first-child {
         border-bottom-left-radius: $table_header_rounding;
+    }
+
+    // Google-blue tinted row hover
+    tbody tr {
+        transition: background-color $dur-fast $ease-std;
+
+        &:hover {
+            background: var(--oj-accent-glow) !important;
+        }
     }
 }

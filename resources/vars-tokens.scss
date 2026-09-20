@@ -1,0 +1,106 @@
+// ─────────────────────────────────────────────────────────────────
+// vars-tokens.scss — CSS Custom Property Design Tokens
+//
+// Colour palette: Google / COPE-style
+//   Google Blue   #4285F4   (primary accent, CTA, active indicator)
+//   Google Red    #EA4335   (errors, warnings)
+//   Google Yellow #FBBC05   (active/badge highlights)
+//   Google Green  #34A853   (solved, editorial, success)
+//
+// Toggle dark mode by adding/removing the `dark` class on <html>.
+// ─────────────────────────────────────────────────────────────────
+
+:root {
+    // ── Page surfaces ─────────────────────────────────────────────
+    --oj-bg:           #f8f9fa;          // Google's off-white background
+    --oj-surface:      #ffffff;
+    --oj-surface-2:    #f1f3f4;          // Google's light grey chip/card bg
+
+    // ── Borders ───────────────────────────────────────────────────
+    --oj-border:       #dadce0;          // Google divider grey
+    --oj-border-2:     #bdc1c6;
+
+    // ── Text ──────────────────────────────────────────────────────
+    --oj-text:         #202124;          // Google primary text (#202124)
+    --oj-text-2:       #5f6368;          // Google secondary text
+    --oj-text-3:       #80868b;          // Google hint/placeholder text
+
+    // ── Accent — Google Blue ──────────────────────────────────────
+    --oj-accent:       #1a73e8;          // Google Blue (interactive elements)
+    --oj-accent-h:     #1557b0;          // hover (darker)
+    --oj-accent-glow:  #e8f0fe;          // Google Blue tint (row hover, focus bg)
+
+    // ── Links ─────────────────────────────────────────────────────
+    --oj-link:         #1a73e8;
+    --oj-link-h:       #1557b0;
+
+    // ── Navigation bar ────────────────────────────────────────────
+    --oj-nav-bg:       #202124;          // Google's near-black top bar
+    --oj-nav-text:     #e8eaed;
+
+    // ── Table header ──────────────────────────────────────────────
+    --oj-th-bg:        #f1f3f4;          // Google's chip/header grey
+    --oj-th-text:      #202124;          // clear black — bold readable header
+
+    // ── Activity heatmap (Google Green scale) ─────────────────────
+    --oj-heat-0:       #dadce0;
+    --oj-heat-1:       #b7dfbb;
+    --oj-heat-2:       #57bb6a;          // Google Green midpoint
+    --oj-heat-3:       #34a853;          // Google Green
+    --oj-heat-4:       #1e7e34;
+
+    // ── Status / verdict colours ──────────────────────────────────
+    --oj-solved:       #34a853;          // Google Green
+    --oj-attempted:    #f29900;          // Google Yellow-orange
+    --oj-unsolved:     #80868b;          // Google hint grey
+    --oj-editorial:    #34a853;
+    --oj-no-editorial: #ea4335;          // Google Red
+}
+
+// ── Dark theme override — activated by html.dark class ────────────
+html.dark {
+    // ── Page surfaces ─────────────────────────────────────────────
+    --oj-bg:           #131314;          // Google dark mode base
+    --oj-surface:      #1e1f20;          // Google dark card surface
+    --oj-surface-2:    #28292a;
+
+    // ── Borders ───────────────────────────────────────────────────
+    --oj-border:       #3c4043;          // Google dark divider
+    --oj-border-2:     #5f6368;
+
+    // ── Text ──────────────────────────────────────────────────────
+    --oj-text:         #e8eaed;          // Google dark primary text
+    --oj-text-2:       #9aa0a6;          // Google dark secondary text
+    --oj-text-3:       #5f6368;
+
+    // ── Accent — Google Blue (luminance-boosted for dark) ─────────
+    --oj-accent:       #8ab4f8;          // Google Blue on dark
+    --oj-accent-h:     #aecbfa;
+    --oj-accent-glow:  #1a3358;          // dark blue tint for hover
+
+    // ── Links ─────────────────────────────────────────────────────
+    --oj-link:         #8ab4f8;
+    --oj-link-h:       #aecbfa;
+
+    // ── Navigation bar ────────────────────────────────────────────
+    --oj-nav-bg:       #131314;
+    --oj-nav-text:     #e8eaed;
+
+    // ── Table header ──────────────────────────────────────────────
+    --oj-th-bg:        #28292a;
+    --oj-th-text:      #e8eaed;          // clearly readable on dark
+
+    // ── Activity heatmap (Google Green on dark) ───────────────────
+    --oj-heat-0:       #3c4043;
+    --oj-heat-1:       #0d3d1e;
+    --oj-heat-2:       #137333;
+    --oj-heat-3:       #34a853;
+    --oj-heat-4:       #81c995;
+
+    // ── Status / verdict colours ──────────────────────────────────
+    --oj-solved:       #81c995;          // Google Green on dark
+    --oj-attempted:    #fdd663;          // Google Yellow on dark
+    --oj-unsolved:     #5f6368;
+    --oj-editorial:    #81c995;
+    --oj-no-editorial: #f28b82;          // Google Red on dark
+}

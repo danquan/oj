@@ -324,3 +324,26 @@ $(function () {
         e.stopPropagation();
     } );
 });
+
+// ─── Light / Dark theme toggle ────────────────────────────────────
+$(function () {
+    var $icon = $('#theme-icon');
+    var $btn  = $('#theme-toggle');
+    if (!$btn.length) return;
+
+    function applyIcon(isDark) {
+        $icon.attr('class', isDark ? 'fa fa-sun-o' : 'fa fa-moon-o');
+        $btn.attr('title', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+        $btn.attr('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+
+    // Initialise icon based on current state (class already set by FOUC script)
+    applyIcon(document.documentElement.classList.contains('dark'));
+
+    $btn.on('click', function () {
+        var nowDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('oj-theme', nowDark ? 'dark' : 'light');
+        applyIcon(nowDark);
+    });
+});
+

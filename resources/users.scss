@@ -34,6 +34,7 @@ span.organization {
     padding-left: 0.5em;
 }
 
+
 .users-table {
     th.rank, th.points, th.problems, th.username {
         white-space: nowrap;
@@ -70,11 +71,15 @@ span.organization {
     }
 
     th a {
-        color: $color_primary0;
+        color: var(--oj-text);
 
         &:link,
         &:visited {
-            color: $color_primary0;
+            color: var(--oj-text);
+        }
+
+        &:hover {
+            color: var(--oj-link);
         }
     }
 }
@@ -199,16 +204,18 @@ img.user-gravatar {
 #rating-tooltip {
     display: none;
     position: absolute;
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 3px;
-    border-radius: 3px;
-    transition: all .1s ease;
+    background: var(--oj-surface);
+    color: var(--oj-text);
+    border: 1px solid var(--oj-border);
+    padding: 6px 8px;
+    border-radius: 6px;
+    transition: all .1s $ease-std;
     pointer-events: none;
     transform: translate(-50%, 0);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
 
     .rate-group {
-        color: white;
+        color: var(--oj-text);
     }
 }
 
@@ -284,22 +291,22 @@ img.user-gravatar {
                 }
 
                 &.activity-blank {
-                    background-color: $color_pageBg;
+                    background-color: var(--oj-bg);
                 }
                 &.activity-0 {
-                    background-color: $color_user_submission_activity0;
+                    background-color: var(--oj-heat-0);
                 }
                 &.activity-1 {
-                    background-color: $color_user_submission_activity1;
+                    background-color: var(--oj-heat-1);
                 }
                 &.activity-2 {
-                    background-color: $color_user_submission_activity2;
+                    background-color: var(--oj-heat-2);
                 }
                 &.activity-3 {
-                    background-color: $color_user_submission_activity3;
+                    background-color: var(--oj-heat-3);
                 }
                 &.activity-4 {
-                    background-color: $color_user_submission_activity4;
+                    background-color: var(--oj-heat-4);
                 }
             }
         }

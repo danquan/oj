@@ -3,6 +3,10 @@
 <head>
     <title>{% block title %}{{ title }} - {{ SITE_LONG_NAME }}{% endblock %}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Google Fonts: Inter (UI) + JetBrains Mono (code) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     {% if misc_config.meta_keywords %}
         <meta name="keywords" content="{{ misc_config.meta_keywords }}">
     {% endif %}
@@ -204,6 +208,16 @@
             }
         </style>
     </noscript>
+    <!-- Theme detection: runs before first paint to prevent FOUC -->
+    <script>
+        (function () {
+            var stored = localStorage.getItem('oj-theme');
+            var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (stored === 'dark' || (!stored && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
 </head>
 <body>
 <svg width="0" height="0" style="display: block">
@@ -268,6 +282,9 @@
             <a id="flag_en" href="#" onclick="submmit_language('en')" style="margin-right: 5px; margin-top: 4px;">
                 <img src="{{ static('icons/gb_flag.svg') }}" alt="EN" height="24">
             </a>
+            <button id="theme-toggle" aria-label="{{ _('Toggle dark mode') }}" title="{{ _('Toggle dark mode') }}">
+                <i class="fa fa-moon-o" id="theme-icon"></i>
+            </button>
             {% if request.user.is_authenticated %}
                 <ul>
                     <li>
