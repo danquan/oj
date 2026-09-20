@@ -22,48 +22,51 @@
     float: right;
 }
 
-// ─── Buttons — emerald flat style with lift ──────────────────────
-.button, button:not(#theme-toggle), input[type=submit] {
+// ─── Buttons — modern clean style with #1a74e8 and 13px typography ───
+.button, button:not(#theme-toggle), input[type=submit], input[type=button] {
     color: white !important;
     text-decoration: none !important;
     cursor: pointer;
-    vertical-align: middle;
     white-space: nowrap;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.4;
-    background: var(--oj-accent);
-    border-radius: $widget_border_radius;
-    padding: 7px 16px;
+    background: #1a74e8;
+    border: 1px solid #1a74e8;
+    border-radius: 4px;
+    padding: 5px 16px;
     display: block;
-    border: none;
     text-align: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
 
-    // 4k hack
-    font-size: $base_font_size;
+    font-size: 13px;
+    letter-spacing: 0.01em;
 
     transition: background $dur-fast $ease-std,
+                border-color $dur-fast $ease-std,
                 box-shadow $dur-fast $ease-std,
                 transform  $dur-fast $ease-std;
 
     &:hover {
-        background: var(--oj-accent-h) !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+        background: #155ec2 !important;
+        border-color: #155ec2 !important;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
         transform: translateY(-1px);
     }
 
     &:active {
-        background: var(--oj-accent-h) !important;
+        background: #124ea3 !important;
+        border-color: #124ea3 !important;
         transform: translateY(0);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
     }
 
     &.full {
-        padding: 7px 0;
+        padding: 5px 0;
     }
 
     &.disabled {
         background: var(--oj-text-3) !important;
+        border-color: var(--oj-text-3) !important;
         box-shadow: none !important;
         transform: none !important;
         cursor: not-allowed;
@@ -72,9 +75,23 @@
 }
 
 .inline-button {
-    display: inline;
-    vertical-align: top;
-    padding: 3px 6px;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 3px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    background: #1a74e8;
+    border: 1px solid #1a74e8;
+    color: #fff !important;
+    text-decoration: none !important;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background $dur-fast $ease-std, border-color $dur-fast $ease-std;
+
+    &:hover {
+        background: #155ec2 !important;
+        border-color: #155ec2 !important;
+    }
 }
 
 input {

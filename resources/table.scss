@@ -6,11 +6,14 @@
 
 .table {
     border-spacing: 0;
+    border-collapse: separate;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0.5em;
     background: var(--oj-surface);
+    border-radius: $table_header_rounding;
+    overflow: hidden;
 
     // No alternating stripe — single solid surface for all rows
     &.striped tr:nth-child(2n) {
@@ -66,17 +69,33 @@
         border-top-width: 1px;
     }
 
-    // Rounded corners for <th>
-    tr:first-child th:first-child {
+    // 4 rounded corners — 6px like problem-list-mode-toggle
+    tr:first-child > th:first-child,
+    tr:first-child > td:first-child,
+    thead tr:first-child > th:first-child,
+    thead tr:first-child > td:first-child {
         border-top-left-radius: $table_header_rounding;
     }
 
-    tr:first-child th:last-child {
+    tr:first-child > th:last-child,
+    tr:first-child > td:last-child,
+    thead tr:first-child > th:last-child,
+    thead tr:first-child > td:last-child {
         border-top-right-radius: $table_header_rounding;
     }
 
-    tbody tr:last-child th:first-child {
+    tbody tr:last-child > th:first-child,
+    tbody tr:last-child > td:first-child,
+    tfoot tr:last-child > th:first-child,
+    tfoot tr:last-child > td:first-child {
         border-bottom-left-radius: $table_header_rounding;
+    }
+
+    tbody tr:last-child > th:last-child,
+    tbody tr:last-child > td:last-child,
+    tfoot tr:last-child > th:last-child,
+    tfoot tr:last-child > td:last-child {
+        border-bottom-right-radius: $table_header_rounding;
     }
 
     // Google-blue tinted row hover

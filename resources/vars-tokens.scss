@@ -75,21 +75,21 @@
     --oj-input-bg:           #ffffff;
     --oj-input-border:       #dadce0;
     --oj-input-border-hover: #bdc1c6;
-    --oj-focus-ring:         rgba(26, 115, 232, 0.25);
+    --oj-focus-ring:         rgba(26, 116, 232, 0.25);
 
     // ── Text ──────────────────────────────────────────────────────
     --oj-text:         #202124;          // Google primary text (#202124)
     --oj-text-2:       #5f6368;          // Google secondary text
     --oj-text-3:       #80868b;          // Google hint/placeholder text
 
-    // ── Accent — Google Blue ──────────────────────────────────────
-    --oj-accent:       #1a73e8;          // Google Blue (interactive elements)
-    --oj-accent-h:     #1557b0;          // hover (darker)
-    --oj-accent-glow:  #e8f0fe;          // Google Blue tint (row hover, focus bg)
+    // ── Accent — Blue #1a74e8 ──────────────────────────────────────
+    --oj-accent:       #1a74e8;          // Primary blue requested by user
+    --oj-accent-h:     #155ec2;          // hover (darker)
+    --oj-accent-glow:  #e8f0fe;          // Blue tint (row hover, focus bg)
 
     // ── Links ─────────────────────────────────────────────────────
-    --oj-link:         #1a73e8;
-    --oj-link-h:       #1557b0;
+    --oj-link:         #1a74e8;
+    --oj-link-h:       #155ec2;
 
     // ── Navigation bar ────────────────────────────────────────────
     --oj-nav-bg:       #202124;          // Google's near-black top bar
