@@ -19,7 +19,7 @@
 
     th {
         height: 2.4em;
-        color: var(--oj-th-text); // bold, clearly dark text (see tokens)
+        color: var(--oj-th-text); // bold, clearly dark text in light, light in dark
         background-color: var(--oj-th-bg);
         border-color: var(--oj-border);
         border-width: 0 1px 1px 0;
@@ -28,10 +28,21 @@
         vertical-align: middle;
         text-align: center;
         white-space: nowrap;
-        font-weight: 700; // bolder than before
+        font-weight: 700;
         font-size: 1.1em;
         letter-spacing: 0.02em;
-        text-transform: none; // drop all-caps — easier to read
+        text-transform: none;
+
+        a, a:link, a:visited {
+            color: var(--oj-th-text);
+            text-decoration: none;
+            font-weight: inherit;
+
+            &:hover {
+                color: var(--oj-accent);
+                text-decoration: underline;
+            }
+        }
     }
 
     td {
@@ -41,6 +52,7 @@
         padding: 8px 5px;
         vertical-align: middle;
         text-align: center;
+        color: var(--oj-text);
     }
 
     // Border fixes

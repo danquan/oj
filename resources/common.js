@@ -344,6 +344,13 @@ $(function () {
         var nowDark = document.documentElement.classList.toggle('dark');
         localStorage.setItem('oj-theme', nowDark ? 'dark' : 'light');
         applyIcon(nowDark);
+
+        var light = document.getElementById('oj-style-light');
+        var dark = document.getElementById('oj-style-dark');
+        if (light && dark) {
+            light.disabled = nowDark;
+            dark.disabled = !nowDark;
+        }
     });
 });
 

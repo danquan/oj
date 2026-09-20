@@ -6,11 +6,62 @@
 //   Google Red    #EA4335   (errors, warnings)
 //   Google Yellow #FBBC05   (active/badge highlights)
 //   Google Green  #34A853   (solved, editorial, success)
-//
-// Toggle dark mode by adding/removing the `dark` class on <html>.
 // ─────────────────────────────────────────────────────────────────
 
-:root {
+@mixin dark-tokens {
+    // ── Page surfaces ─────────────────────────────────────────────
+    --oj-bg:           #131314;          // Google dark mode base
+    --oj-surface:      #1e1f20;          // Google dark card surface
+    --oj-surface-2:    #28292a;          // Google dark chip/card secondary
+
+    // ── Borders (WCAG 3:1+ contrast against dark surfaces) ─────────
+    --oj-border:       #50545a;          // Clear structural divider
+    --oj-border-2:     #6a6f7a;          // High visibility border
+
+    // ── Textboxes & form controls ──────────────────────────────────
+    --oj-input-bg:           #24262b;    // Elevated distinct textbox bg
+    --oj-input-border:       #6a6f7a;    // Crisp visible border
+    --oj-input-border-hover: #9aa0a6;    // Hover border
+    --oj-focus-ring:         rgba(138, 180, 248, 0.35);
+
+    // ── Text ──────────────────────────────────────────────────────
+    --oj-text:         #f1f3f4;          // Google dark primary text
+    --oj-text-2:       #bdc1c6;          // Google dark secondary text
+    --oj-text-3:       #9aa0a6;          // Google hint/placeholder text
+
+    // ── Accent — Google Blue (luminance-boosted for dark) ─────────
+    --oj-accent:       #8ab4f8;          // Google Blue on dark
+    --oj-accent-h:     #aecbfa;
+    --oj-accent-glow:  rgba(138, 180, 248, 0.16); // dark blue tint for hover
+
+    // ── Links ─────────────────────────────────────────────────────
+    --oj-link:         #8ab4f8;
+    --oj-link-h:       #aecbfa;
+
+    // ── Navigation bar ────────────────────────────────────────────
+    --oj-nav-bg:       #18191c;
+    --oj-nav-text:     #f1f3f4;
+
+    // ── Table header ──────────────────────────────────────────────
+    --oj-th-bg:        #282a2e;
+    --oj-th-text:      #f1f3f4;          // clearly readable on dark
+
+    // ── Activity heatmap (Google Green on dark) ───────────────────
+    --oj-heat-0:       #3c4043;
+    --oj-heat-1:       #0d3d1e;
+    --oj-heat-2:       #137333;
+    --oj-heat-3:       #34a853;
+    --oj-heat-4:       #81c995;
+
+    // ── Status / verdict colours ──────────────────────────────────
+    --oj-solved:       #81c995;          // Google Green on dark
+    --oj-attempted:    #fdd663;          // Google Yellow on dark
+    --oj-unsolved:     #9aa0a6;
+    --oj-editorial:    #81c995;
+    --oj-no-editorial: #f28b82;          // Google Red on dark
+}
+
+@mixin light-tokens {
     // ── Page surfaces ─────────────────────────────────────────────
     --oj-bg:           #f8f9fa;          // Google's off-white background
     --oj-surface:      #ffffff;
@@ -19,6 +70,12 @@
     // ── Borders ───────────────────────────────────────────────────
     --oj-border:       #dadce0;          // Google divider grey
     --oj-border-2:     #bdc1c6;
+
+    // ── Textboxes & form controls ──────────────────────────────────
+    --oj-input-bg:           #ffffff;
+    --oj-input-border:       #dadce0;
+    --oj-input-border-hover: #bdc1c6;
+    --oj-focus-ring:         rgba(26, 115, 232, 0.25);
 
     // ── Text ──────────────────────────────────────────────────────
     --oj-text:         #202124;          // Google primary text (#202124)
@@ -57,50 +114,15 @@
     --oj-no-editorial: #ea4335;          // Google Red
 }
 
+:root {
+    @if variable-exists("is_light_theme") and not $is_light_theme {
+        @include dark-tokens;
+    } @else {
+        @include light-tokens;
+    }
+}
+
 // ── Dark theme override — activated by html.dark class ────────────
 html.dark {
-    // ── Page surfaces ─────────────────────────────────────────────
-    --oj-bg:           #131314;          // Google dark mode base
-    --oj-surface:      #1e1f20;          // Google dark card surface
-    --oj-surface-2:    #28292a;
-
-    // ── Borders ───────────────────────────────────────────────────
-    --oj-border:       #3c4043;          // Google dark divider
-    --oj-border-2:     #5f6368;
-
-    // ── Text ──────────────────────────────────────────────────────
-    --oj-text:         #e8eaed;          // Google dark primary text
-    --oj-text-2:       #9aa0a6;          // Google dark secondary text
-    --oj-text-3:       #5f6368;
-
-    // ── Accent — Google Blue (luminance-boosted for dark) ─────────
-    --oj-accent:       #8ab4f8;          // Google Blue on dark
-    --oj-accent-h:     #aecbfa;
-    --oj-accent-glow:  #1a3358;          // dark blue tint for hover
-
-    // ── Links ─────────────────────────────────────────────────────
-    --oj-link:         #8ab4f8;
-    --oj-link-h:       #aecbfa;
-
-    // ── Navigation bar ────────────────────────────────────────────
-    --oj-nav-bg:       #131314;
-    --oj-nav-text:     #e8eaed;
-
-    // ── Table header ──────────────────────────────────────────────
-    --oj-th-bg:        #28292a;
-    --oj-th-text:      #e8eaed;          // clearly readable on dark
-
-    // ── Activity heatmap (Google Green on dark) ───────────────────
-    --oj-heat-0:       #3c4043;
-    --oj-heat-1:       #0d3d1e;
-    --oj-heat-2:       #137333;
-    --oj-heat-3:       #34a853;
-    --oj-heat-4:       #81c995;
-
-    // ── Status / verdict colours ──────────────────────────────────
-    --oj-solved:       #81c995;          // Google Green on dark
-    --oj-attempted:    #fdd663;          // Google Yellow on dark
-    --oj-unsolved:     #5f6368;
-    --oj-editorial:    #81c995;
-    --oj-no-editorial: #f28b82;          // Google Red on dark
+    @include dark-tokens;
 }
