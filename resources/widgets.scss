@@ -491,20 +491,22 @@ a.close {
     margin-bottom: 1em;
     transition: background-color $dur-std $ease-std, border-color $dur-std $ease-std;
 
-    h3 {
+    h2, h3, h4 {
         margin: 0 0 12px;
-        font-size: 0.78em;
-        font-weight: 600;
-        letter-spacing: 0.08em;
+        font-size: 1.15em;
+        font-weight: 700;
         text-transform: uppercase;
-        color: var(--oj-text-2);
+        letter-spacing: 0.03em;
+        color: var(--oj-text, $color_primary90);
         border-bottom: 1px solid var(--oj-border);
         padding-bottom: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
         .fa {
             color: var(--oj-accent);
-            float: right;
-            margin: 0.1em 0 0 0;
+            font-size: 0.95em;
         }
     }
 }
