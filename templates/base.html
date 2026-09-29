@@ -49,7 +49,7 @@
     {% endif %}
     <!-- Theme detection: runs BEFORE stylesheets to prevent FOUC -->
     <script>
-        (function () {
+        (function () { 
             var stored = localStorage.getItem('oj-theme');
             var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
             window.__OJ_IS_DARK = stored === 'dark' || (!stored && prefersDark);

@@ -42,6 +42,11 @@
     --oj-nav-bg:       #18191c;
     --oj-nav-text:     #f1f3f4;
 
+    // ── Tabs ──────────────────────────────────────────────────────
+    --oj-tab-active-bg:      #3c4043;          // Rounded box fill for active tab
+    --oj-tab-active-text:    #f1f3f4;
+    --oj-tab-hover-bg:       rgba(255, 255, 255, 0.08);
+
     // ── Table header ──────────────────────────────────────────────
     --oj-th-bg:        #282a2e;
     --oj-th-text:      #f1f3f4;          // clearly readable on dark
@@ -94,6 +99,11 @@
     // ── Navigation bar ────────────────────────────────────────────
     --oj-nav-bg:       #202124;          // Google's near-black top bar
     --oj-nav-text:     #e8eaed;
+
+    // ── Tabs ──────────────────────────────────────────────────────
+    --oj-tab-active-bg:      #d2d6dc;          // Rounded box fill for active tab
+    --oj-tab-active-text:    #111827;
+    --oj-tab-hover-bg:       rgba(0, 0, 0, 0.05);
 
     // ── Table header ──────────────────────────────────────────────
     --oj-th-bg:        #f1f3f4;          // Google's chip/header grey

@@ -166,12 +166,12 @@
 }
 
 form.contest-join-pseudotab {
-    display: inline;
-    padding: 6px 8px !important;
-    line-height: 1.7em;
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px !important;
+    line-height: 1.42857;
     margin-left: 0.5em;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    border-radius: $widget_border_radius;
 
     input {
         display: inline;
@@ -179,6 +179,7 @@ form.contest-join-pseudotab {
         padding: 0;
         background: none;
         font-weight: 600;
+        cursor: pointer;
     }
 }
 

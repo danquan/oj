@@ -219,60 +219,65 @@ select {
     margin-top: 1.5em;
 }
 
-// Bootstrap-y tabs
+// Rounded block tabs
 .ul_tab_a_active {
-    color: $color_primary100;
-    // Cover up the bottom border of active tabs with this color
-    background: $color_pageBg;
+    color: var(--oj-tab-active-text, #{$color_primary100}) !important;
+    background: var(--oj-tab-active-bg, if($is_light_theme, #d2d6dc, #3c4043)) !important;
     cursor: default;
-    border: 1px solid $color_primary25;
-    border-bottom-color: $color_pageBg;
-    border-image: none;
+    border: 1px solid transparent !important;
+    border-radius: $widget_border_radius;
 }
 
 .tabs {
-    border-bottom: 1px solid $color_primary25;
-    margin: 0 0 8px;
+    border-bottom: 1px solid var(--oj-border, $color_primary25);
+    margin: 0 0 12px;
+    padding-bottom: 8px;
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
+    gap: 8px;
 
     .tab {
         .tab-icon {
-            padding-right: 0.3em;
-            color: $color_primary50;
+            padding-right: 0.35em;
+            color: inherit;
+            opacity: 0.85;
 
             &.fa-plus {
-                color: green !important;
+                color: #1e8e3e !important;
+                opacity: 1;
             }
-        }
-
-        a, span {
-            border-top-width: 3px !important;
         }
 
         &.active {
             a, span {
-                border-top-color: $highlight_blue !important;
+                background: var(--oj-tab-active-bg, if($is_light_theme, #d2d6dc, #3c4043)) !important;
+                color: var(--oj-tab-active-text, #{$color_primary100}) !important;
+                border-color: transparent !important;
+                font-weight: bold;
             }
 
             .tab-icon {
-                color: $color_primary100;
+                color: inherit;
+                opacity: 1;
             }
         }
     }
 
     h2 {
-        color: $color_primary75;
+        color: var(--oj-text, $color_primary75);
+        margin: 0;
     }
 
     > ul {
         margin: 0;
-        margin-bottom: -1px;
         padding: 0;
         list-style: outside none none;
         display: flex;
+        align-items: center;
+        gap: 6px;
         overflow-x: auto;
         overflow-y: hidden;
 
@@ -283,26 +288,33 @@ select {
             &.active > a, &.active > span {
                 @extend .ul_tab_a_active;
 
-                &:hover {
-                    @extend .ul_tab_a_active;
-                }
-
-                &:focus {
+                &:hover, &:focus {
                     @extend .ul_tab_a_active;
                 }
             }
 
             > a, > span {
-                margin-right: 2px;
                 line-height: 1.42857;
                 border: 1px solid transparent;
-                border-radius: $widget_border_radius $widget_border_radius 0 0;
+                border-radius: $widget_border_radius;
                 position: relative;
-                display: block;
-                padding: 10px 15px;
-                color: $color_primary66;
+                display: flex;
+                align-items: center;
+                padding: 6px 14px;
+                color: var(--oj-text-2, $color_primary66);
                 text-decoration: none;
                 white-space: nowrap;
+                font-weight: 600;
+                transition: background-color $dur-fast $ease-std, color $dur-fast $ease-std;
+
+                &:hover {
+                    background-color: var(--oj-tab-hover-bg, rgba(0, 0, 0, 0.05));
+                    color: var(--oj-text, $color_primary100);
+                }
+
+                &:focus {
+                    outline: none;
+                }
             }
         }
     }
