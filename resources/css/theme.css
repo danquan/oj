@@ -72,18 +72,18 @@
     --info:            #A0651F;  --info-soft:      #FBEBD6;   /* Pending / Running */
 
     /* ── Navbar (tối ở cả 2 chế độ — logo gốc thiết kế cho nền tối) ─── */
-    --nav-bg:          #2E2019;
-    --nav-bg-elevated: #3A2A21;
-    --nav-text:        #F7EADB;   /* ~13:1 trên --nav-bg */
-    --nav-text-muted:  #D9C4AE;
+    --nav-bg:          #5A3A28;   /* nâu caramel đậm */
+    --nav-bg-elevated: #6A4630;   /* dropdown: sáng hơn nav một bậc */
+    --nav-text:        #F7EADB;   /* ~8.5:1 trên --nav-bg */
+    --nav-text-muted:  #E6D3BF;   /* ~6.8:1 */
     --nav-hover-bg:    rgba(247, 234, 219, 0.10);
     --nav-tab-active-bg:     rgba(232, 163, 61, 0.12);
-    --nav-tab-active-border: rgba(232, 163, 61, 0.70);   /* ~4.3:1 trên --nav-bg */
-    --nav-border:      rgba(247, 234, 219, 0.12);
-    --nav-accent:      #E8A33D;   /* ~7.6:1 trên --nav-bg */
+    --nav-tab-active-border: rgba(232, 163, 61, 0.90);   /* ~4.2:1 trên --nav-bg */
+    --nav-border:      rgba(247, 234, 219, 0.18);
+    --nav-accent:      #E8A33D;   /* ~4.7:1 trên --nav-bg */
     --nav-control-size:         28px;   /* nút theme + ngôn ngữ */
-    --nav-control-border:       rgba(247, 234, 219, 0.40);  /* ≥ 3:1 trên --nav-bg */
-    --nav-control-border-hover: rgba(247, 234, 219, 0.60);
+    --nav-control-border:       rgba(247, 234, 219, 0.50);  /* ~3.4:1 trên --nav-bg */
+    --nav-control-border-hover: rgba(247, 234, 219, 0.70);
     --nav-control-track:        rgba(247, 234, 219, 0.05);  /* nền khung chọn ngôn ngữ */
     --nav-control-knob:         rgba(247, 234, 219, 0.22);  /* ô ngôn ngữ đang chọn */
 
@@ -172,8 +172,8 @@ html.dark,
     --neutral:   #BFAE9F;  --neutral-soft:   rgba(191, 174, 159, 0.14);
     --info:      #E3A55C;  --info-soft:      rgba(227, 165, 92, 0.14);
 
-    --nav-bg:          #221A15;   /* vẫn tối hơn --bg một bậc để giữ phân cấp */
-    --nav-bg-elevated: #30251E;
+    --nav-bg:          #3F2A1E;   /* nâu trầm, vẫn tách rõ khỏi --bg */
+    --nav-bg-elevated: #4C3325;
     --nav-text:        #F3E6D8;
     --nav-text-muted:  #CDB9A6;
     --nav-accent:      #F0B354;
@@ -352,7 +352,7 @@ noscript #noscript {
 
 /* Đồng hồ kỳ thi nổi */
 #contest-info {
-    background: rgba(46, 32, 25, 0.92);
+    background: rgba(90, 58, 40, 0.94);
     border-color: var(--nav-accent);
     border-left-color: var(--nav-text-muted);
     color: var(--nav-text);
