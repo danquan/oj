@@ -4,9 +4,11 @@
     <title>{% block title %}{{ title }} - {{ SITE_LONG_NAME }}{% endblock %}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Google Fonts: Inter (UI) + JetBrains Mono (code) -->
+    {# Tắt tải font ngoài (theme.css dùng font hệ thống) — bỏ comment để bật lại
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    #}
     {% if misc_config.meta_keywords %}
         <meta name="keywords" content="{{ misc_config.meta_keywords }}">
     {% endif %}
@@ -77,6 +79,7 @@
         <link rel="stylesheet" type="text/css" href="{{ static('libs/clipboard/tooltip.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ static('libs/select2/select2.css') }}">
     {% endcompress %}
+    <link rel="stylesheet" href="{{ static('css/theme.css') }}">
     <link rel="canonical"
           href="{{ DMOJ_SCHEME }}://{{ DMOJ_CANONICAL|default(site.domain) }}{{ request.get_full_path() }}">
     {% if request.user.is_impersonate %}

@@ -1,0 +1,875 @@
+/* ==========================================================================
+   theme.css — Warm theme (kem · cam đất · hổ phách · nâu caramel)
+
+   Nạp SAU style.css / dark/style.css trong templates/base.html.
+   Chỉ ghi đè phong cách; không thay đổi bố cục, DOM hay hành vi JS.
+
+   Dark mode: dự án bật class `html.dark` (script FOUC trong base.html đã
+   tính cả prefers-color-scheme + lựa chọn lưu ở localStorage 'oj-theme'),
+   nên dark tokens gắn vào `html.dark` thay vì @media prefers-color-scheme
+   — để không ép dark khi người dùng đã chủ động chọn light.
+
+   Phạm vi hiện tại: tokens · base · navbar · footer · buttons.
+
+   Mục lục
+     1. Tokens (light / dark)
+     2. Bridge: ánh xạ biến --oj-* có sẵn sang tokens ấm
+     3. Base
+     4. Layout skin (page container, footer, announcement, contest timer)
+     5. Components — Navbar
+     6. Components — Buttons
+     7. Responsive
+     8. Motion / Print
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. TOKENS
+   ========================================================================== */
+
+:root {
+    color-scheme: light;
+
+    /* ── Nền / bề mặt ───────────────────────────────────────────────── */
+    --bg:              #FFF8F0;
+    --surface:         #FFFDF9;
+    --surface-alt:     #FBEFE0;
+    --border:          #EADBC8;   /* đường chia trang trí */
+    --border-strong:   #D8C3A8;
+    --border-input:    #A68A6D;   /* viền control ≥ 3:1 trên nền trắng (WCAG 1.4.11) */
+    --border-input-hover: #8C6F54;
+    --input-bg:        #FFFDF9;
+
+    /* ── Chữ ────────────────────────────────────────────────────────── */
+    --text:            #3B2A20;
+    --text-muted:      #6F5E52;   /* ~5.9:1 trên --bg */
+    --text-subtle:     #7A6555;   /* ≥ 4.5:1 cả trên --surface-alt */
+    --text-on-primary: #FFFFFF;
+
+    /* ── Thương hiệu ────────────────────────────────────────────────── */
+    --primary:         #C8501E;   /* nền nút (chữ trắng ~4.5:1) */
+    --primary-hover:   #A94116;
+    --primary-active:  #8E3612;
+    --primary-soft:    #FDE3D2;
+    --secondary:       #E8A33D;
+    --accent:          #8C5A3C;
+
+    /* Link: #C8501E trên nền kem chỉ ~4.3:1 → dùng tông đậm hơn cho chữ */
+    --link:            #A94116;
+    --link-hover:      #8E3612;
+    --link-active:     #C8501E;
+
+    --focus:           #C8501E;   /* outline focus ≥ 3:1 trên nền sáng */
+    --focus-ring:      rgba(200, 80, 30, 0.25);
+
+    /* ── Trạng thái chấm bài (luôn đi kèm icon/chữ) ─────────────────── */
+    --ok:              #3F7D3A;  --ok-soft:        #E6F2E3;   /* AC */
+    --danger:          #B3261E;  --danger-soft:    #FBE3E0;   /* WA */
+    --warn:            #B26A00;  --warn-soft:      #FDF0D9;   /* TLE / MLE */
+    --warn-text:       #8F5500;                               /* bản đậm cho chữ nhỏ */
+    --error-alt:       #8E3B6B;  --error-alt-soft: #F6E4EE;   /* RE */
+    --neutral:         #6B5B50;  --neutral-soft:   #EFE8E2;   /* CE */
+    --info:            #A0651F;  --info-soft:      #FBEBD6;   /* Pending / Running */
+
+    /* ── Navbar (tối ở cả 2 chế độ — logo gốc thiết kế cho nền tối) ─── */
+    --nav-bg:          #2E2019;
+    --nav-bg-elevated: #3A2A21;
+    --nav-text:        #F7EADB;   /* ~13:1 trên --nav-bg */
+    --nav-text-muted:  #D9C4AE;
+    --nav-hover-bg:    rgba(247, 234, 219, 0.10);
+    --nav-tab-active-bg:     rgba(232, 163, 61, 0.12);
+    --nav-tab-active-border: rgba(232, 163, 61, 0.70);   /* ~4.3:1 trên --nav-bg */
+    --nav-border:      rgba(247, 234, 219, 0.12);
+    --nav-accent:      #E8A33D;   /* ~7.6:1 trên --nav-bg */
+    --nav-control-size:         28px;   /* nút theme + ngôn ngữ */
+    --nav-control-border:       rgba(247, 234, 219, 0.40);  /* ≥ 3:1 trên --nav-bg */
+    --nav-control-border-hover: rgba(247, 234, 219, 0.60);
+    --nav-control-track:        rgba(247, 234, 219, 0.05);  /* nền khung chọn ngôn ngữ */
+    --nav-control-knob:         rgba(247, 234, 219, 0.22);  /* ô ngôn ngữ đang chọn */
+
+    /* ── Typography (chỉ font hệ thống / cài sẵn — không tải từ mạng) ── */
+    --font-sans: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto,
+                 "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, "Cascadia Mono",
+                 Consolas, "DejaVu Sans Mono", "Liberation Mono", monospace;
+
+    --fs-xs:   0.75rem;    /* 12 */
+    --fs-sm:   0.875rem;   /* 14 */
+    --fs-md:   1rem;       /* 16 */
+    --fs-lg:   1.125rem;   /* 18 */
+    --fs-xl:   1.25rem;    /* 20 */
+    --fs-2xl:  1.5rem;     /* 24 */
+    --fs-3xl:  1.875rem;   /* 30 */
+    --fs-4xl:  2.25rem;    /* 36 */
+    --lh-body:    1.6;
+    --lh-heading: 1.25;
+
+    /* ── Spacing (thang 4px) ────────────────────────────────────────── */
+    --space-1: 4px;   --space-2: 8px;   --space-3: 12px;  --space-4: 16px;
+    --space-5: 20px;  --space-6: 24px;  --space-8: 32px;  --space-10: 40px;
+
+    /* ── Radius / shadow ────────────────────────────────────────────── */
+    --radius-sm:   6px;     /* input, nút */
+    --radius-md:   10px;    /* card, dropdown */
+    --radius-pill: 999px;   /* badge */
+
+    --shadow-1: 0 1px 2px rgba(90, 50, 20, 0.08);
+    --shadow-2: 0 2px 8px rgba(90, 50, 20, 0.10), 0 1px 2px rgba(90, 50, 20, 0.06);
+    --shadow-3: 0 12px 28px rgba(90, 50, 20, 0.16), 0 2px 6px rgba(90, 50, 20, 0.08);
+
+    /* ── Motion ─────────────────────────────────────────────────────── */
+    --dur-fast: 150ms;
+    --dur:      200ms;
+    --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+    /* ── z-index (khớp giá trị gốc; chỉ dùng cho thành phần về sau) ─── */
+    --z-sticky:   100;
+    --z-nav:      500;
+    --z-dropdown: 510;
+    --z-overlay:  1000;
+    --z-modal:    1100;
+    --z-toast:    1200;
+}
+
+html.dark,
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    /* Nền nâu cacao vừa phải (không quá tối) để card / bảng / viền
+       tách lớp rõ hơn; các tầng cách nhau đủ để mắt phân biệt. */
+    --bg:              #2B221C;
+    --surface:         #362B24;
+    --surface-alt:     #41342B;
+    --border:          #5A4A3D;
+    --border-strong:   #6E5B4C;
+    --border-input:    #9A8270;   /* ~3.8:1 trên --surface */
+    --border-input-hover: #B59F8C;
+    --input-bg:        #30261F;
+
+    --text:            #F3E6D8;   /* ~11:1 trên --surface */
+    --text-muted:      #CDB9A6;   /* ~7:1 */
+    --text-subtle:     #B59F8C;   /* ≥ 4.5:1 cả trên --surface-alt */
+
+    --primary:         #C8501E;
+    --primary-hover:   #A94116;
+    --primary-active:  #8E3612;
+    --primary-soft:    #5A3826;
+    --secondary:       #F0B354;
+    --accent:          #D4A07E;
+
+    --link:            #F29A68;   /* ~6.4:1 trên --surface */
+    --link-hover:      #F7B892;
+    --link-active:     #F0B354;
+
+    --focus:           #F0B354;
+    --focus-ring:      rgba(240, 179, 84, 0.35);
+
+    --ok:        #8CC784;  --ok-soft:        rgba(140, 199, 132, 0.14);
+    --danger:    #F2877C;  --danger-soft:    rgba(242, 135, 124, 0.14);
+    --warn:      #F0B354;  --warn-soft:      rgba(240, 179, 84, 0.14);
+    --warn-text: #F0B354;
+    --error-alt: #DB8FBE;  --error-alt-soft: rgba(219, 143, 190, 0.14);
+    --neutral:   #BFAE9F;  --neutral-soft:   rgba(191, 174, 159, 0.14);
+    --info:      #E3A55C;  --info-soft:      rgba(227, 165, 92, 0.14);
+
+    --nav-bg:          #221A15;   /* vẫn tối hơn --bg một bậc để giữ phân cấp */
+    --nav-bg-elevated: #30251E;
+    --nav-text:        #F3E6D8;
+    --nav-text-muted:  #CDB9A6;
+    --nav-accent:      #F0B354;
+
+    --shadow-1: 0 1px 2px rgba(10, 5, 2, 0.35);
+    --shadow-2: 0 2px 8px rgba(10, 5, 2, 0.40);
+    --shadow-3: 0 12px 28px rgba(10, 5, 2, 0.50);
+}
+
+
+/* ==========================================================================
+   2. BRIDGE — biến --oj-* đã được toàn bộ SCSS gốc sử dụng.
+   `html.dark` trong danh sách để có specificity (0,1,1), thắng block
+   `html.dark { --oj-*: … }` biên dịch sẵn trong style.css.
+   ========================================================================== */
+
+:root,
+html.dark {
+    --oj-bg:                 var(--bg);
+    --oj-surface:            var(--surface);
+    --oj-surface-2:          var(--surface-alt);
+    --oj-border:             var(--border);
+    --oj-border-2:           var(--border-strong);
+
+    --oj-input-bg:           var(--input-bg);
+    --oj-input-border:       var(--border-input);
+    --oj-input-border-hover: var(--border-input-hover);
+    --oj-focus-ring:         var(--focus-ring);
+
+    --oj-text:               var(--text);
+    --oj-text-2:             var(--text-muted);
+    --oj-text-3:             var(--text-subtle);
+
+    --oj-accent:             var(--primary);
+    --oj-accent-h:           var(--primary-hover);
+    --oj-accent-glow:        var(--primary-soft);
+
+    --oj-link:               var(--link);
+    --oj-link-h:             var(--link-hover);
+
+    --oj-nav-bg:             var(--nav-bg);
+    --oj-nav-text:           var(--nav-text);
+
+    --oj-tab-active-bg:      var(--primary-soft);
+    --oj-tab-active-text:    var(--primary-active);
+    --oj-tab-hover-bg:       rgba(140, 90, 60, 0.08);
+
+    --oj-th-bg:              var(--surface-alt);
+    --oj-th-text:            var(--text);
+
+    --oj-solved:             var(--ok);
+    --oj-attempted:          var(--warn-text);
+    --oj-unsolved:           var(--text-subtle);
+    --oj-editorial:          var(--ok);
+    --oj-no-editorial:       var(--danger);
+}
+
+html.dark {
+    --oj-accent:          var(--link);        /* cam sáng dễ đọc trên nền tối */
+    --oj-accent-h:        var(--link-hover);
+    --oj-accent-glow:     rgba(242, 154, 104, 0.14);
+    --oj-tab-active-text: var(--text);
+    --oj-tab-hover-bg:    rgba(243, 230, 216, 0.08);
+}
+
+
+/* ==========================================================================
+   3. BASE
+   ========================================================================== */
+
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scrollbar-color: var(--border-strong) var(--bg);
+}
+
+body {
+    font-family: var(--font-sans);
+    color: var(--text);
+    background: var(--bg);
+    line-height: var(--lh-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+    color: var(--text);
+    line-height: var(--lh-heading);
+    letter-spacing: -0.01em;
+}
+
+h1 { letter-spacing: -0.02em; }
+
+/* Heading co giãn nhẹ theo viewport, giữ đơn vị em như SCSS gốc */
+h2 { font-size: clamp(1.4em, 1.2em + 0.6vw, 1.75em); }
+h3 { font-size: clamp(1.15em, 1.05em + 0.3vw, 1.3em); }
+
+code, kbd, samp, pre {
+    font-family: var(--font-mono);
+}
+
+a:active {
+    color: var(--link-active);
+}
+
+::selection {
+    background: var(--primary-soft);
+    color: var(--text);
+}
+
+html.dark ::selection {
+    background: rgba(240, 179, 84, 0.30);
+}
+
+:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+}
+
+hr {
+    border-bottom-color: var(--border);
+}
+
+/* Không đặt `img { height: auto }` toàn cục: nhiều ảnh (cờ ngôn ngữ SVG,
+   logo override) chỉ khai báo thuộc tính height="…" và sẽ mất kích thước. */
+
+
+/* ==========================================================================
+   4. LAYOUT SKIN (chỉ màu / viền / bóng — không đổi kích thước khối)
+   ========================================================================== */
+
+#page-container {
+    background: var(--surface);
+    border-inline-color: var(--border);
+}
+
+/* Footer */
+footer {
+    background: var(--surface-alt);
+    border-top-color: var(--border);
+    color: var(--text-subtle);
+}
+
+/* Link footer có inline style="color: #808080" (~3.5:1 trên nền kem,
+   không đạt AA) → buộc dùng !important để ghi đè inline. */
+#footer-content a {
+    color: var(--text-muted) !important;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition: text-decoration-color var(--dur-fast) var(--ease-out);
+}
+
+#footer-content a:hover {
+    color: var(--link) !important; /* cùng lý do: inline style */
+    text-decoration-color: currentColor;
+}
+
+/* Thông báo toàn site & cảnh báo noscript */
+#announcement,
+noscript #noscript {
+    background: var(--danger);
+    color: #FFF8F0;
+}
+
+#announcement {
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-3);
+}
+
+#announcement a {
+    color: #FFE1B0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* Đồng hồ kỳ thi nổi */
+#contest-info {
+    background: rgba(46, 32, 25, 0.92);
+    border-color: var(--nav-accent);
+    border-left-color: var(--nav-text-muted);
+    color: var(--nav-text);
+    box-shadow: var(--shadow-3);
+}
+
+#contest-info a {
+    color: var(--nav-text);
+}
+
+#contest-time-remaining {
+    font-variant-numeric: tabular-nums;
+}
+
+
+/* ==========================================================================
+   5. COMPONENTS — NAVBAR
+   Selector bám theo selector gốc (navbar.scss) để giữ specificity ngang
+   bằng; không đổi padding/height/display của các mục menu desktop.
+   ========================================================================== */
+
+#nav-container {
+    background: var(--nav-bg);
+}
+
+/* Đường viền đáy: vệt hổ phách mảnh thay cho đường xám */
+#nav-shadow {
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(232, 163, 61, 0.45) 20%,
+        rgba(232, 163, 61, 0.45) 80%,
+        transparent 100%);
+}
+
+nav ul li {
+    font-family: var(--font-sans);
+}
+
+nav ul li a,
+nav ul li button:not(#theme-toggle) {
+    color: var(--nav-text);
+}
+
+nav ul li a:link {
+    color: var(--nav-text);
+}
+
+nav ul li a:hover {
+    color: var(--nav-text);
+    background: var(--nav-hover-bg);
+}
+
+nav ul li a:active {
+    color: var(--nav-accent);
+}
+
+/* ── Tab đang chọn / hover: khung chữ nhật bo góc ──────────────────
+   Không còn gạch chân màu. Khung vẽ bằng ::before định vị tuyệt đối
+   theo <li> (đã có position: relative trong navbar.scss) → không đổi
+   kích thước, padding hay vị trí của link. Border gốc của a.active
+   (5px/3px) giữ nguyên độ dày, chỉ chuyển trong suốt.
+   Chỉ animate opacity. */
+nav ul li a.active {
+    color: var(--nav-text);
+    background: transparent;
+    border-bottom-color: transparent;
+}
+
+#nav-list li:not(.home-nav-element) > a:hover,
+#nav-list li:not(.home-nav-element) > a.active {
+    background: transparent;
+}
+
+#nav-list li:not(.home-nav-element) > a::before {
+    content: "";
+    position: absolute;
+    inset: 8px 2px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: var(--nav-hover-bg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+#nav-list li:not(.home-nav-element) > a:hover::before {
+    opacity: 1;
+}
+
+#nav-list li:not(.home-nav-element) > a.active::before {
+    opacity: 1;
+    background: var(--nav-tab-active-bg);
+    border-color: var(--nav-tab-active-border);
+}
+
+/* Mục trong dropdown: khung sát hơn */
+#nav-list li li > a::before {
+    inset: 2px 4px;
+}
+
+nav a:focus-visible,
+nav button:focus-visible {
+    outline: 2px solid var(--nav-accent);
+    outline-offset: -2px;
+}
+
+/* Dropdown */
+nav ul li ul {
+    background: var(--nav-bg-elevated);
+    border-color: var(--nav-border);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    box-shadow: var(--shadow-3);
+}
+
+/* Bỏ vạch màu bên trái của mục dropdown — dùng khung bo góc như tab chính
+   (độ dày border-left gốc 3px giữ nguyên, chỉ trong suốt). */
+nav ul li ul li a:hover,
+nav ul li ul li button:hover,
+nav ul li ul li a.active {
+    border-left-color: transparent;
+}
+
+/* Nút "Đăng xuất" trong dropdown: rule hover toàn cục của nút dùng
+   !important (widgets.scss) → cần !important để giữ dáng mục menu. */
+nav ul li button:not(#theme-toggle) {
+    box-shadow: none;
+}
+
+nav ul li button:not(#theme-toggle):hover,
+nav ul li button:not(#theme-toggle):active {
+    background: var(--nav-hover-bg) !important;
+    border-color: transparent !important;
+    box-shadow: none;
+    transform: none;
+}
+
+nav .nav-divider {
+    border-right-color: var(--nav-border);
+}
+
+/* ── Nút điều khiển nhỏ trên navbar: đổi theme + ngôn ngữ ─────────
+   Cùng một kiểu "ô vuông bo góc": cùng kích thước, viền, bo góc, hover,
+   focus → các nút thẳng hàng và nhìn như một nhóm. */
+#theme-toggle,
+#flag_vi,
+#flag_en {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    height: var(--nav-control-size);
+    min-width: var(--nav-control-size);
+    padding: 0 6px;
+    color: var(--nav-text);
+    background: transparent;
+    border: 1px solid var(--nav-control-border);
+    border-radius: var(--radius-sm);
+    transition: background-color var(--dur-fast) var(--ease-out),
+                border-color var(--dur-fast) var(--ease-out),
+                color var(--dur-fast) var(--ease-out);
+}
+
+#theme-toggle:hover {
+    color: var(--nav-accent);
+    background: var(--nav-hover-bg);
+    border-color: var(--nav-control-border-hover);
+}
+
+#theme-toggle:focus-visible,
+#flag_vi:focus-visible,
+#flag_en:focus-visible {
+    outline: 2px solid var(--nav-accent);
+    outline-offset: 2px;
+}
+
+/* Khu vực người dùng */
+#user-links a {
+    color: var(--nav-text);
+}
+
+#user-links > ul > li > a > span > img {
+    box-shadow: 0 0 0 2px var(--nav-accent);
+}
+
+#user-links > ul > li > a > span > span {
+    color: var(--nav-text);
+}
+
+#user-links .anon {
+    color: var(--nav-text-muted);
+}
+
+#user-links .anon a {
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 4px;
+    transition: color var(--dur-fast) var(--ease-out),
+                text-decoration-color var(--dur-fast) var(--ease-out);
+}
+
+#user-links .anon a:hover {
+    color: var(--nav-accent);
+    text-decoration-color: currentColor;
+}
+
+/* ── Chọn ngôn ngữ VI / EN (segmented control) ──────────────────────
+   Không có phần tử bọc ngoài → 2 link #flag_vi, #flag_en ghép sát nhau
+   thành MỘT khung chữ nhật bo góc (VI giữ viền trái, EN giữ viền phải).
+   Ô "được chọn" là chính <img> cờ: padding + nền nhạt + bo góc tạo
+   thành hình chữ nhật bo góc bên trong khung, không dùng viền sáng.
+   Ngôn ngữ đang dùng lấy từ <html lang="{{ LANGUAGE_CODE }}">. */
+#flag_vi,
+#flag_en {
+    min-width: 0;
+    background: var(--nav-control-track);
+    margin-top: 0 !important;       /* ghi đè inline margin-top:4px để thẳng hàng với nút theme */
+}
+
+#flag_vi {
+    border-right: 0;
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+    padding: 0 1px 0 2px;
+    margin-right: 0 !important;     /* ghi đè inline margin-right:5px để 2 nửa dính liền */
+}
+
+#flag_en {
+    border-left: 0;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 0 2px 0 1px;
+    margin-left: -4px;              /* bù `gap: 4px` của #user-links */
+}
+
+#flag_vi img,
+#flag_en img {
+    display: block;
+    box-sizing: content-box;
+    width: 16px;
+    height: 16px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    object-fit: contain;
+    opacity: 0.45;
+    filter: grayscale(1);
+    transition: opacity var(--dur-fast) var(--ease-out),
+                background-color var(--dur-fast) var(--ease-out);
+}
+
+#flag_vi:hover img,
+#flag_en:hover img {
+    opacity: 0.85;
+    filter: grayscale(0.3);
+    background-color: var(--nav-hover-bg);
+}
+
+/* Ô đang được chọn */
+html[lang|="vi"] #flag_vi,
+html[lang|="en"] #flag_en {
+    cursor: default;
+}
+
+html[lang|="vi"] #flag_vi img,
+html[lang|="en"] #flag_en img {
+    opacity: 1;
+    filter: none;
+    background-color: var(--nav-control-knob);
+    box-shadow: 0 1px 2px rgba(20, 10, 5, 0.35);
+}
+
+/* Hamburger */
+#navicon {
+    color: var(--nav-text);
+}
+
+#navicon.hover {
+    color: var(--nav-accent);
+    text-shadow: none;
+}
+
+
+/* ==========================================================================
+   6. COMPONENTS — BUTTONS
+   Selector trùng với widgets.scss để cùng specificity (rule sau thắng).
+   ========================================================================== */
+
+.button,
+button:not(#theme-toggle),
+input[type=submit],
+input[type=button] {
+    background: var(--primary);
+    border-color: var(--primary);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    box-shadow: var(--shadow-1);
+    transition: background-color var(--dur-fast) var(--ease-out),
+                border-color var(--dur-fast) var(--ease-out),
+                box-shadow var(--dur-fast) var(--ease-out),
+                transform var(--dur-fast) var(--ease-out);
+}
+
+/* Chiều cao ~40px cho nút hành động (padding, không đặt height để text
+   luôn căn giữa). Không áp cho <button> chung để tránh phình nút icon. */
+.button,
+.button.full,
+input[type=submit],
+input[type=button],
+button.button:not(#theme-toggle),
+button[type=submit]:not(#theme-toggle) {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* Hover/active gốc dùng !important → buộc dùng !important để ghi đè. */
+.button:hover,
+button:not(#theme-toggle):hover,
+input[type=submit]:hover,
+input[type=button]:hover {
+    background: var(--primary-hover) !important;
+    border-color: var(--primary-hover) !important;
+    box-shadow: var(--shadow-2);
+}
+
+.button:active,
+button:not(#theme-toggle):active,
+input[type=submit]:active,
+input[type=button]:active {
+    background: var(--primary-active) !important;
+    border-color: var(--primary-active) !important;
+    box-shadow: var(--shadow-1);
+}
+
+.button:focus-visible,
+button:not(#theme-toggle):focus-visible,
+input[type=submit]:focus-visible,
+input[type=button]:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+}
+
+/* Disabled: gốc dùng !important cho .disabled → giữ cùng cơ chế */
+.button.disabled,
+.button[disabled],
+button:not(#theme-toggle):disabled,
+input[type=submit]:disabled,
+input[type=button]:disabled {
+    background: var(--text-subtle) !important;
+    border-color: var(--text-subtle) !important;
+    box-shadow: none !important;
+    transform: none !important;
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* Loading: chỉ khi code sẵn có đặt aria-busy — không thêm class mới */
+.button[aria-busy="true"],
+button[aria-busy="true"],
+input[aria-busy="true"] {
+    cursor: progress;
+    opacity: 0.8;
+}
+
+/* Nút nhỏ trong dòng */
+.inline-button {
+    background: var(--primary);
+    border-color: var(--primary);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+
+.inline-button:hover {
+    background: var(--primary-hover) !important; /* gốc dùng !important */
+    border-color: var(--primary-hover) !important;
+}
+
+.inline-button:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+}
+
+
+/* ==========================================================================
+   7. RESPONSIVE (breakpoint 760px khớp navbar.scss gốc)
+   ========================================================================== */
+
+@media (max-width: 760px) {
+    #nav-list {
+        background: var(--nav-bg);
+    }
+
+    #nav-list.show-list {
+        box-shadow: var(--shadow-3);
+    }
+
+    /* Vạch ngăn giữa các mục (inset shadow → không đổi kích thước) */
+    #nav-list > li > a {
+        box-shadow: inset 0 -1px 0 var(--nav-border);
+    }
+
+    /* Mục con ≥ 44px cho màn cảm ứng; gốc dùng padding !important */
+    #nav-list li ul li a,
+    #nav-list li ul li button {
+        padding-top: 13px !important;
+        padding-bottom: 13px !important;
+    }
+}
+
+@media (pointer: coarse) {
+    .button,
+    input[type=submit],
+    input[type=button],
+    button[type=submit]:not(#theme-toggle) {
+        min-height: 44px;
+    }
+}
+
+
+/* ==========================================================================
+   7b. DARK MODE — nền hardcode gần đen trong dark/style.css
+   (#0f0f0f / #111 / #181818 / #222) được đưa về token để không thành
+   "mảng đen" trên nền mới. Chỉ đổi background-color.
+   ========================================================================== */
+
+html.dark .featherlight .featherlight-content {
+    background-color: var(--surface);
+}
+
+html.dark .info-title,
+html.dark .ticket-message .header,
+html.dark #contest-calendar th,
+html.dark .new-comments .comment-display,
+html.dark .problem-list-mode-toggle,
+html.dark .btn-clipboard,
+html.dark .select2-container--dmoj.select2-container--disabled .select2-selection--single,
+html.dark .select2-container--dmoj.select2-container--disabled .select2-selection--multiple,
+html.dark .select2-container--dmoj .select2-selection--multiple .select2-selection__choice {
+    background-color: var(--surface-alt);
+}
+
+html.dark .content-description code,
+html.dark .content-description span.code,
+html.dark .content-description pre,
+html.dark .problem-list-mode-toggle .toggle-btn:not(.active),
+html.dark #org-check-list-wrapper,
+html.dark #language-select2 .select2-results__option,
+html.dark .select2-container--dmoj .select2-selection--single,
+html.dark .select2-container--dmoj .select2-selection--multiple {
+    background-color: var(--input-bg);
+}
+
+html.dark #contest-calendar .noday,
+html.dark #judge-versions .version-blank {
+    background-color: var(--bg);
+}
+
+html.dark .submission-row:hover,
+html.dark .problem-list-mode-toggle .toggle-btn:not(.active):hover {
+    background-color: #4A3B31;   /* tầng hover: sáng hơn --surface-alt một bậc */
+}
+
+
+/* ==========================================================================
+   8. MOTION / PRINT
+   ========================================================================== */
+
+/* !important: phải thắng mọi transition/animation khai báo rải rác */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* In đề bài: nền trắng, chữ đen, ẩn thanh điều hướng & nút.
+   !important để thắng mọi màu theme / inline style khi in. */
+@media print {
+    html,
+    body,
+    #page-container,
+    #content {
+        background: #fff !important;
+        color: #000 !important;
+    }
+
+    #navigation,
+    #nav-shadow,
+    #contest-info,
+    #announcement,
+    footer,
+    .button,
+    button,
+    input[type=submit],
+    input[type=button] {
+        display: none !important;
+    }
+
+    #content {
+        margin-top: 0 !important;
+        width: auto !important;
+    }
+
+    #page-container {
+        border: 0 !important;
+        box-shadow: none !important;
+    }
+
+    a {
+        color: #000 !important;
+        text-decoration: underline;
+    }
+
+    pre, code {
+        background: #fff !important;
+        color: #000 !important;
+        border: 1px solid #999;
+    }
+}
