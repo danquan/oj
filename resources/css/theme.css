@@ -1113,6 +1113,42 @@ input[aria-busy="true"] {
     background: color-mix(in srgb, var(--surface) 50%, var(--surface-alt));
 }
 
+/* Nối liền thead ↔ tbody (lỗi gốc ở table.scss): `tr:first-child > td:first-child`
+   không giới hạn trong thead nên khớp cả HÀNG ĐẦU CỦA TBODY → hàng đó bị bo
+   2 góc trên và thêm border-top 1px (vạch kép dưới header). Chỉ gỡ khi tbody
+   đứng SAU thead — bảng không có thead (header nằm trong tbody) giữ nguyên
+   bo góc.
+   Specificity: rule gốc bo góc là `.table tr:first-child > td:first-child`
+   = (0,3,2) → selector gỡ bo góc phải nhắm đúng ô đầu/cuối
+   (`td:first-child` / `td:last-child`) để đạt (0,3,4). Viền trên gốc
+   `.table tr:first-child td` chỉ (0,2,2) nên rule chung (0,2,4) đủ thắng. */
+.table thead ~ tbody tr:first-child > td,
+.table thead ~ tbody tr:first-child > th {
+    border-top-width: 0;
+}
+
+.table thead ~ tbody tr:first-child > td:first-child,
+.table thead ~ tbody tr:first-child > th:first-child {
+    border-top-left-radius: 0;
+}
+
+.table thead ~ tbody tr:first-child > td:last-child,
+.table thead ~ tbody tr:first-child > th:last-child {
+    border-top-right-radius: 0;
+}
+
+/* Tương tự ở đáy: khi có tfoot, hàng cuối tbody không được bo góc.
+   :has(~ tfoot) chỉ cộng (0,0,1) → cũng phải nhắm ô đầu/cuối: (0,3,4). */
+.table tbody:has(~ tfoot) tr:last-child > td:first-child,
+.table tbody:has(~ tfoot) tr:last-child > th:first-child {
+    border-bottom-left-radius: 0;
+}
+
+.table tbody:has(~ tfoot) tr:last-child > td:last-child,
+.table tbody:has(~ tfoot) tr:last-child > th:last-child {
+    border-bottom-right-radius: 0;
+}
+
 .table td {
     font-variant-numeric: tabular-nums;
 }
