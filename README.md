@@ -1,38 +1,77 @@
-# VNOJ: VNOI Online Judge [![Build Status](https://github.com/VNOI-Admin/OJ/workflows/build/badge.svg)](https://github.com/VNOI-Admin/OJ/actions/) [![AGPL License](https://img.shields.io/badge/license-AGPLv3.0-blue.svg)](http://www.gnu.org/licenses/agpl-3.0) [![Discord link](https://img.shields.io/discord/660930260405190688?color=%237289DA&label=Discord&logo=Discord)](https://discord.com/invite/TDyYVyd)
+# COPE [![Build Status](https://github.com/danquan/oj/workflows/build/badge.svg)](https://github.com/danquan/oj/actions/) [![AGPL License](https://img.shields.io/badge/license-AGPLv3.0-blue.svg)](http://www.gnu.org/licenses/agpl-3.0) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](contributing.md)
 
-As a fork of [DMOJ](https://github.com/DMOJ/online-judge), VNOJ serves as [VNOI](https://team.vnoi.info/)'s official online judge and hosts its programming contests.
+**COPE** (Competitive Online Programming Environment) là nền tảng chấm bài trực tuyến hiện đại và hệ thống tổ chức kỳ thi lập trình thi đấu.
 
-See it live at [oj.vnoi.info](https://oj.vnoi.info/)!
+Dự án được xây dựng và phát triển dựa trên nền tảng của [DMOJ](https://github.com/DMOJ/online-judge) và [VNOJ](https://github.com/VNOI-Admin/OJ).
 
-## Features
+---
 
-Check out its features [here](https://github.com/DMOJ/online-judge#features).
+## Tính năng nổi bật
 
-## Installation
+- **Chấm bài đa ngôn ngữ**: Hỗ trợ hàng chục ngôn ngữ lập trình với độ trễ thấp và độ tin cậy cao.
+- **Tổ chức contest linh hoạt**: Hỗ trợ nhiều thể thức thi đấu phổ biến (ICPC, IOI, AtCoder, VNOJ/COPE format, v.v.).
+- **Tùy biến bài tập & Checker**: Tích hợp checker mặc định, custom checker bằng Python và C++ (`testlib.h`).
+- **Giao diện hiện đại & Thân thiện**: Tối ưu hóa trải nghiệm người dùng, bảng xếp hạng realtime, quản lý tổ chức (Organizations) và blog/tin tức.
 
-Refer to the install documentation [here](https://vnoi-admin.github.io/vnoj-docs/#/site/installation). Almost all installation steps remain the same as the docs, but there are several minor differences, including cloning this repo instead of DMOJ's repo.
+---
 
-### Additional installation steps
+## Cài đặt (Installation)
 
-- You **have to** define `DMOJ_PROBLEM_DATA_ROOT` in `local_settings.py`, which should be the path to the directory that contains your problems' tests.
+### 1. Clone repository
 
-- Regarding disabling full-text search, please read [this issue](https://github.com/VNOI-Admin/OJ/issues/4) for more information.
+```bash
+git clone --recursive https://github.com/danquan/oj.git
+cd oj
+```
 
-- To sync the judge server and the site's cache, change the cache framework (`CACHES`) to `memcached` or `redis` instead of the default (local-memory caching).
+### 2. Thiết lập môi trường
 
-- If you use `python3 manage.py loaddata demo`, the home button in the admin dashboard (/admin) links you to `localhost:8081`, there are 2 ways to change that:
+Hệ thống kế thừa kiến trúc từ DMOJ & VNOJ. Bạn có thể tham khảo thêm tài liệu triển khai chuẩn của DMOJ tại [docs.dmoj.ca](https://docs.dmoj.ca/#/site/installation).
 
-  1. You can change that in [demo.json](/judge/fixtures/demo.json)
-  2. You can go to the admin page, scroll down to find the `Sites` setting and change `localhost:8081` to your domain.
+Các bước thiết lập cơ bản:
+1. Cài đặt Python 3, Node.js, và các thư viện hệ thống cần thiết (MySQL/PostgreSQL, Redis, v.v.).
+2. Cài đặt các gói phụ thuộc Python:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Tạo và tinh chỉnh tệp cấu hình `dmoj/local_settings.py` từ mẫu cấu hình:
+   - Cấu hình database kết nối MySQL hoặc PostgreSQL.
+   - Định nghĩa `DMOJ_PROBLEM_DATA_ROOT` trỏ tới thư mục lưu trữ test case của các bài tập:
+     ```python
+     DMOJ_PROBLEM_DATA_ROOT = '/path/to/problem/data'
+     ```
+   - Cấu hình cache framework (`CACHES`) sử dụng `redis` hoặc `memcached` để đồng bộ giữa judge server và web site.
+4. Chạy migration và chuẩn bị cơ sở dữ liệu:
+   ```bash
+   python manage.py migrate
+   python manage.py loaddata demo
+   ```
+5. Build static assets (CSS/JS) và chạy server phát triển:
+   ```bash
+   python manage.py collectstatic --noinput
+   python manage.py runserver 0.0.0.0:8080
+   ```
 
-- To support `testlib.h`, you need to copy [testlib.h](https://github.com/MikeMirzayanov/testlib/blob/master/testlib.h) to `g++`'s include path in the judge server. To speed up compile time, you can also create a precompiled header for `testlib.h`.
+---
 
-## Contributing ![PR's Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)
+## Lưu ý cấu hình bổ sung
 
-Take a look at [our contribution guideline](contributing.md).
+- **Cấu hình Domain / Sites**: Khi tải dữ liệu mẫu bằng `python manage.py loaddata demo`, domain mặc định sẽ là `localhost:8081`. Bạn có thể thay đổi trực tiếp trong trang quản trị Admin (`/admin/sites/site/`) hoặc tệp [judge/fixtures/demo.json](judge/fixtures/demo.json) trỏ về domain mong muốn.
+- **Hỗ trợ `testlib.h`**: Để sử dụng `testlib.h` cho các custom checker viết bằng C++, sao chép [testlib.h](https://github.com/MikeMirzayanov/testlib/blob/master/testlib.h) vào đường dẫn include của `g++` trên judge server. Bạn có thể tạo precompiled header (`testlib.h.gch`) để tăng tốc độ biên dịch.
 
-If you find any bug, please feel free to contact us via Discord [![Discord Chat](https://img.shields.io/discord/660930260405190688?color=%237289DA&label=Discord&logo=Discord)](https://discord.gg/TDyYVyd) or open an issue.
+---
 
-Pull requests are welcome as well. Before you submit your PR, please check your code with [flake8](https://flake8.pycqa.org/en/latest/) and format it if needed. There's also `prettier` if you need to format JS code (in `websocket/`).
+## Đóng góp (Contributing)
 
-Translation contributions are also welcome.
+Mọi đóng góp cho **COPE** đều được hoan nghênh! Vui lòng đọc [Hướng dẫn đóng góp (contributing.md)](contributing.md) trước khi gửi PR hoặc mở Issue.
+
+- **Báo lỗi & Đề xuất tính năng**: Mở Issue tại [COPE Issues](https://github.com/danquan/oj/issues).
+- **Quy chuẩn mã nguồn**: Kiểm tra định dạng code với `flake8` trước khi tạo Pull Request.
+- **Đóng góp bản dịch**: Các tệp dịch thuật được lưu tại thư mục [locale/vi/LC_MESSAGES](locale/vi/LC_MESSAGES/).
+
+---
+
+## Giấy phép (License)
+
+Dự án được phân phối dưới giấy phép [GNU AGPLv3](LICENSE).
+

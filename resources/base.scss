@@ -18,10 +18,11 @@
 }
 
 a {
-    color: $color_link75;
+    color: var(--oj-link);
+    transition: color $dur-fast $ease-std;
 
     &:hover {
-        color: $color_link100;
+        color: var(--oj-link-h);
     }
 
     &:active {
@@ -31,8 +32,6 @@ a {
 
 img {
     max-width: 100%;
-    // width: auto;
-    // height: auto;
 }
 
 .full {
@@ -40,8 +39,8 @@ img {
 }
 
 table.sortable thead {
-    background-color: $color_primary10;
-    color: #666;
+    background-color: var(--oj-surface-2);
+    color: var(--oj-text-2);
     font-weight: bold;
     cursor: default;
 }
@@ -70,13 +69,13 @@ hr {
     display: block;
     height: 0;
     border: 0;
-    font-style: italic;
-    border-bottom: 1px solid $color_primary25;
+    border-bottom: 1px solid var(--oj-border);
     padding: 0;
+    margin: 0.75em 0;
 }
 
 .dashed {
-    border-bottom: 1px dashed $color_primary25;
+    border-bottom: 1px dashed var(--oj-border);
 }
 
 th {
@@ -85,10 +84,10 @@ th {
 
 .form-area {
     display: inline-block;
-    background: $color_primary5;
+    background: var(--oj-surface-2);
     padding: 5px 10px 10px;
     border-radius: $widget_border_radius;
-    border: 1px solid $color_primary25;
+    border: 1px solid var(--oj-border);
 }
 
 div.info-float {
@@ -97,7 +96,7 @@ div.info-float {
 }
 
 footer {
-    color: $color_primary50;
+    color: var(--oj-text-3);
     display: block;
     width: 100%;
     position: absolute;
@@ -109,11 +108,13 @@ body {
     min-height: 100%;
     margin: 0 auto;
     font-size: $base_font_size;
-    line-height: 1.231;
-    background: $color_primary5;
-    font-family: "Segoe UI", "Lucida Grande", Arial, sans-serif;
-    color: $color_primary100;
+    line-height: 1.6;
+    background: var(--oj-bg);
+    font-family: 'Inter', "Segoe UI", "Lucida Grande", Arial, sans-serif;
+    color: var(--oj-text);
     height: 100%;
+    // Smooth colour transitions when toggling theme
+    transition: background-color $dur-std $ease-std, color $dur-std $ease-std;
 }
 
 .unselectable {
@@ -126,6 +127,7 @@ h1 {
     margin: 0;
     padding: 0;
     line-height: 1em;
+    font-weight: 700;
 }
 
 b {
@@ -133,16 +135,17 @@ b {
 }
 
 h2 {
-    font-weight: 400;
-    font-size: 2em;
+    font-weight: 600;
+    font-size: 1.75em;
     border-radius: $widget_border_radius;
     padding: 0;
     margin: 0;
+    color: var(--oj-text);
 }
 
 h3 {
-    font-weight: 400;
-    font-size: 1.4em;
+    font-weight: 600;
+    font-size: 1.3em;
     border-radius: $widget_border_radius;
     padding: 0;
     margin: 0;
@@ -150,33 +153,32 @@ h3 {
 
 h4 {
     font-size: 1.1em;
+    font-weight: 600;
     padding: 0;
     margin: 0;
 }
 
-hr {
-    color: rgba(0, 0, 0, 0.2);
-}
-
 #content {
     margin: 52px auto auto;
-
-    // Header
     width: 90%;
     height: 100%;
     min-height: 25em;
     display: block;
+    padding: 0 8px;
 
     .title {
-        color: $color_primary75;
+        color: var(--oj-text-2);
     }
 }
 
 footer {
     text-align: center;
-    height: 40px;
-    border-top: 1px solid $color_primary25;
-    background: $color_primary10;
+    height: 44px;
+    line-height: 44px;
+    font-size: 13px;
+    border-top: 1px solid var(--oj-border);
+    background: var(--oj-surface-2);
+    color: var(--oj-text-3);
 }
 
 html {
@@ -190,7 +192,7 @@ a {
 }
 
 noscript #noscript {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', Arial, sans-serif;
     font-size: 111%;
     color: white;
     font-weight: bold;
@@ -204,7 +206,7 @@ noscript #noscript {
 }
 
 #announcement {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', Arial, sans-serif;
     font-size: 111%;
     color: white;
     font-weight: bold;
@@ -224,14 +226,14 @@ noscript #noscript {
 }
 
 .time {
-    color: $color_primary75;
+    color: var(--oj-text-2);
 }
 
 .toggle {
     font-weight: bold;
 
     .fa {
-        transition: transform 0.4s;
+        transition: transform 0.4s $ease-std;
     }
 
     &.open .fa {
@@ -239,9 +241,10 @@ noscript #noscript {
     }
 }
 
-#form-errors, .form-errors {
-    background: rgba(255, 0, 0, 0.3);
-    border: 3px solid red;
+#form-errors,
+.form-errors {
+    background: hsla(0, 72%, 50%, 0.15);
+    border: 2px solid hsl(0, 72%, 50%);
     border-radius: $widget_border_radius;
     padding: 0 1em 0.1em 1em;
     margin: 0.3em 0 0.5em 0;
@@ -249,10 +252,11 @@ noscript #noscript {
 
 #contest-info {
     font-size: 1.25em;
-    border: 5px solid $highlight_blue;
-    border-left: 5px dotted white;
+    border: 3px solid var(--oj-accent);
+    border-left: 3px dotted white;
     border-radius: 0 $widget_border_radius $widget_border_radius 0;
-    background: rgba(0, 0, 0, 0.77);
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(6px);
     z-index: 100000;
     padding: 10px 12px;
     color: white;
@@ -279,21 +283,16 @@ noscript #noscript {
     min-height: 100%;
     position: relative;
     margin: 0 auto;
-    border-right: 1px solid $color_primary25;
-    border-left: 1px solid $color_primary25;
-    background: $color_pageBg;
+    border-right: 1px solid var(--oj-border);
+    border-left: 1px solid var(--oj-border);
+    background: var(--oj-surface);
     max-width: 100em;
+    transition: background-color $dur-std $ease-std;
 }
-
-// border-bottom: 1px solid rgb(204, 204, 204)
-// border-bottom-left-radius: 4px
-// border-bottom-right-radius: 4px
 
 #content-body {
     padding-bottom: 4em;
 }
-
-// Offset the footer
 
 .title-line-action {
     float: right;
@@ -322,6 +321,6 @@ math {
 @media (max-width: 760px) {
     #content {
         width: auto;
-        padding: 0 5px;
+        padding: 0 10px;
     }
 }

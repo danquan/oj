@@ -115,7 +115,7 @@
 }
 
 .sub-prop .grey-icon {
-    color: $color_primary50;
+    color: var(--oj-text-3);
 }
 
 label[for="language"], label[for="status"], label[for="organization"] {
@@ -133,11 +133,11 @@ label[for="language"], label[for="status"], label[for="organization"] {
 }
 
 #statistics-table tr:not(:first-child) td {
-    border-top: 1px solid white !important;
+    border-top: 1px solid var(--oj-border) !important;
 }
 
 #statistics-table tr:not(:last-child) td:not(:last-child) {
-    border-right: 1px solid white;
+    border-right: 1px solid var(--oj-border);
 }
 
 #statistics-table {
@@ -220,7 +220,7 @@ label[for="language"], label[for="status"], label[for="organization"] {
     }
 
     .count {
-        color: black;
+        color: var(--oj-text);
     }
 }
 

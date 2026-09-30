@@ -3,6 +3,12 @@
 <head>
     <title>{% block title %}{{ title }} - {{ SITE_LONG_NAME }}{% endblock %}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Google Fonts: Inter (UI) + JetBrains Mono (code) -->
+    {# Tắt tải font ngoài (theme.css dùng font hệ thống) — bỏ comment để bật lại
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    #}
     {% if misc_config.meta_keywords %}
         <meta name="keywords" content="{{ misc_config.meta_keywords }}">
     {% endif %}
@@ -43,23 +49,37 @@
     {% if not INLINE_FONTAWESOME %}
         <link rel="stylesheet" href="{{ FONTAWESOME_CSS }}">
     {% endif %}
+    <!-- Theme detection: runs BEFORE stylesheets to prevent FOUC -->
+    <script>
+        (function () { 
+            var stored = localStorage.getItem('oj-theme');
+            var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            window.__OJ_IS_DARK = stored === 'dark' || (!stored && prefersDark);
+            if (window.__OJ_IS_DARK) document.documentElement.classList.add('dark');
+        })();
+    </script>
+    <link id="oj-style-light" rel="stylesheet" href="{{ static(LIGHT_STYLE_CSS) }}">
+    <link id="oj-style-dark" rel="stylesheet" href="{{ static(DARK_STYLE_CSS) }}">
+    <script>
+        (function () {
+            var light = document.getElementById('oj-style-light');
+            var dark = document.getElementById('oj-style-dark');
+            if (window.__OJ_IS_DARK) {
+                light.disabled = true;
+                dark.disabled = false;
+            } else {
+                light.disabled = false;
+                dark.disabled = true;
+            }
+        })();
+    </script>
     {% compress css %}
-        {# TODO: once dark mode support is better, enable for all users by deleting the else branch #}
-        {% if perms.judge.test_site %}
-            {% if PREFERRED_STYLE_CSS is not none %}
-                <link rel="stylesheet" href="{{ static(PREFERRED_STYLE_CSS) }}">
-            {% else %}
-                <link rel="stylesheet" href="{{ static(LIGHT_STYLE_CSS) }}" media="(prefers-color-scheme: light)">
-                <link rel="stylesheet" href="{{ static(DARK_STYLE_CSS) }}" media="(prefers-color-scheme: dark)">
-            {% endif %}
-        {% else %}
-            <link rel="stylesheet" href="{{ static(LIGHT_STYLE_CSS) }}">
-        {% endif %}
         {% if INLINE_FONTAWESOME %}<link rel="stylesheet" href="{{ static('libs/fontawesome/font-awesome.css') }}">{% endif %}
         <link rel="stylesheet" href="{{ static('source_sans_pro.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ static('libs/clipboard/tooltip.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ static('libs/select2/select2.css') }}">
     {% endcompress %}
+    <link rel="stylesheet" href="{{ static('css/theme.css') }}">
     <link rel="canonical"
           href="{{ DMOJ_SCHEME }}://{{ DMOJ_CANONICAL|default(site.domain) }}{{ request.get_full_path() }}">
     {% if request.user.is_impersonate %}
@@ -204,6 +224,7 @@
             }
         </style>
     </noscript>
+    {# FOUC prevention already handled above before stylesheets #}
 </head>
 <body>
 <svg width="0" height="0" style="display: block">
@@ -268,6 +289,9 @@
             <a id="flag_en" href="#" onclick="submmit_language('en')" style="margin-right: 5px; margin-top: 4px;">
                 <img src="{{ static('icons/gb_flag.svg') }}" alt="EN" height="24">
             </a>
+            <button id="theme-toggle" aria-label="{{ _('Toggle dark mode') }}" title="{{ _('Toggle dark mode') }}">
+                <i class="fa fa-moon-o" id="theme-icon"></i>
+            </button>
             {% if request.user.is_authenticated %}
                 <ul>
                     <li>
@@ -360,7 +384,7 @@
     <footer>
         <span id="footer-content">
             <br>
-            {{_('proudly powered by %(vnoj)s', vnoj=safe('<a style="color: #808080" href="https://oj.vnoi.info"><b>DMOJ</b></a>'))}} |
+            {{_('proudly powered by %(vnoj)s', vnoj=safe('<a style="color: #808080" href="https://github.com/DMOJ/online-judge"><b>DMOJ</b></a> và <a style="color: #808080" href="https://oj.vnoi.info"><b>VNOJ</b></a>'))}} |
             {{_('follow us on %(github)s', github=safe('<a style="color: #808080" href="https://github.com/danquan/OJ"><b>Github</b></a>'))}}
             {% if misc_config.footer %}
                 {{ misc_config.footer|safe }} |

@@ -6,60 +6,104 @@
 
 .table {
     border-spacing: 0;
+    border-collapse: separate;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0.5em;
-    background: rgba($color_primary100, 0.01);
-    backdrop-filter: blur(3px);
+    background: var(--oj-surface);
+    border-radius: $table_header_rounding;
+    overflow: hidden;
 
+    // No alternating stripe — single solid surface for all rows
     &.striped tr:nth-child(2n) {
-        background: rgba($color_primary100, 0.03);
+        background: var(--oj-surface);
     }
 
     th {
-        height: 2em;
-        color: $color_primary0;
-        background-color: $color_primary75;
-        border-color: $color_primary50;
+        height: 2.4em;
+        color: var(--oj-th-text); // bold, clearly dark text in light, light in dark
+        background-color: var(--oj-th-bg);
+        border-color: var(--oj-border);
         border-width: 0 1px 1px 0;
         border-style: solid;
-        padding: 4px 10px;
+        padding: 8px 10px;
         vertical-align: middle;
         text-align: center;
         white-space: nowrap;
-        font-weight: 600;
+        font-weight: 700;
         font-size: 1.1em;
+        letter-spacing: 0.02em;
+        text-transform: none;
+
+        a, a:link, a:visited {
+            color: var(--oj-th-text);
+            text-decoration: none;
+            font-weight: inherit;
+
+            &:hover {
+                color: var(--oj-accent);
+                text-decoration: underline;
+            }
+        }
     }
 
     td {
-        border-color: $color_primary25;
+        border-color: var(--oj-border);
         border-width: 0 1px 1px 0;
         border-style: solid;
-        padding: 7px 5px;
+        padding: 8px 5px;
         vertical-align: middle;
         text-align: center;
+        color: var(--oj-text);
     }
 
     // Border fixes
-    th:first-child, td:first-child {
+    th:first-child,
+    td:first-child {
         border-left-width: 1px;
     }
 
-    tr:first-child th, tr:first-child td {
+    tr:first-child th,
+    tr:first-child td {
         border-top-width: 1px;
     }
 
-    // Rounded corners for <th>
-    tr:first-child th:first-child {
+    // 4 rounded corners — 6px like problem-list-mode-toggle
+    tr:first-child > th:first-child,
+    tr:first-child > td:first-child,
+    thead tr:first-child > th:first-child,
+    thead tr:first-child > td:first-child {
         border-top-left-radius: $table_header_rounding;
     }
 
-    tr:first-child th:last-child {
+    tr:first-child > th:last-child,
+    tr:first-child > td:last-child,
+    thead tr:first-child > th:last-child,
+    thead tr:first-child > td:last-child {
         border-top-right-radius: $table_header_rounding;
     }
 
-    tbody tr:last-child th:first-child {
+    tbody tr:last-child > th:first-child,
+    tbody tr:last-child > td:first-child,
+    tfoot tr:last-child > th:first-child,
+    tfoot tr:last-child > td:first-child {
         border-bottom-left-radius: $table_header_rounding;
+    }
+
+    tbody tr:last-child > th:last-child,
+    tbody tr:last-child > td:last-child,
+    tfoot tr:last-child > th:last-child,
+    tfoot tr:last-child > td:last-child {
+        border-bottom-right-radius: $table_header_rounding;
+    }
+
+    // Google-blue tinted row hover
+    tbody tr {
+        transition: background-color $dur-fast $ease-std;
+
+        &:hover {
+            background: var(--oj-accent-glow) !important;
+        }
     }
 }

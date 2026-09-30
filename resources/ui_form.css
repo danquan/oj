@@ -1,6 +1,6 @@
 .helptext {
     font-size: 15px;
-    color: #999;
+    color: var(--oj-text-3, #999);
     border-width: 0 0 1px 0;
 }
 .helptext::before {

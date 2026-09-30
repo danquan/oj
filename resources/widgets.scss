@@ -22,76 +22,102 @@
     float: right;
 }
 
-// Bootstrap-y buttons
-.button, button, input[type=submit] {
+// ─── Buttons — modern clean style with #1a74e8 and 13px typography ───
+.button, button:not(#theme-toggle), input[type=submit], input[type=button] {
     color: white !important;
     text-decoration: none !important;
     cursor: pointer;
-    vertical-align: middle;
     white-space: nowrap;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.4;
-    background: rgb(51, 122, 183) none repeat scroll 0 (0% / auto) padding-box border-box;
-    background: -webkit-linear-gradient(top, #337ab7 0, #265a88 100%) repeat-x;
-    background: linear-gradient(to bottom, #337ab7 0, #265a88 100%) repeat-x;
-    border-radius: $widget_border_radius;
-    padding: 6px 12px;
+    background: #1a74e8;
+    border: 1px solid #1a74e8;
+    border-radius: 4px;
+    padding: 5px 16px;
     display: block;
-    border: 0;
     text-align: center;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
 
-    // 4k hack
-    font-size: $base_font_size;
+    font-size: 13px;
+    letter-spacing: 0.01em;
+
+    transition: background $dur-fast $ease-std,
+                border-color $dur-fast $ease-std,
+                box-shadow $dur-fast $ease-std,
+                transform  $dur-fast $ease-std;
 
     &:hover {
-        background: #265a88;
+        background: #155ec2 !important;
+        border-color: #155ec2 !important;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+        transform: translateY(-1px);
     }
 
     &:active {
-        border-color: #245580;
-        background: #265a88;
+        background: #124ea3 !important;
+        border-color: #124ea3 !important;
+        transform: translateY(0);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
     }
 
     &.full {
-        padding: 6px 0;
+        padding: 5px 0;
     }
 
     &.disabled {
-        background: linear-gradient(to bottom, darkgray 0, gray 100%) repeat-x !important;
-        border-color: grey !important;
+        background: var(--oj-text-3) !important;
+        border-color: var(--oj-text-3) !important;
+        box-shadow: none !important;
+        transform: none !important;
         cursor: not-allowed;
+        opacity: 0.6;
     }
 }
 
 .inline-button {
-    display: inline;
-    vertical-align: top;
-    padding: 3px 6px;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 3px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    background: #1a74e8;
+    border: 1px solid #1a74e8;
+    color: #fff !important;
+    text-decoration: none !important;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background $dur-fast $ease-std, border-color $dur-fast $ease-std;
+
+    &:hover {
+        background: #155ec2 !important;
+        border-color: #155ec2 !important;
+    }
 }
 
 input {
-    &[type=text], &[type=password], &[type=email], &[type=number], &[type=url] {
-        padding: 4px 8px;
-        color: $color_primary75;
-        background: $color_primary0 none;
-        border: 1px solid $color_primary25;
+    &[type=text], &[type=password], &[type=email], &[type=number], &[type=url], &[type=search], &[type=tel], &:not([type]) {
+        padding: 6px 10px;
+        color: var(--oj-text);
+        background: var(--oj-input-bg);
+        border: 1px solid var(--oj-input-border);
         border-radius: $widget_border_radius;
-        box-shadow: 0 1px 1px rgba($color_primary100, 0.075) inset;
-        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        box-shadow: none;
+        transition: border-color $dur-fast $ease-std, box-shadow $dur-fast $ease-std, background-color $dur-fast $ease-std;
         box-sizing: border-box;
-
-        // Need this explicitly because UA stylesheet for Chrome on 4k makes
-        // everything look bad otherwise (forces it to 9.3px)
         font-size: $base_font_size;
 
+        &::placeholder {
+            color: var(--oj-text-3);
+            opacity: 1;
+        }
+
         &:hover {
-            border-color: rgba(82, 168, 236, 0.8);
-            box-shadow: inset 0 1px 1px rgba($color_primary100, 0.075), 0 0 4px rgba(82, 168, 236, 0.6);
+            border-color: var(--oj-input-border-hover);
         }
 
         &:focus {
-            border-color: rgba(82, 168, 236, 0.8);
-            box-shadow: inset 0 1px 1px rgba($color_primary100, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+            border-color: var(--oj-accent);
+            box-shadow: 0 0 0 3px var(--oj-focus-ring);
             outline: 0;
         }
     }
@@ -103,40 +129,73 @@ input {
     &[type=checkbox] {
         appearance: none;
         vertical-align: middle;
-        border: 1px solid $color_primary50;
-        background: $color_primary0;
-        border-radius: 2px;
+        border: 1px solid var(--oj-input-border);
+        background: var(--oj-input-bg);
+        border-radius: 3px;
         width: 0.95em;
         height: 0.95em;
         cursor: pointer;
+        transition: border-color $dur-fast $ease-std;
 
         &:checked {
             appearance: auto;
-            accent-color: $highlight_blue;
+            accent-color: var(--oj-accent);
         }
     }
 }
 
 textarea {
-    padding: 4px 8px;
-    color: $color_primary75;
-    background: $color_primary0 none;
-    border: 1px solid $color_primary25;
+    padding: 6px 10px;
+    color: var(--oj-text);
+    background: var(--oj-input-bg);
+    border: 1px solid var(--oj-input-border);
     border-radius: $widget_border_radius;
-    box-shadow: 0 1px 1px rgba($color_primary100, 0.075) inset;
-    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    box-shadow: none;
+    transition: border-color $dur-fast $ease-std, box-shadow $dur-fast $ease-std, background-color $dur-fast $ease-std;
     box-sizing: border-box;
+    font-family: inherit;
+
+    &::placeholder {
+        color: var(--oj-text-3);
+        opacity: 1;
+    }
+
+    &:hover {
+        border-color: var(--oj-input-border-hover);
+    }
+
+    &:focus {
+        border-color: var(--oj-accent);
+        box-shadow: 0 0 0 3px var(--oj-focus-ring);
+        outline: 0;
+    }
 }
 
-textarea:hover {
-    border-color: rgba(82, 168, 236, 0.8);
-    box-shadow: inset 0 1px 1px rgba($color_primary100, 0.075), 0 0 4px rgba(82, 168, 236, 0.6);
-}
+select {
+    padding: 6px 10px;
+    color: var(--oj-text);
+    background-color: var(--oj-input-bg);
+    border: 1px solid var(--oj-input-border);
+    border-radius: $widget_border_radius;
+    box-shadow: none;
+    box-sizing: border-box;
+    font-size: $base_font_size;
+    transition: border-color $dur-fast $ease-std, box-shadow $dur-fast $ease-std, background-color $dur-fast $ease-std;
 
-textarea:focus {
-    border-color: rgba(82, 168, 236, 0.8);
-    box-shadow: inset 0 1px 1px rgba($color_primary100, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-    outline: 0;
+    &:hover {
+        border-color: var(--oj-input-border-hover);
+    }
+
+    &:focus {
+        border-color: var(--oj-accent);
+        box-shadow: 0 0 0 3px var(--oj-focus-ring);
+        outline: 0;
+    }
+
+    option {
+        background: var(--oj-surface);
+        color: var(--oj-text);
+    }
 }
 
 // Bootstrap-y copy button
@@ -160,60 +219,65 @@ textarea:focus {
     margin-top: 1.5em;
 }
 
-// Bootstrap-y tabs
+// Rounded block tabs
 .ul_tab_a_active {
-    color: $color_primary100;
-    // Cover up the bottom border of active tabs with this color
-    background: $color_pageBg;
+    color: var(--oj-tab-active-text, #{$color_primary100}) !important;
+    background: var(--oj-tab-active-bg, if($is_light_theme, #d2d6dc, #3c4043)) !important;
     cursor: default;
-    border: 1px solid $color_primary25;
-    border-bottom-color: $color_pageBg;
-    border-image: none;
+    border: 1px solid transparent !important;
+    border-radius: $widget_border_radius;
 }
 
 .tabs {
-    border-bottom: 1px solid $color_primary25;
-    margin: 0 0 8px;
+    border-bottom: 1px solid var(--oj-border, $color_primary25);
+    margin: 0 0 12px;
+    padding-bottom: 8px;
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
+    gap: 8px;
 
     .tab {
         .tab-icon {
-            padding-right: 0.3em;
-            color: $color_primary50;
+            padding-right: 0.35em;
+            color: inherit;
+            opacity: 0.85;
 
             &.fa-plus {
-                color: green !important;
+                color: #1e8e3e !important;
+                opacity: 1;
             }
-        }
-
-        a, span {
-            border-top-width: 3px !important;
         }
 
         &.active {
             a, span {
-                border-top-color: $highlight_blue !important;
+                background: var(--oj-tab-active-bg, if($is_light_theme, #d2d6dc, #3c4043)) !important;
+                color: var(--oj-tab-active-text, #{$color_primary100}) !important;
+                border-color: transparent !important;
+                font-weight: bold;
             }
 
             .tab-icon {
-                color: $color_primary100;
+                color: inherit;
+                opacity: 1;
             }
         }
     }
 
     h2 {
-        color: $color_primary75;
+        color: var(--oj-text, $color_primary75);
+        margin: 0;
     }
 
     > ul {
         margin: 0;
-        margin-bottom: -1px;
         padding: 0;
         list-style: outside none none;
         display: flex;
+        align-items: center;
+        gap: 6px;
         overflow-x: auto;
         overflow-y: hidden;
 
@@ -224,26 +288,33 @@ textarea:focus {
             &.active > a, &.active > span {
                 @extend .ul_tab_a_active;
 
-                &:hover {
-                    @extend .ul_tab_a_active;
-                }
-
-                &:focus {
+                &:hover, &:focus {
                     @extend .ul_tab_a_active;
                 }
             }
 
             > a, > span {
-                margin-right: 2px;
                 line-height: 1.42857;
                 border: 1px solid transparent;
-                border-radius: $widget_border_radius $widget_border_radius 0 0;
+                border-radius: $widget_border_radius;
                 position: relative;
-                display: block;
-                padding: 10px 15px;
-                color: $color_primary66;
+                display: flex;
+                align-items: center;
+                padding: 6px 14px;
+                color: var(--oj-text-2, $color_primary66);
                 text-decoration: none;
                 white-space: nowrap;
+                font-weight: 600;
+                transition: background-color $dur-fast $ease-std, color $dur-fast $ease-std;
+
+                &:hover {
+                    background-color: var(--oj-tab-hover-bg, rgba(0, 0, 0, 0.05));
+                    color: var(--oj-text, $color_primary100);
+                }
+
+                &:focus {
+                    outline: none;
+                }
             }
         }
     }
@@ -410,28 +481,38 @@ a.close {
     text-align: right;
 }
 
-.sidebox h3 {
-    margin: 0 -5px;
-    background: $color_primary75;
-    border-radius: $widget_border_radius $widget_border_radius 0 0;
-    color: $color_primary0;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 7px;
-    font-size: 1.3em;
-}
+// ─── Sidebox — rounded card style ────────────────────────────────
+.sidebox {
+    background: var(--oj-surface);
+    border: 1px solid var(--oj-border);
+    border-radius: 10px;
+    padding: 16px !important;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+    margin-bottom: 1em;
+    transition: background-color $dur-std $ease-std, border-color $dur-std $ease-std;
 
-.sidebox h3 .fa {
-    color: $color_primary0;
-    float: right;
-    margin: 0.2em 0.4em 0 0;
+    h2, h3, h4 {
+        margin: 0 0 12px;
+        font-size: 1.15em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: var(--oj-text, $color_primary90);
+        border-bottom: 1px solid var(--oj-border);
+        padding-bottom: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .fa {
+            color: var(--oj-accent);
+            font-size: 0.95em;
+        }
+    }
 }
 
 .sidebox-content {
-    border: 1px solid $color_primary25;
-    border-top: none;
-    margin: 0 -5px;
-    padding: 1px 0.5em 3px;
+    padding: 1px 0 3px;
 
     &.sidebox-table {
         border: none;
@@ -441,13 +522,6 @@ a.close {
             margin: 0 !important;
         }
     }
-}
-
-.sidebox {
-    border-top-left-radius: $widget_border_radius;
-    border-top-right-radius: $widget_border_radius;
-    padding: 0 5px !important;
-    padding-bottom: 1.5em !important;
 }
 
 .ws-closed {
@@ -513,8 +587,8 @@ a.close {
 }
 
 details {
-    border: 1px solid $color_primary25;
-    background: $color_primary5;
-    padding: 5px 10px;
-    border-radius: 4px;
+    border: 1px solid var(--oj-border);
+    background: var(--oj-surface-2);
+    padding: 6px 12px;
+    border-radius: $widget_border_radius;
 }
