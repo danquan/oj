@@ -9,19 +9,35 @@
    nên dark tokens gắn vào `html.dark` thay vì @media prefers-color-scheme
    — để không ép dark khi người dùng đã chủ động chọn light.
 
-   Phạm vi hiện tại: tokens · base · navbar · footer · buttons.
+   Quy ước: chỉ ghi khai báo khác với CSS gốc (không lặp lại những gì
+   SCSS gốc đã lấy qua biến --oj-*). Selector bám selector gốc để giữ
+   specificity ngang bằng. !important chỉ dùng khi phải thắng
+   !important / inline style có sẵn — mỗi chỗ có comment lý do.
 
    Mục lục
-     1. Tokens (light / dark)
-     2. Bridge: ánh xạ biến --oj-* có sẵn sang tokens ấm
-     3. Base
-     4. Layout skin (page container, footer, announcement, contest timer)
-     5. Components — Navbar
-     6. Components — Buttons
-     7. Responsive
-     8. Motion / Print
+      1. Tokens (light / dark, gồm verdict & icon trạng thái)
+      2. Bridge: ánh xạ biến --oj-* có sẵn sang tokens
+      3. Base
+      4. Layout skin (page container, footer, announcement, contest timer)
+      5. Navbar
+      6. Buttons
+      7. Nội dung đề bài / bài viết
+      8. Kết quả chấm (verdict)
+      9. Danh sách submission & source
+     10. Bảng
+     11. Phân trang
+     12. Thông báo, tab, sidebox
+     13. Form & select2
+     14. Trang bài tập & editor
+     15. Kỳ thi
+     16. Blog
+     17. Bình luận
+     18. Ticket
+     19. Khác
+     20. Responsive
+     21. Dark mode — override riêng cho component
+     22. Motion / Print
    ========================================================================== */
-
 
 /* ==========================================================================
    1. TOKENS
@@ -129,6 +145,32 @@
     --z-overlay:  1000;
     --z-modal:    1100;
     --z-toast:    1200;
+
+    /* ── Verdict (chip nền tươi + chữ tối, dùng chung sáng/tối) ──────────
+       Bộ --ok/--danger… ở trên dùng làm CHỮ trên nền sáng nên sẫm; chip,
+       chữ test case và icon trạng thái bài cần tông tươi hơn.
+       Contrast chữ --verdict-ink trên chip:
+       ac 7.4 · partial 11.4 · wa 5.8 · tle 8.7 · re 6.2 · ce 9.0 · ie 5.2 · pending 8.1 */
+    --verdict-ink:     #1F1510;   /* nâu gần đen, không dùng #000 thuần */
+    --verdict-ac:      #3DBE55;   /* xanh lá tươi */
+    --verdict-partial: #C6D93A;   /* vàng chanh — AC một phần */
+    --verdict-wa:      #FF5A4E;   /* đỏ san hô */
+    --verdict-tle:     #FF9F1C;   /* cam tươi — TLE / MLE */
+    --verdict-re:      #E26BD4;   /* hồng tím — RE / OLE / IR */
+    --verdict-ce:      #C4B5A5;   /* be xám — CE / AB */
+    --verdict-ie:      #FF3B6B;   /* hồng mâm xôi — lỗi hệ thống */
+    --verdict-pending: #5AB8F0;   /* xanh trời — đang chờ / đang chấm */
+
+    /* Chữ verdict từng test (.case-*) — tươi, ≥ 4.6:1 trên --surface/--surface-alt/--bg */
+    --case-ac:         #037C21;
+    --case-partial:    #647203;
+    --case-wa:         #D61005;
+    --case-tle:        #A95104;
+    --case-re:         #C705A0;
+
+    /* Icon trạng thái bài (check / mặt buồn / khoá) — ≥ 3:1 trên --surface */
+    --icon-solved:     #1E9A42;   /* ≥ 3.2:1 trên --surface & --surface-alt */
+    --icon-attempted:  #C96A00;   /* ≥ 3.3:1 trên --surface & --surface-alt */
 }
 
 html.dark,
@@ -138,17 +180,17 @@ html.dark,
     /* Nền nâu cacao vừa phải (không quá tối) để card / bảng / viền
        tách lớp rõ hơn; các tầng cách nhau đủ để mắt phân biệt. */
     --bg:              #2B221C;
-    --surface:         #362B24;
-    --surface-alt:     #41342B;
-    --border:          #5A4A3D;
-    --border-strong:   #6E5B4C;
+    --surface:         #3E3129;   /* ~1.26:1 so với --bg → box tách khỏi nền */
+    --surface-alt:     #473930;
+    --border:          #6B584A;   /* ~1.9:1 trên --surface, ~2.3:1 trên --bg */
+    --border-strong:   #7D6858;
     --border-input:    #9A8270;   /* ~3.8:1 trên --surface */
     --border-input-hover: #B59F8C;
     --input-bg:        #30261F;
 
     --text:            #F3E6D8;   /* ~11:1 trên --surface */
     --text-muted:      #CDB9A6;   /* ~7:1 */
-    --text-subtle:     #B59F8C;   /* ≥ 4.5:1 cả trên --surface-alt */
+    --text-subtle:     #BCA793;   /* ≥ 4.5:1 cả trên --surface-alt (~4.8:1) */
 
     --primary:         #C8501E;
     --primary-hover:   #A94116;
@@ -181,8 +223,16 @@ html.dark,
     --shadow-1: 0 1px 2px rgba(10, 5, 2, 0.35);
     --shadow-2: 0 2px 8px rgba(10, 5, 2, 0.40);
     --shadow-3: 0 12px 28px rgba(10, 5, 2, 0.50);
-}
 
+    --case-ac:         #05CC37;   /* ≥ 4.6:1 trên mọi nền dark */
+    --case-partial:    #B1CC05;
+    --case-wa:         #FC847E;
+    --case-tle:        #FA8A29;
+    --case-re:         #FC79E1;
+
+    --icon-solved:     #3DBE55;   /* ~5.2:1 trên --surface dark */
+    --icon-attempted:  #FF9F1C;   /* ~6.1:1 */
+}
 
 /* ==========================================================================
    2. BRIDGE — biến --oj-* đã được toàn bộ SCSS gốc sử dụng.
@@ -207,8 +257,8 @@ html.dark {
     --oj-text-2:             var(--text-muted);
     --oj-text-3:             var(--text-subtle);
 
-    --oj-accent:             var(--primary);
-    --oj-accent-h:           var(--primary-hover);
+    --oj-accent:             var(--link);   /* cũng làm màu chữ (th a:hover) → cần ≥ 4.5:1; --primary chỉ ~3.9:1 */
+    --oj-accent-h:           var(--link-hover);
     --oj-accent-glow:        var(--primary-soft);
 
     --oj-link:               var(--link);
@@ -224,21 +274,18 @@ html.dark {
     --oj-th-bg:              var(--surface-alt);
     --oj-th-text:            var(--text);
 
-    --oj-solved:             var(--ok);
-    --oj-attempted:          var(--warn-text);
-    --oj-unsolved:           var(--text-subtle);
-    --oj-editorial:          var(--ok);
+    --oj-solved:             var(--icon-solved);
+    --oj-attempted:          var(--icon-attempted);
+    --oj-unsolved:           var(--text-muted);   /* icon khoá bài chưa giải: --text-subtle quá nhạt */
+    --oj-editorial:          var(--icon-solved);
     --oj-no-editorial:       var(--danger);
 }
 
 html.dark {
-    --oj-accent:          var(--link);        /* cam sáng dễ đọc trên nền tối */
-    --oj-accent-h:        var(--link-hover);
     --oj-accent-glow:     rgba(242, 154, 104, 0.14);
     --oj-tab-active-text: var(--text);
     --oj-tab-hover-bg:    rgba(243, 230, 216, 0.08);
 }
-
 
 /* ==========================================================================
    3. BASE
@@ -250,11 +297,9 @@ html {
     scrollbar-color: var(--border-strong) var(--bg);
 }
 
+/* color / background / line-height của body đã lấy từ --oj-* trong CSS gốc */
 body {
     font-family: var(--font-sans);
-    color: var(--text);
-    background: var(--bg);
-    line-height: var(--lh-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -284,39 +329,25 @@ a:active {
     color: var(--text);
 }
 
-html.dark ::selection {
-    background: rgba(240, 179, 84, 0.30);
-}
-
 :focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 2px;
 }
 
-hr {
-    border-bottom-color: var(--border);
-}
-
 /* Không đặt `img { height: auto }` toàn cục: nhiều ảnh (cờ ngôn ngữ SVG,
    logo override) chỉ khai báo thuộc tính height="…" và sẽ mất kích thước. */
-
 
 /* ==========================================================================
    4. LAYOUT SKIN (chỉ màu / viền / bóng — không đổi kích thước khối)
    ========================================================================== */
 
+/* Nền trang = --bg; box/bảng/sidebox (dùng --oj-surface) nổi lên trên.
+   Trước đây cả hai cùng --surface → box trùng màu nền. */
 #page-container {
-    background: var(--surface);
-    border-inline-color: var(--border);
+    background: var(--bg);
 }
 
-/* Footer */
-footer {
-    background: var(--surface-alt);
-    border-top-color: var(--border);
-    color: var(--text-subtle);
-}
-
+/* Footer: nền / viền / màu chữ đã lấy từ --oj-* trong CSS gốc */
 /* Link footer có inline style="color: #808080" (~3.5:1 trên nền kem,
    không đạt AA) → buộc dùng !important để ghi đè inline. */
 #footer-content a {
@@ -367,16 +398,11 @@ noscript #noscript {
     font-variant-numeric: tabular-nums;
 }
 
-
 /* ==========================================================================
    5. COMPONENTS — NAVBAR
    Selector bám theo selector gốc (navbar.scss) để giữ specificity ngang
    bằng; không đổi padding/height/display của các mục menu desktop.
    ========================================================================== */
-
-#nav-container {
-    background: var(--nav-bg);
-}
 
 /* Đường viền đáy: vệt hổ phách mảnh thay cho đường xám */
 #nav-shadow {
@@ -391,17 +417,8 @@ nav ul li {
     font-family: var(--font-sans);
 }
 
-nav ul li a,
-nav ul li button:not(#theme-toggle) {
-    color: var(--nav-text);
-}
-
-nav ul li a:link {
-    color: var(--nav-text);
-}
-
+/* Màu chữ navbar đã lấy từ --oj-nav-text trong navbar.scss */
 nav ul li a:hover {
-    color: var(--nav-text);
     background: var(--nav-hover-bg);
 }
 
@@ -416,7 +433,6 @@ nav ul li a:active {
    (5px/3px) giữ nguyên độ dày, chỉ chuyển trong suốt.
    Chỉ animate opacity. */
 nav ul li a.active {
-    color: var(--nav-text);
     background: transparent;
     border-bottom-color: transparent;
 }
@@ -528,17 +544,9 @@ nav .nav-divider {
     outline-offset: 2px;
 }
 
-/* Khu vực người dùng */
-#user-links a {
-    color: var(--nav-text);
-}
-
+/* Khu vực người dùng (màu chữ đã lấy từ --oj-nav-text) */
 #user-links > ul > li > a > span > img {
     box-shadow: 0 0 0 2px var(--nav-accent);
-}
-
-#user-links > ul > li > a > span > span {
-    color: var(--nav-text);
 }
 
 #user-links .anon {
@@ -621,16 +629,11 @@ html[lang|="en"] #flag_en img {
     box-shadow: 0 1px 2px rgba(20, 10, 5, 0.35);
 }
 
-/* Hamburger */
-#navicon {
-    color: var(--nav-text);
-}
-
+/* Hamburger: gốc dùng --oj-accent (giờ là --link, tối trên nền nav) */
 #navicon.hover {
     color: var(--nav-accent);
     text-shadow: none;
 }
-
 
 /* ==========================================================================
    6. COMPONENTS — BUTTONS
@@ -692,7 +695,8 @@ input[type=button]:focus-visible {
     outline-offset: 2px;
 }
 
-/* Disabled: gốc dùng !important cho .disabled → giữ cùng cơ chế */
+/* Disabled: nền/viền cần !important vì phải thắng hover !important;
+   box-shadow/transform thì hover không dùng !important → không cần. */
 .button.disabled,
 .button[disabled],
 button:not(#theme-toggle):disabled,
@@ -700,8 +704,8 @@ input[type=submit]:disabled,
 input[type=button]:disabled {
     background: var(--text-subtle) !important;
     border-color: var(--text-subtle) !important;
-    box-shadow: none !important;
-    transform: none !important;
+    box-shadow: none;
+    transform: none;
     opacity: 0.55;
     cursor: not-allowed;
 }
@@ -732,16 +736,848 @@ input[aria-busy="true"] {
     outline-offset: 2px;
 }
 
+/* ==========================================================================
+   7. NỘI DUNG ĐỀ BÀI / BÀI VIẾT (.content-description)
+   ========================================================================== */
+
+.content-description h1,
+.content-description h2,
+.content-description h3,
+.content-description h4,
+.content-description h5,
+.content-description h6 {
+    color: var(--text);
+}
+
+.content-description h4 {
+    border-bottom-color: var(--border);
+}
+
+.content-description hr {
+    border-bottom-color: var(--border);
+}
+
+.content-description blockquote {
+    color: var(--text-muted);
+    border-left-color: var(--border-strong);
+}
+
+.content-description blockquote.spoiler {
+    background: var(--surface-alt);
+    color: var(--text);
+    border-color: var(--border);
+}
+
+.content-description blockquote.spoiler::before {
+    background: var(--border-strong);
+}
+
+.content-description blockquote.spoiler::after {
+    color: var(--text-subtle);
+}
+
+.content-description pre,
+.content-description code,
+.content-description kbd,
+.content-description samp {
+    font-family: var(--font-mono);
+    color: var(--text);
+}
+
+.content-description code,
+.content-description span.code {
+    background-color: var(--surface-alt);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+.content-description pre {
+    background-color: var(--surface-alt);
+    border-color: var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    overflow-x: auto;       /* chỉ có tác dụng khi khối code dài hơn khung */
+}
+
+.content-description pre code,
+.content-description pre div.code {
+    color: var(--text);
+    background: transparent;
+    border: 0;
+}
+
+.content-description ins {
+    background: var(--ok-soft);
+    color: var(--text);
+}
+
+.content-description mark {
+    background: var(--warn-soft);
+    color: var(--text);
+}
+
+.info-float .fa {
+    color: var(--text-muted);
+}
 
 /* ==========================================================================
-   7. RESPONSIVE (breakpoint 760px khớp navbar.scss gốc)
+   8. KẾT QUẢ CHẤM — badge .sub-result.<STATUS> và .case-<STATUS>
+   Nhãn chữ (AC/WA/…) đã có sẵn trong markup → màu chỉ là tín hiệu phụ.
+   ========================================================================== */
+
+/* Nền TƯƠI + chữ --verdict-ink (nâu gần đen), dùng chung cho sáng & tối.
+   Nền tươi đặt chữ trắng không đủ tương phản (vd. đỏ tươi ~3.7:1) → chữ
+   tối cho mọi verdict; tất cả ≥ 4.5:1. Tokens ở mục 1. */
+.AC,
+._AC,
+.WA,
+.TLE,
+.MLE,
+.OLE,
+.IR,
+.RTE,
+.OTH,
+.CE,
+.AB,
+.IE,
+.QU,
+.G      { color: var(--verdict-ink); }
+
+.AC     { background-color: var(--verdict-ac); }
+._AC    { background-color: var(--verdict-partial); }   /* AC một phần */
+.WA     { background-color: var(--verdict-wa); }
+.TLE,
+.MLE    { background-color: var(--verdict-tle); }
+.OLE,
+.IR,
+.RTE,
+.OTH    { background-color: var(--verdict-re); }
+.CE,
+.AB     { background-color: var(--verdict-ce); }
+.IE     { background-color: var(--verdict-ie); }
+.QU,
+.G      { background: var(--verdict-pending); }
+
+/* Đang chờ / đang chấm: nhấp nháy opacity nhẹ (tắt khi reduced-motion) */
+@keyframes oj-pending-pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.55; }
+}
+
+.sub-result.QU .state,
+.sub-result.G .state {
+    animation: oj-pending-pulse 1.6s ease-in-out infinite;
+}
+
+/* Điểm & spinner nằm trên nền đặc của verdict → theo màu chữ của badge */
+.submission-row .sub-result .score,
+.submission-row .sub-result .score .grading-spinner {
+    color: inherit;
+}
+
+/* Verdict từng test (chữ + icon ✓/✗ trang chi tiết submission):
+   tông TƯƠI (bão hoà cao) nhưng vẫn ≥ 4.6:1 trên mọi nền — tokens mục 1. */
+.case-AC                          { color: var(--case-ac); }
+.case-_AC                         { color: var(--case-partial); }
+.case-WA                          { color: var(--case-wa); }
+.case-TLE,
+.case-MLE                         { color: var(--case-tle); }
+.case-OLE,
+.case-RTE,
+.case-IR                          { color: var(--case-re); }
+.case-SC                          { color: var(--text-subtle); }
+
+#test-cases .case-info {
+    border-color: var(--border);
+    color: var(--text-muted);
+}
+
+/* Thời gian / bộ nhớ / điểm: chữ số cùng bề rộng để dễ so cột */
+.sub-usage,
+.submission-row .sub-result .score,
+#test-cases,
+.time,
+.total-ac,
+#ranking-table .points,
+#ranking-table .user-points {
+    font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   9. DANH SÁCH SUBMISSION & XEM SOURCE
+   ========================================================================== */
+
+.submission-row,
+.submission-row > div,
+.submission-row .sub-result,
+.submission-row .sub-usage {
+    border-color: var(--border);
+}
+
+.submission-row:hover {
+    background: var(--surface-alt);
+}
+
+.submission-row .sub-main .sub-testcase,
+.sub-prop .grey-label,
+.submission-info .submission-date,
+.source-ln,
+.source-ln a {
+    color: var(--text-subtle);
+}
+
+.submission-contest {
+    color: var(--text-muted);
+}
+
+.source-ln {
+    border-right-color: var(--border);
+}
+
+.source-wrap a:active .line .highlighter {
+    background: var(--warn-soft);
+}
+
+/* ==========================================================================
+   10. BẢNG (.table, bảng xếp hạng, bảng người dùng)
+   ========================================================================== */
+
+/* Hàng xen kẽ — :where() để specificity = 0, mọi trạng thái hàng có sẵn
+   (highlight, disqualified, hover…) vẫn thắng. */
+:where(.table tbody tr:nth-child(2n)) {
+    /* Hàng chẵn: nằm giữa --surface và --surface-alt (không dùng --bg,
+       vì --bg giờ là nền trang → hàng trông như "thủng" xuống nền). */
+    background: var(--surface-alt);
+    background: color-mix(in srgb, var(--surface) 50%, var(--surface-alt));
+}
+
+.table td {
+    font-variant-numeric: tabular-nums;
+}
+
+#ranking-table th a:hover {
+    color: var(--link);
+}
+
+/* Gốc dùng !important cho .disqualified → giữ cùng cơ chế */
+#ranking-table .disqualified {
+    background-color: var(--danger-soft) !important;
+}
+
+#ranking-table .point-denominator {
+    border-top-color: var(--border-strong);
+}
+
+#ranking-table .virtual-participation {
+    color: var(--text-subtle);
+}
+
+#ranking-table .user-points,
+#ranking-table .user-points a {
+    color: var(--text);
+}
+
+tr:target,
+.users-table tr.highlight,
+.organization-table tr.highlight {
+    background: var(--primary-soft);
+}
+
+.users-table .personal-info a,
+.users-table .personal-info span,
+.pp-table .pp-weighted {
+    color: var(--text-subtle);
+}
+
+.hide-solved-problems > span:before {
+    background: var(--border);
+}
+
+#pp-load-link-wrapper,
+#submission-activity #submission-activity-display {
+    border-color: var(--border);
+}
+
+#submission-activity #submission-activity-actions #year,
+#submission-activity #submission-activity-display .info-text {
+    color: var(--text-muted);
+}
+
+#rating-tooltip,
+.type-tag-full {
+    box-shadow: var(--shadow-2);
+}
+
+/* ==========================================================================
+   11. PHÂN TRANG (ul.pagination)
+   ========================================================================== */
+
+ul.pagination > li > a,
+ul.pagination > li > span {
+    color: var(--text);
+    background-color: var(--surface);
+    border-color: var(--border-input);
+    transition: background-color var(--dur-fast) var(--ease-out),
+                color var(--dur-fast) var(--ease-out);
+}
+
+ul.pagination a:hover {
+    background: var(--primary-soft);
+    color: var(--primary-active);
+}
+
+ul.pagination > .active-page > a,
+ul.pagination > .active-page > span {
+    color: var(--text-on-primary);
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+ul.pagination > .disabled-page > a,
+ul.pagination > .disabled-page > span {
+    color: var(--text-subtle);
+    cursor: not-allowed;
+}
+
+ul.pagination a:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   12. THÔNG BÁO: .alert-*, .messages, .badge, .close, .ws-closed, sidebox
+   ========================================================================== */
+
+.alert-info    { color: var(--text); background-color: var(--info-soft);   border-color: var(--info); }
+.alert-warning { color: var(--text); background-color: var(--warn-soft);   border-color: var(--warn); }
+.alert-danger  { color: var(--text); background-color: var(--danger-soft); border-color: var(--danger); }
+
+.messages li.debug   { color: var(--text); background-color: var(--neutral-soft); border-color: var(--neutral); }
+.messages li.info    { color: var(--text); background-color: var(--info-soft);    border-color: var(--info); }
+.messages li.success { color: var(--text); background-color: var(--ok-soft);      border-color: var(--ok); }
+.messages li.warning { color: var(--text); background-color: var(--warn-soft);    border-color: var(--warn); }
+.messages li.error   { color: var(--text); background-color: var(--danger-soft);  border-color: var(--danger); }
+
+.close,
+a.close:hover {
+    color: var(--text-muted);
+}
+
+.close:focus,
+.close:hover {
+    color: var(--text);
+}
+
+.close:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+}
+
+.badge {
+    color: var(--text-on-primary);
+    background-color: var(--danger);
+}
+
+.ws-closed {
+    background: var(--danger);
+}
+
+.ws-closed a {
+    color: var(--text-on-primary);
+}
+
+.sidebox {
+    box-shadow: var(--shadow-1);
+}
+
+.form-submit-group {
+    border-top-color: var(--border);
+}
+
+/* Tab: gốc đặt `outline: none` ở :focus → không có dấu hiệu focus */
+.tabs > ul > li > a:focus-visible,
+.tabs > ul > li > span:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+}
+
+/* Gốc dùng !important cho icon "+" trong tab */
+.tabs .tab .tab-icon.fa-plus {
+    color: var(--ok) !important;
+}
+
+.btn-clipboard {
+    color: var(--text-muted);
+    background-color: var(--surface);
+    border-color: var(--border);
+    transition: color var(--dur-fast) var(--ease-out);
+}
+
+.btn-clipboard:hover {
+    color: var(--link);
+}
+
+/* ==========================================================================
+   13. FORM (Django form render tự động + select2)
+   ========================================================================== */
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+    background-color: var(--surface-alt);
+    color: var(--text-subtle);
+    cursor: not-allowed;
+}
+
+/* Autofill Chrome/Safari: giữ nền & chữ theo theme */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px var(--input-bg) inset;
+    -webkit-text-fill-color: var(--text);
+    caret-color: var(--text);
+}
+
+input[type=checkbox],
+input[type=radio] {
+    accent-color: var(--primary);
+}
+
+/* Focus bàn phím: CSS gốc đặt `outline: 0` ở :focus (chỉ còn đổi viền +
+   vòng bóng nhạt ~1.5:1) → thêm outline rõ ràng cho :focus-visible.
+   Selector cùng specificity với rule gốc, nạp sau nên thắng. */
+input[type=text]:focus-visible,
+input[type=password]:focus-visible,
+input[type=email]:focus-visible,
+input[type=number]:focus-visible,
+input[type=url]:focus-visible,
+input[type=search]:focus-visible,
+input[type=tel]:focus-visible,
+input:not([type]):focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+}
+
+.errorlist {
+    color: var(--danger);
+    font-weight: 500;
+}
+
+.helptext,
+#problem_submit .helptext {
+    color: var(--text-subtle);
+}
+
+#form-errors,
+.form-errors {
+    color: var(--text);
+    background: var(--danger-soft);
+    border-color: var(--danger);
+    border-radius: var(--radius-sm);
+}
+
+#problem_submit .errorlist {
+    color: var(--text);     /* --danger trên --danger-soft (dark) chỉ ~4:1 */
+    background: var(--danger-soft);
+    border-color: var(--danger);
+}
+
+#problem_submit .errornote {
+    border-color: var(--warn);
+}
+
+#problem_submit .required th::after {
+    color: var(--danger);
+}
+
+/* select2 (theme "dmoj") */
+.select2-container--dmoj .select2-selection--single,
+.select2-container--dmoj .select2-selection--multiple {
+    background-color: var(--input-bg);
+    border-color: var(--border-input);
+    border-radius: var(--radius-sm);
+}
+
+.select2-container--dmoj .select2-selection--single .select2-selection__rendered {
+    color: var(--text);
+}
+
+.select2-container--dmoj .select2-selection--single .select2-selection__placeholder,
+.select2-container--dmoj .select2-selection--multiple .select2-selection__placeholder,
+.select2-container--dmoj .select2-results__option[aria-disabled=true] {
+    color: var(--text-subtle);
+}
+
+.select2-container--dmoj .select2-selection--single .select2-selection__arrow b {
+    border-color: var(--text-subtle) transparent transparent transparent;
+}
+
+.select2-container--dmoj.select2-container--open .select2-selection--single .select2-selection__arrow b {
+    border-color: transparent transparent var(--text-subtle) transparent;
+}
+
+.select2-container--dmoj .select2-selection--multiple .select2-selection__choice {
+    background-color: var(--surface-alt);
+    color: var(--text);
+    border-color: var(--border-input);
+    border-radius: var(--radius-sm);
+}
+
+.select2-container--dmoj .select2-selection--multiple .select2-selection__choice__remove {
+    color: var(--text-subtle);
+}
+
+.select2-container--dmoj .select2-selection--multiple .select2-selection__choice__remove:hover {
+    color: var(--danger);
+}
+
+.select2-container--dmoj.select2-container--focus .select2-selection--single,
+.select2-container--dmoj.select2-container--focus .select2-selection--multiple,
+.select2-container--dmoj.select2-container--open .select2-selection--single {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.select2-container--dmoj.select2-container--disabled .select2-selection--single,
+.select2-container--dmoj.select2-container--disabled .select2-selection--multiple {
+    background-color: var(--surface-alt);
+}
+
+.select2-container--dmoj .select2-dropdown {
+    background-color: var(--surface);
+    border-color: var(--border-input);
+    box-shadow: var(--shadow-2);
+}
+
+.select2-container--dmoj .select2-results__option {
+    color: var(--text);
+}
+
+.select2-container--dmoj .select2-results__option[aria-selected=true] {
+    background-color: var(--primary-soft);
+    color: var(--text);
+}
+
+.select2-container--dmoj .select2-results__option--highlighted[aria-selected] {
+    background-color: var(--primary);
+    color: var(--text-on-primary);
+}
+
+#language-select2 .select2-results__option {
+    color: var(--text-muted);
+    background: var(--input-bg);
+}
+
+#language-select2 .select2-results__option[aria-selected=true] {
+    color: var(--text);
+}
+
+#language-select2 #result-version-info {
+    border-bottom-color: var(--border);
+    color: var(--text-subtle);
+}
+
+/* ==========================================================================
+   14. TRANG BÀI TẬP & EDITOR (ACE — chỉ khung ngoài, giữ theme ACE gốc)
+   ========================================================================== */
+
+#tagproblem-table .row-tag-list,
+#tagproblem-table .row-tag-list a,
+.license a {
+    color: var(--text-subtle);
+}
+
+.submissions-left {
+    color: var(--text-muted);
+}
+
+.no-submissions-left {
+    color: var(--danger);
+}
+
+.organization-tag {
+    background-color: var(--primary-soft);
+    box-shadow: none;
+}
+
+.organization-tag a {
+    color: var(--primary-active);
+}
+
+.pdf-icon .pdf-icon-logo {
+    color: var(--danger);
+}
+
+.pdf-icon .pdf-icon-bar {
+    background: var(--danger);
+}
+
+/* Công tắc chế độ danh sách bài */
+.problem-list-mode-toggle {
+    background: var(--surface-alt);
+    border-color: var(--border-input);
+    border-radius: var(--radius-sm);
+}
+
+.problem-list-mode-toggle .toggle-btn {
+    color: var(--text-muted);
+    border-color: var(--border-input);
+}
+
+/* :not(.active) để không đè nền --oj-accent của nút đang chọn */
+.problem-list-mode-toggle .toggle-btn:not(.active) {
+    background: var(--input-bg);
+}
+
+.problem-list-mode-toggle .toggle-btn:hover {
+    color: var(--text);
+    border-color: var(--border-input-hover);
+}
+
+.problem-list-mode-toggle .toggle-btn:not(.active):hover {
+    background: var(--surface-alt);
+}
+
+.problem-list-mode-toggle .toggle-btn.active {
+    color: var(--text-on-primary);
+}
+
+/* ACE editor: viền + bo góc bằng box-shadow (không đổi kích thước) */
+.django-ace-widget {
+    border-radius: var(--radius-sm);
+    box-shadow: 0 0 0 1px var(--border-input);
+}
+
+.django-ace-widget:focus-within {
+    box-shadow: 0 0 0 2px var(--focus);
+}
+
+.django-ace-widget > div {
+    border-radius: inherit;
+}
+
+.django-ace-toolbar {
+    color: var(--text-muted);
+    text-shadow: none;
+    background-color: var(--surface-alt);
+    background-image: none;
+    border-bottom-color: var(--border);
+}
+
+/* ==========================================================================
+   15. KỲ THI (lịch, banner, lọc tổ chức)
+   ========================================================================== */
+
+#contest-calendar th,
+#contest-calendar td,
+#contest-calendar td .num {
+    border-color: var(--border);
+}
+
+#contest-calendar th {
+    background: var(--surface-alt);
+}
+
+#contest-calendar td ul li i.fa {
+    color: var(--primary);
+}
+
+#contest-calendar td ul li a {
+    color: var(--text);
+}
+
+#contest-calendar td:hover {
+    background: var(--primary-soft);
+}
+
+#contest-calendar .today {
+    background: var(--warn-soft);
+}
+
+#contest-calendar .noday {
+    background: var(--bg);
+}
+
+#banner a.date        { color: var(--link); }
+#banner a.date:hover  { color: var(--link-hover); }
+#banner a.date:active { color: var(--link-active); }
+
+#org-check-list-wrapper {
+    background: var(--input-bg);
+    border-color: var(--border-input);
+}
+
+#org-check-list-wrapper #org-check-list {
+    border-bottom-color: var(--border);
+    color: var(--text);
+}
+
+/* ==========================================================================
+   16. BLOG
+   ========================================================================== */
+
+.blog-content .post .title a        { color: var(--link); }
+.blog-content .post .title a:hover  { color: var(--link-hover); }
+.blog-content .post .title a:active { color: var(--link-active); }
+
+.blog-content .post .comment-count-link {
+    color: var(--text-subtle);
+}
+
+.blog-content .post .blog-body {
+    border-left-color: var(--border-strong);
+}
+
+.blog-content .meta {
+    border-color: var(--border);
+}
+
+.blog-sidebox .contest {
+    border-bottom-color: var(--border);
+}
+
+/* ==========================================================================
+   17. BÌNH LUẬN
+   ========================================================================== */
+
+a.upvote-link,
+a.downvote-link {
+    color: var(--text-muted);
+}
+
+a.voted {
+    color: var(--primary);
+    text-shadow: none;
+}
+
+.comment-edits:not(:empty),
+.comment-operation .fa,
+.previous-revision,
+.next-revision,
+.new-comments .header i {
+    color: var(--text-subtle);
+}
+
+.new-comments .comment-display {
+    background: var(--surface);
+    border-color: var(--border);
+    border-radius: var(--radius-md);
+}
+
+.new-comments .comment .detail .header {
+    border-bottom-color: var(--border);
+    color: var(--text-subtle);
+}
+
+.new-comments .comment:target > .comment-display {
+    border-color: var(--primary);
+}
+
+/* ==========================================================================
+   18. TICKET
+   ========================================================================== */
+
+#ticket-list .fa-check-circle-o,
+#ticket-list .fa-arrow-up,
+div.ticket-title .fa-check-circle-o,
+div.ticket-title .fa-arrow-up {
+    color: var(--ok);
+}
+
+#ticket-list .fa-exclamation-circle,
+div.ticket-title .fa-exclamation-circle {
+    color: var(--danger);
+}
+
+div.ticket-title small,
+.info-box .fa,
+.info-empty,
+.ticket-message .operation .fa {
+    color: var(--text-subtle);
+}
+
+.info-box,
+.info-title,
+.ticket-message .detail,
+.ticket-message .header {
+    border-color: var(--border);
+}
+
+.info-title,
+.ticket-message .header {
+    background: var(--surface-alt);
+}
+
+/* Nút đóng/mở ticket, vote: hover gốc của .button dùng !important */
+.close-ticket,
+.vote-good {
+    background: var(--ok);
+    border-color: var(--ok);
+}
+
+.open-ticket,
+.vote-norm {
+    background: var(--danger);
+    border-color: var(--danger);
+}
+
+.close-ticket:hover,
+.vote-good:hover {
+    background: var(--ok) !important;
+    border-color: var(--ok) !important;
+}
+
+.open-ticket:hover,
+.vote-norm:hover {
+    background: var(--danger) !important;
+    border-color: var(--danger) !important;
+}
+
+/* ==========================================================================
+   19. KHÁC (judge versions, overlay, trạng thái rỗng)
+   ========================================================================== */
+
+/* Chữ --text: --ok trên --ok-soft chỉ ~4.3:1 (sáng), --danger trên
+   --danger-soft ~4:1 (tối) */
+#judge-versions .version-latest {
+    background: var(--ok-soft);
+    color: var(--text);
+}
+
+#judge-versions .version-outdated {
+    background: var(--danger-soft);
+    color: var(--text);
+}
+
+#judge-versions .version-blank {
+    background: var(--bg);
+}
+
+.grayed {
+    color: var(--text-subtle);
+}
+
+.featherlight .featherlight-content {
+    background: var(--surface);
+    border-color: var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-3);
+}
+
+.featherlight .featherlight-close-icon {
+    color: var(--text);
+    background: var(--surface-alt);
+}
+
+/* ==========================================================================
+   20. RESPONSIVE (breakpoint 760px khớp navbar.scss gốc)
    ========================================================================== */
 
 @media (max-width: 760px) {
-    #nav-list {
-        background: var(--nav-bg);
-    }
-
     #nav-list.show-list {
         box-shadow: var(--shadow-3);
     }
@@ -768,53 +1604,51 @@ input[aria-busy="true"] {
     }
 }
 
-
 /* ==========================================================================
-   7b. DARK MODE — nền hardcode gần đen trong dark/style.css
-   (#0f0f0f / #111 / #181818 / #222) được đưa về token để không thành
-   "mảng đen" trên nền mới. Chỉ đổi background-color.
+   21. DARK MODE — override riêng cho component
+   Tokens đã tự đổi theo html.dark; ở đây chỉ còn vùng chọn chữ và các
+   chỗ phải đổi MÀU CHỮ vì nền (token trạng thái / --oj-accent) sáng lên.
    ========================================================================== */
 
-html.dark .featherlight .featherlight-content {
-    background-color: var(--surface);
+html.dark ::selection {
+    background: rgba(240, 179, 84, 0.30);
 }
 
-html.dark .info-title,
-html.dark .ticket-message .header,
-html.dark #contest-calendar th,
-html.dark .new-comments .comment-display,
-html.dark .problem-list-mode-toggle,
-html.dark .btn-clipboard,
-html.dark .select2-container--dmoj.select2-container--disabled .select2-selection--single,
-html.dark .select2-container--dmoj.select2-container--disabled .select2-selection--multiple,
-html.dark .select2-container--dmoj .select2-selection--multiple .select2-selection__choice {
-    background-color: var(--surface-alt);
+html.dark ul.pagination a:hover {
+    color: var(--text);
 }
 
-html.dark .content-description code,
-html.dark .content-description span.code,
-html.dark .content-description pre,
-html.dark .problem-list-mode-toggle .toggle-btn:not(.active),
-html.dark #org-check-list-wrapper,
-html.dark #language-select2 .select2-results__option,
-html.dark .select2-container--dmoj .select2-selection--single,
-html.dark .select2-container--dmoj .select2-selection--multiple {
-    background-color: var(--input-bg);
+html.dark .badge {
+    color: var(--bg);     /* chữ trắng trên --danger (dark) không đủ tương phản */
 }
 
-html.dark #contest-calendar .noday,
-html.dark #judge-versions .version-blank {
-    background-color: var(--bg);
+html.dark .ws-closed,
+html.dark .ws-closed a {
+    color: var(--bg);
 }
 
-html.dark .submission-row:hover,
-html.dark .problem-list-mode-toggle .toggle-btn:not(.active):hover {
-    background-color: #4A3B31;   /* tầng hover: sáng hơn --surface-alt một bậc */
+html.dark .organization-tag a {
+    color: var(--text);
+}
+
+html.dark .problem-list-mode-toggle .toggle-btn.active {
+    color: var(--bg);    /* nền --oj-accent (dark) sáng → chữ tối */
+}
+
+html.dark a.voted {
+    color: var(--link);
+}
+
+html.dark .close-ticket,
+html.dark .vote-good,
+html.dark .open-ticket,
+html.dark .vote-norm {
+    color: var(--bg) !important;   /* gốc: color white !important; nền dark sáng → chữ tối */
 }
 
 
 /* ==========================================================================
-   8. MOTION / PRINT
+   22. MOTION / PRINT
    ========================================================================== */
 
 /* !important: phải thắng mọi transition/animation khai báo rải rác */
