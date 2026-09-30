@@ -241,7 +241,8 @@ noscript #noscript {
     }
 }
 
-#form-errors, .form-errors {
+#form-errors,
+.form-errors {
     background: hsla(0, 72%, 50%, 0.15);
     border: 2px solid hsl(0, 72%, 50%);
     border-radius: $widget_border_radius;

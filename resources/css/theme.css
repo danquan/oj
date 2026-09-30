@@ -47,87 +47,135 @@
     color-scheme: light;
 
     /* ── Nền / bề mặt ───────────────────────────────────────────────── */
-    --bg:              #FFF8F0;
-    --surface:         #FFFDF9;
-    --surface-alt:     #FBEFE0;
-    --border:          #EADBC8;   /* đường chia trang trí */
-    --border-strong:   #D8C3A8;
-    --border-input:    #A68A6D;   /* viền control ≥ 3:1 trên nền trắng (WCAG 1.4.11) */
+    --bg: #FFFCF8;
+    /* nền trang: kem rất nhạt */
+    --surface: #FFFEFC;
+    /* box / bảng: sáng hơn nền một chút, tách lớp nhờ viền + shadow-1 */
+    --surface-alt: #FBEFE0;
+    --border: #EADBC8;
+    /* đường chia trang trí */
+    --border-strong: #D8C3A8;
+    --border-input: #A68A6D;
+    /* viền control ≥ 3:1 trên nền trắng (WCAG 1.4.11) */
     --border-input-hover: #8C6F54;
-    --input-bg:        #FFFDF9;
+    --input-bg: #FFFEFC;
 
     /* ── Chữ ────────────────────────────────────────────────────────── */
-    --text:            #3B2A20;
-    --text-muted:      #6F5E52;   /* ~5.9:1 trên --bg */
-    --text-subtle:     #7A6555;   /* ≥ 4.5:1 cả trên --surface-alt */
+    --text: #3B2A20;
+    --text-muted: #6F5E52;
+    /* ~5.9:1 trên --bg */
+    --text-subtle: #7A6555;
+    /* ≥ 4.5:1 cả trên --surface-alt */
     --text-on-primary: #FFFFFF;
 
     /* ── Thương hiệu ────────────────────────────────────────────────── */
-    --primary:         #C8501E;   /* nền nút (chữ trắng ~4.5:1) */
-    --primary-hover:   #A94116;
-    --primary-active:  #8E3612;
-    --primary-soft:    #FDE3D2;
-    --secondary:       #E8A33D;
-    --accent:          #8C5A3C;
+    --primary: #C8501E;
+    /* nền nút (chữ trắng ~4.5:1) */
+    --primary-hover: #A94116;
+    --primary-active: #8E3612;
+    --primary-soft: #FDE3D2;
+    --secondary: #E8A33D;
+    --accent: #8C5A3C;
 
     /* Link: #C8501E trên nền kem chỉ ~4.3:1 → dùng tông đậm hơn cho chữ */
-    --link:            #A94116;
-    --link-hover:      #8E3612;
-    --link-active:     #C8501E;
+    --link: #A94116;
+    --link-hover: #8E3612;
+    --link-active: #C8501E;
 
-    --focus:           #C8501E;   /* outline focus ≥ 3:1 trên nền sáng */
-    --focus-ring:      rgba(200, 80, 30, 0.25);
+    --focus: #C8501E;
+    /* outline focus ≥ 3:1 trên nền sáng */
+    --focus-ring: rgba(200, 80, 30, 0.25);
 
     /* ── Trạng thái chấm bài (luôn đi kèm icon/chữ) ─────────────────── */
-    --ok:              #3F7D3A;  --ok-soft:        #E6F2E3;   /* AC */
-    --danger:          #B3261E;  --danger-soft:    #FBE3E0;   /* WA */
-    --warn:            #B26A00;  --warn-soft:      #FDF0D9;   /* TLE / MLE */
-    --warn-text:       #8F5500;                               /* bản đậm cho chữ nhỏ */
-    --error-alt:       #8E3B6B;  --error-alt-soft: #F6E4EE;   /* RE */
-    --neutral:         #6B5B50;  --neutral-soft:   #EFE8E2;   /* CE */
-    --info:            #A0651F;  --info-soft:      #FBEBD6;   /* Pending / Running */
+    --ok: #3F7D3A;
+    --ok-soft: #E6F2E3;
+    /* AC */
+    --danger: #B3261E;
+    --danger-soft: #FBE3E0;
+    /* WA */
+    --warn: #B26A00;
+    --warn-soft: #FDF0D9;
+    /* TLE / MLE */
+    --warn-text: #8F5500;
+    /* bản đậm cho chữ nhỏ */
+    --error-alt: #8E3B6B;
+    --error-alt-soft: #F6E4EE;
+    /* RE */
+    --neutral: #6B5B50;
+    --neutral-soft: #EFE8E2;
+    /* CE */
+    --info: #A0651F;
+    --info-soft: #FBEBD6;
+    /* Pending / Running */
 
     /* ── Navbar (tối ở cả 2 chế độ — logo gốc thiết kế cho nền tối) ─── */
-    --nav-bg:          #5A3A28;   /* nâu caramel đậm */
-    --nav-bg-elevated: #6A4630;   /* dropdown: sáng hơn nav một bậc */
-    --nav-text:        #F7EADB;   /* ~8.5:1 trên --nav-bg */
-    --nav-text-muted:  #E6D3BF;   /* ~6.8:1 */
-    --nav-hover-bg:    rgba(247, 234, 219, 0.10);
-    --nav-tab-active-bg:     rgba(232, 163, 61, 0.12);
-    --nav-tab-active-border: rgba(232, 163, 61, 0.90);   /* ~4.2:1 trên --nav-bg */
-    --nav-border:      rgba(247, 234, 219, 0.18);
-    --nav-accent:      #E8A33D;   /* ~4.7:1 trên --nav-bg */
-    --nav-control-size:         28px;   /* nút theme + ngôn ngữ */
-    --nav-control-border:       rgba(247, 234, 219, 0.50);  /* ~3.4:1 trên --nav-bg */
+    --nav-bg: #5A3A28;
+    /* nâu caramel đậm */
+    --nav-bg-elevated: #6A4630;
+    /* dropdown: sáng hơn nav một bậc */
+    --nav-text: #F7EADB;
+    /* ~8.5:1 trên --nav-bg */
+    --nav-text-muted: #E6D3BF;
+    /* ~6.8:1 */
+    --nav-hover-bg: rgba(247, 234, 219, 0.10);
+    --nav-tab-active-bg: rgba(232, 163, 61, 0.12);
+    --nav-tab-active-border: rgba(232, 163, 61, 0.90);
+    /* ~4.2:1 trên --nav-bg */
+    --nav-border: rgba(247, 234, 219, 0.18);
+    --nav-accent: #E8A33D;
+    /* ~4.7:1 trên --nav-bg */
+    --nav-control-size: 28px;
+    /* nút theme + ngôn ngữ */
+    --nav-control-border: rgba(247, 234, 219, 0.50);
+    /* ~3.4:1 trên --nav-bg */
     --nav-control-border-hover: rgba(247, 234, 219, 0.70);
-    --nav-control-track:        rgba(247, 234, 219, 0.05);  /* nền khung chọn ngôn ngữ */
-    --nav-control-knob:         rgba(247, 234, 219, 0.22);  /* ô ngôn ngữ đang chọn */
+    --nav-control-track: rgba(247, 234, 219, 0.05);
+    /* nền khung chọn ngôn ngữ */
+    --nav-control-knob: rgba(247, 234, 219, 0.22);
+    /* ô ngôn ngữ đang chọn */
 
     /* ── Typography (chỉ font hệ thống / cài sẵn — không tải từ mạng) ── */
     --font-sans: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto,
-                 "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+        "Noto Sans", "Helvetica Neue", Arial, sans-serif;
     --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, "Cascadia Mono",
-                 Consolas, "DejaVu Sans Mono", "Liberation Mono", monospace;
+        Consolas, "DejaVu Sans Mono", "Liberation Mono", monospace;
 
-    --fs-xs:   0.75rem;    /* 12 */
-    --fs-sm:   0.875rem;   /* 14 */
-    --fs-md:   1rem;       /* 16 */
-    --fs-lg:   1.125rem;   /* 18 */
-    --fs-xl:   1.25rem;    /* 20 */
-    --fs-2xl:  1.5rem;     /* 24 */
-    --fs-3xl:  1.875rem;   /* 30 */
-    --fs-4xl:  2.25rem;    /* 36 */
-    --lh-body:    1.6;
+    --fs-xs: 0.75rem;
+    /* 12 */
+    --fs-sm: 0.875rem;
+    /* 14 */
+    --fs-md: 1rem;
+    /* 16 */
+    --fs-lg: 1.125rem;
+    /* 18 */
+    --fs-xl: 1.25rem;
+    /* 20 */
+    --fs-2xl: 1.5rem;
+    /* 24 */
+    --fs-3xl: 1.875rem;
+    /* 30 */
+    --fs-4xl: 2.25rem;
+    /* 36 */
+    --lh-body: 1.6;
     --lh-heading: 1.25;
 
     /* ── Spacing (thang 4px) ────────────────────────────────────────── */
-    --space-1: 4px;   --space-2: 8px;   --space-3: 12px;  --space-4: 16px;
-    --space-5: 20px;  --space-6: 24px;  --space-8: 32px;  --space-10: 40px;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
 
     /* ── Radius / shadow ────────────────────────────────────────────── */
-    --radius-sm:   6px;     /* input, nút */
-    --radius-md:   10px;    /* card, dropdown */
-    --radius-pill: 999px;   /* badge */
+    --radius-sm: 6px;
+    /* input, nút */
+    --radius-md: 10px;
+    /* card, dropdown */
+    --radius-pill: 999px;
+    /* badge */
 
     --shadow-1: 0 1px 2px rgba(90, 50, 20, 0.08);
     --shadow-2: 0 2px 8px rgba(90, 50, 20, 0.10), 0 1px 2px rgba(90, 50, 20, 0.06);
@@ -135,42 +183,53 @@
 
     /* ── Motion ─────────────────────────────────────────────────────── */
     --dur-fast: 150ms;
-    --dur:      200ms;
+    --dur: 200ms;
     --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
 
     /* ── z-index (khớp giá trị gốc; chỉ dùng cho thành phần về sau) ─── */
-    --z-sticky:   100;
-    --z-nav:      500;
+    --z-sticky: 100;
+    --z-nav: 500;
     --z-dropdown: 510;
-    --z-overlay:  1000;
-    --z-modal:    1100;
-    --z-toast:    1200;
+    --z-overlay: 1000;
+    --z-modal: 1100;
+    --z-toast: 1200;
 
     /* ── Verdict (chip nền tươi + chữ tối, dùng chung sáng/tối) ──────────
        Bộ --ok/--danger… ở trên dùng làm CHỮ trên nền sáng nên sẫm; chip,
        chữ test case và icon trạng thái bài cần tông tươi hơn.
        Contrast chữ --verdict-ink trên chip:
        ac 7.4 · partial 11.4 · wa 5.8 · tle 8.7 · re 6.2 · ce 9.0 · ie 5.2 · pending 8.1 */
-    --verdict-ink:     #1F1510;   /* nâu gần đen, không dùng #000 thuần */
-    --verdict-ac:      #3DBE55;   /* xanh lá tươi */
-    --verdict-partial: #C6D93A;   /* vàng chanh — AC một phần */
-    --verdict-wa:      #FF5A4E;   /* đỏ san hô */
-    --verdict-tle:     #FF9F1C;   /* cam tươi — TLE / MLE */
-    --verdict-re:      #E26BD4;   /* hồng tím — RE / OLE / IR */
-    --verdict-ce:      #C4B5A5;   /* be xám — CE / AB */
-    --verdict-ie:      #FF3B6B;   /* hồng mâm xôi — lỗi hệ thống */
-    --verdict-pending: #5AB8F0;   /* xanh trời — đang chờ / đang chấm */
+    --verdict-ink: #1F1510;
+    /* nâu gần đen, không dùng #000 thuần */
+    --verdict-ac: #3DBE55;
+    /* xanh lá tươi */
+    --verdict-partial: #C6D93A;
+    /* vàng chanh — AC một phần */
+    --verdict-wa: #FF5A4E;
+    /* đỏ san hô */
+    --verdict-tle: #FF9F1C;
+    /* cam tươi — TLE / MLE */
+    --verdict-re: #E26BD4;
+    /* hồng tím — RE / OLE / IR */
+    --verdict-ce: #C4B5A5;
+    /* be xám — CE / AB */
+    --verdict-ie: #FF3B6B;
+    /* hồng mâm xôi — lỗi hệ thống */
+    --verdict-pending: #5AB8F0;
+    /* xanh trời — đang chờ / đang chấm */
 
     /* Chữ verdict từng test (.case-*) — tươi, ≥ 4.6:1 trên --surface/--surface-alt/--bg */
-    --case-ac:         #037C21;
-    --case-partial:    #647203;
-    --case-wa:         #D61005;
-    --case-tle:        #A95104;
-    --case-re:         #C705A0;
+    --case-ac: #037C21;
+    --case-partial: #647203;
+    --case-wa: #D61005;
+    --case-tle: #A95104;
+    --case-re: #C705A0;
 
     /* Icon trạng thái bài (check / mặt buồn / khoá) — ≥ 3:1 trên --surface */
-    --icon-solved:     #1E9A42;   /* ≥ 3.2:1 trên --surface & --surface-alt */
-    --icon-attempted:  #C96A00;   /* ≥ 3.3:1 trên --surface & --surface-alt */
+    --icon-solved: #1E9A42;
+    /* ≥ 3.2:1 trên --surface & --surface-alt */
+    --icon-attempted: #C96A00;
+    /* ≥ 3.3:1 trên --surface & --surface-alt */
 }
 
 html.dark,
@@ -179,59 +238,76 @@ html.dark,
 
     /* Nền nâu cacao vừa phải (không quá tối) để card / bảng / viền
        tách lớp rõ hơn; các tầng cách nhau đủ để mắt phân biệt. */
-    --bg:              #2B221C;
-    --surface:         #3E3129;   /* ~1.26:1 so với --bg → box tách khỏi nền */
-    --surface-alt:     #473930;
-    --border:          #6B584A;   /* ~1.9:1 trên --surface, ~2.3:1 trên --bg */
-    --border-strong:   #7D6858;
-    --border-input:    #9A8270;   /* ~3.8:1 trên --surface */
+    --bg: #2B221C;
+    --surface: #3E3129;
+    /* ~1.26:1 so với --bg → box tách khỏi nền */
+    --surface-alt: #473930;
+    --border: #6B584A;
+    /* ~1.9:1 trên --surface, ~2.3:1 trên --bg */
+    --border-strong: #7D6858;
+    --border-input: #9A8270;
+    /* ~3.8:1 trên --surface */
     --border-input-hover: #B59F8C;
-    --input-bg:        #30261F;
+    --input-bg: #30261F;
 
-    --text:            #F3E6D8;   /* ~11:1 trên --surface */
-    --text-muted:      #CDB9A6;   /* ~7:1 */
-    --text-subtle:     #BCA793;   /* ≥ 4.5:1 cả trên --surface-alt (~4.8:1) */
+    --text: #F3E6D8;
+    /* ~11:1 trên --surface */
+    --text-muted: #CDB9A6;
+    /* ~7:1 */
+    --text-subtle: #BCA793;
+    /* ≥ 4.5:1 cả trên --surface-alt (~4.8:1) */
 
-    --primary:         #C8501E;
-    --primary-hover:   #A94116;
-    --primary-active:  #8E3612;
-    --primary-soft:    #5A3826;
-    --secondary:       #F0B354;
-    --accent:          #D4A07E;
+    --primary: #C8501E;
+    --primary-hover: #A94116;
+    --primary-active: #8E3612;
+    --primary-soft: #5A3826;
+    --secondary: #F0B354;
+    --accent: #D4A07E;
 
-    --link:            #F29A68;   /* ~6.4:1 trên --surface */
-    --link-hover:      #F7B892;
-    --link-active:     #F0B354;
+    --link: #F29A68;
+    /* ~6.4:1 trên --surface */
+    --link-hover: #F7B892;
+    --link-active: #F0B354;
 
-    --focus:           #F0B354;
-    --focus-ring:      rgba(240, 179, 84, 0.35);
+    --focus: #F0B354;
+    --focus-ring: rgba(240, 179, 84, 0.35);
 
-    --ok:        #8CC784;  --ok-soft:        rgba(140, 199, 132, 0.14);
-    --danger:    #F2877C;  --danger-soft:    rgba(242, 135, 124, 0.14);
-    --warn:      #F0B354;  --warn-soft:      rgba(240, 179, 84, 0.14);
+    --ok: #8CC784;
+    --ok-soft: rgba(140, 199, 132, 0.14);
+    --danger: #F2877C;
+    --danger-soft: rgba(242, 135, 124, 0.14);
+    --warn: #F0B354;
+    --warn-soft: rgba(240, 179, 84, 0.14);
     --warn-text: #F0B354;
-    --error-alt: #DB8FBE;  --error-alt-soft: rgba(219, 143, 190, 0.14);
-    --neutral:   #BFAE9F;  --neutral-soft:   rgba(191, 174, 159, 0.14);
-    --info:      #E3A55C;  --info-soft:      rgba(227, 165, 92, 0.14);
+    --error-alt: #DB8FBE;
+    --error-alt-soft: rgba(219, 143, 190, 0.14);
+    --neutral: #BFAE9F;
+    --neutral-soft: rgba(191, 174, 159, 0.14);
+    --info: #E3A55C;
+    --info-soft: rgba(227, 165, 92, 0.14);
 
-    --nav-bg:          #3F2A1E;   /* nâu trầm, vẫn tách rõ khỏi --bg */
+    --nav-bg: #3F2A1E;
+    /* nâu trầm, vẫn tách rõ khỏi --bg */
     --nav-bg-elevated: #4C3325;
-    --nav-text:        #F3E6D8;
-    --nav-text-muted:  #CDB9A6;
-    --nav-accent:      #F0B354;
+    --nav-text: #F3E6D8;
+    --nav-text-muted: #CDB9A6;
+    --nav-accent: #F0B354;
 
     --shadow-1: 0 1px 2px rgba(10, 5, 2, 0.35);
     --shadow-2: 0 2px 8px rgba(10, 5, 2, 0.40);
     --shadow-3: 0 12px 28px rgba(10, 5, 2, 0.50);
 
-    --case-ac:         #05CC37;   /* ≥ 4.6:1 trên mọi nền dark */
-    --case-partial:    #B1CC05;
-    --case-wa:         #FC847E;
-    --case-tle:        #FA8A29;
-    --case-re:         #FC79E1;
+    --case-ac: #05CC37;
+    /* ≥ 4.6:1 trên mọi nền dark */
+    --case-partial: #B1CC05;
+    --case-wa: #FC847E;
+    --case-tle: #FA8A29;
+    --case-re: #FC79E1;
 
-    --icon-solved:     #3DBE55;   /* ~5.2:1 trên --surface dark */
-    --icon-attempted:  #FF9F1C;   /* ~6.1:1 */
+    --icon-solved: #3DBE55;
+    /* ~5.2:1 trên --surface dark */
+    --icon-attempted: #FF9F1C;
+    /* ~6.1:1 */
 }
 
 /* ==========================================================================
@@ -242,49 +318,51 @@ html.dark,
 
 :root,
 html.dark {
-    --oj-bg:                 var(--bg);
-    --oj-surface:            var(--surface);
-    --oj-surface-2:          var(--surface-alt);
-    --oj-border:             var(--border);
-    --oj-border-2:           var(--border-strong);
+    --oj-bg: var(--bg);
+    --oj-surface: var(--surface);
+    --oj-surface-2: var(--surface-alt);
+    --oj-border: var(--border);
+    --oj-border-2: var(--border-strong);
 
-    --oj-input-bg:           var(--input-bg);
-    --oj-input-border:       var(--border-input);
+    --oj-input-bg: var(--input-bg);
+    --oj-input-border: var(--border-input);
     --oj-input-border-hover: var(--border-input-hover);
-    --oj-focus-ring:         var(--focus-ring);
+    --oj-focus-ring: var(--focus-ring);
 
-    --oj-text:               var(--text);
-    --oj-text-2:             var(--text-muted);
-    --oj-text-3:             var(--text-subtle);
+    --oj-text: var(--text);
+    --oj-text-2: var(--text-muted);
+    --oj-text-3: var(--text-subtle);
 
-    --oj-accent:             var(--link);   /* cũng làm màu chữ (th a:hover) → cần ≥ 4.5:1; --primary chỉ ~3.9:1 */
-    --oj-accent-h:           var(--link-hover);
-    --oj-accent-glow:        var(--primary-soft);
+    --oj-accent: var(--link);
+    /* cũng làm màu chữ (th a:hover) → cần ≥ 4.5:1; --primary chỉ ~3.9:1 */
+    --oj-accent-h: var(--link-hover);
+    --oj-accent-glow: var(--primary-soft);
 
-    --oj-link:               var(--link);
-    --oj-link-h:             var(--link-hover);
+    --oj-link: var(--link);
+    --oj-link-h: var(--link-hover);
 
-    --oj-nav-bg:             var(--nav-bg);
-    --oj-nav-text:           var(--nav-text);
+    --oj-nav-bg: var(--nav-bg);
+    --oj-nav-text: var(--nav-text);
 
-    --oj-tab-active-bg:      var(--primary-soft);
-    --oj-tab-active-text:    var(--primary-active);
-    --oj-tab-hover-bg:       rgba(140, 90, 60, 0.08);
+    --oj-tab-active-bg: var(--primary-soft);
+    --oj-tab-active-text: var(--primary-active);
+    --oj-tab-hover-bg: rgba(140, 90, 60, 0.08);
 
-    --oj-th-bg:              var(--surface-alt);
-    --oj-th-text:            var(--text);
+    --oj-th-bg: var(--surface-alt);
+    --oj-th-text: var(--text);
 
-    --oj-solved:             var(--icon-solved);
-    --oj-attempted:          var(--icon-attempted);
-    --oj-unsolved:           var(--text-muted);   /* icon khoá bài chưa giải: --text-subtle quá nhạt */
-    --oj-editorial:          var(--icon-solved);
-    --oj-no-editorial:       var(--danger);
+    --oj-solved: var(--icon-solved);
+    --oj-attempted: var(--icon-attempted);
+    --oj-unsolved: var(--text-muted);
+    /* icon khoá bài chưa giải: --text-subtle quá nhạt */
+    --oj-editorial: var(--icon-solved);
+    --oj-no-editorial: var(--danger);
 }
 
 html.dark {
-    --oj-accent-glow:     rgba(242, 154, 104, 0.14);
+    --oj-accent-glow: rgba(242, 154, 104, 0.14);
     --oj-tab-active-text: var(--text);
-    --oj-tab-hover-bg:    rgba(243, 230, 216, 0.08);
+    --oj-tab-hover-bg: rgba(243, 230, 216, 0.08);
 }
 
 /* ==========================================================================
@@ -304,19 +382,32 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
     color: var(--text);
     line-height: var(--lh-heading);
     letter-spacing: -0.01em;
 }
 
-h1 { letter-spacing: -0.02em; }
+h1 {
+    letter-spacing: -0.02em;
+}
 
 /* Heading co giãn nhẹ theo viewport, giữ đơn vị em như SCSS gốc */
-h2 { font-size: clamp(1.4em, 1.2em + 0.6vw, 1.75em); }
-h3 { font-size: clamp(1.15em, 1.05em + 0.3vw, 1.3em); }
+h2 {
+    font-size: clamp(1.4em, 1.2em + 0.6vw, 1.75em);
+}
 
-code, kbd, samp, pre {
+h3 {
+    font-size: clamp(1.15em, 1.05em + 0.3vw, 1.3em);
+}
+
+code,
+kbd,
+samp,
+pre {
     font-family: var(--font-mono);
 }
 
@@ -342,12 +433,27 @@ a:active {
    ========================================================================== */
 
 /* Nền trang = --bg; box/bảng/sidebox (dùng --oj-surface) nổi lên trên.
-   Trước đây cả hai cùng --surface → box trùng màu nền. */
+   Trước đây cả hai cùng --surface → box trùng màu nền.
+
+   Không còn ranh giới container trên màn hình rộng (> 100em ≈ 1500px):
+   - Viền trái/phải gốc (1px var(--oj-border)) → trong suốt. Giữ nguyên độ
+     dày 1px (không dùng `none`) để bề rộng khối không đổi.
+   - Nền trong/ngoài container cùng --bg nên không còn mép nào lộ ra. */
 #page-container {
     background: var(--bg);
+    border-inline-color: transparent;
 }
 
-/* Footer: nền / viền / màu chữ đã lấy từ --oj-* trong CSS gốc */
+/* Footer tràn full-width: footer nằm TRONG #page-container nên dải nền
+   --surface-alt + vạch trên của nó dừng ở mép 1500px, tạo "bậc" ở đáy
+   trang. border-image với outset ngang vẽ dải ra tới mép màn hình:
+   outset là ink overflow → không đổi kích thước footer, không sinh thanh
+   cuộn ngang. Gradient vẽ luôn vạch trên 1px (thay border-top gốc). */
+footer {
+    border-image: linear-gradient(var(--border) 0 1px, var(--surface-alt) 1px 100%) fill 0 / 0 / 0 100vw;
+}
+
+/* Footer: màu chữ đã lấy từ --oj-text-3 trong CSS gốc */
 /* Link footer có inline style="color: #808080" (~3.5:1 trên nền kem,
    không đạt AA) → buộc dùng !important để ghi đè inline. */
 #footer-content a {
@@ -359,7 +465,8 @@ a:active {
 }
 
 #footer-content a:hover {
-    color: var(--link) !important; /* cùng lý do: inline style */
+    color: var(--link) !important;
+    /* cùng lý do: inline style */
     text-decoration-color: currentColor;
 }
 
@@ -407,10 +514,10 @@ noscript #noscript {
 /* Đường viền đáy: vệt hổ phách mảnh thay cho đường xám */
 #nav-shadow {
     background: linear-gradient(90deg,
-        transparent 0%,
-        rgba(232, 163, 61, 0.45) 20%,
-        rgba(232, 163, 61, 0.45) 80%,
-        transparent 100%);
+            transparent 0%,
+            rgba(232, 163, 61, 0.45) 20%,
+            rgba(232, 163, 61, 0.45) 80%,
+            transparent 100%);
 }
 
 nav ul li {
@@ -437,12 +544,12 @@ nav ul li a.active {
     border-bottom-color: transparent;
 }
 
-#nav-list li:not(.home-nav-element) > a:hover,
-#nav-list li:not(.home-nav-element) > a.active {
+#nav-list li:not(.home-nav-element)>a:hover,
+#nav-list li:not(.home-nav-element)>a.active {
     background: transparent;
 }
 
-#nav-list li:not(.home-nav-element) > a::before {
+#nav-list li:not(.home-nav-element)>a::before {
     content: "";
     position: absolute;
     inset: 8px 2px;
@@ -454,18 +561,18 @@ nav ul li a.active {
     transition: opacity var(--dur-fast) var(--ease-out);
 }
 
-#nav-list li:not(.home-nav-element) > a:hover::before {
+#nav-list li:not(.home-nav-element)>a:hover::before {
     opacity: 1;
 }
 
-#nav-list li:not(.home-nav-element) > a.active::before {
+#nav-list li:not(.home-nav-element)>a.active::before {
     opacity: 1;
     background: var(--nav-tab-active-bg);
     border-color: var(--nav-tab-active-border);
 }
 
 /* Mục trong dropdown: khung sát hơn */
-#nav-list li li > a::before {
+#nav-list li li>a::before {
     inset: 2px 4px;
 }
 
@@ -527,8 +634,8 @@ nav .nav-divider {
     border: 1px solid var(--nav-control-border);
     border-radius: var(--radius-sm);
     transition: background-color var(--dur-fast) var(--ease-out),
-                border-color var(--dur-fast) var(--ease-out),
-                color var(--dur-fast) var(--ease-out);
+        border-color var(--dur-fast) var(--ease-out),
+        color var(--dur-fast) var(--ease-out);
 }
 
 #theme-toggle:hover {
@@ -545,7 +652,7 @@ nav .nav-divider {
 }
 
 /* Khu vực người dùng (màu chữ đã lấy từ --oj-nav-text) */
-#user-links > ul > li > a > span > img {
+#user-links>ul>li>a>span>img {
     box-shadow: 0 0 0 2px var(--nav-accent);
 }
 
@@ -558,7 +665,7 @@ nav .nav-divider {
     text-decoration-color: transparent;
     text-underline-offset: 4px;
     transition: color var(--dur-fast) var(--ease-out),
-                text-decoration-color var(--dur-fast) var(--ease-out);
+        text-decoration-color var(--dur-fast) var(--ease-out);
 }
 
 #user-links .anon a:hover {
@@ -576,21 +683,24 @@ nav .nav-divider {
 #flag_en {
     min-width: 0;
     background: var(--nav-control-track);
-    margin-top: 0 !important;       /* ghi đè inline margin-top:4px để thẳng hàng với nút theme */
+    margin-top: 0 !important;
+    /* ghi đè inline margin-top:4px để thẳng hàng với nút theme */
 }
 
 #flag_vi {
     border-right: 0;
     border-radius: var(--radius-sm) 0 0 var(--radius-sm);
     padding: 0 1px 0 2px;
-    margin-right: 0 !important;     /* ghi đè inline margin-right:5px để 2 nửa dính liền */
+    margin-right: 0 !important;
+    /* ghi đè inline margin-right:5px để 2 nửa dính liền */
 }
 
 #flag_en {
     border-left: 0;
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     padding: 0 2px 0 1px;
-    margin-left: -4px;              /* bù `gap: 4px` của #user-links */
+    margin-left: -4px;
+    /* bù `gap: 4px` của #user-links */
 }
 
 #flag_vi img,
@@ -605,7 +715,7 @@ nav .nav-divider {
     opacity: 0.45;
     filter: grayscale(1);
     transition: opacity var(--dur-fast) var(--ease-out),
-                background-color var(--dur-fast) var(--ease-out);
+        background-color var(--dur-fast) var(--ease-out);
 }
 
 #flag_vi:hover img,
@@ -651,9 +761,9 @@ input[type=button] {
     font-weight: 600;
     box-shadow: var(--shadow-1);
     transition: background-color var(--dur-fast) var(--ease-out),
-                border-color var(--dur-fast) var(--ease-out),
-                box-shadow var(--dur-fast) var(--ease-out),
-                transform var(--dur-fast) var(--ease-out);
+        border-color var(--dur-fast) var(--ease-out),
+        box-shadow var(--dur-fast) var(--ease-out),
+        transform var(--dur-fast) var(--ease-out);
 }
 
 /* Chiều cao ~40px cho nút hành động (padding, không đặt height để text
@@ -727,7 +837,8 @@ input[aria-busy="true"] {
 }
 
 .inline-button:hover {
-    background: var(--primary-hover) !important; /* gốc dùng !important */
+    background: var(--primary-hover) !important;
+    /* gốc dùng !important */
     border-color: var(--primary-hover) !important;
 }
 
@@ -796,7 +907,8 @@ input[aria-busy="true"] {
     border-color: var(--border);
     border-radius: var(--radius-sm);
     color: var(--text);
-    overflow-x: auto;       /* chỉ có tác dụng khi khối code dài hơn khung */
+    overflow-x: auto;
+    /* chỉ có tác dụng khi khối code dài hơn khung */
 }
 
 .content-description pre code,
@@ -841,27 +953,60 @@ input[aria-busy="true"] {
 .AB,
 .IE,
 .QU,
-.G      { color: var(--verdict-ink); }
+.G {
+    color: var(--verdict-ink);
+}
 
-.AC     { background-color: var(--verdict-ac); }
-._AC    { background-color: var(--verdict-partial); }   /* AC một phần */
-.WA     { background-color: var(--verdict-wa); }
+.AC {
+    background-color: var(--verdict-ac);
+}
+
+._AC {
+    background-color: var(--verdict-partial);
+}
+
+/* AC một phần */
+.WA {
+    background-color: var(--verdict-wa);
+}
+
 .TLE,
-.MLE    { background-color: var(--verdict-tle); }
+.MLE {
+    background-color: var(--verdict-tle);
+}
+
 .OLE,
 .IR,
 .RTE,
-.OTH    { background-color: var(--verdict-re); }
+.OTH {
+    background-color: var(--verdict-re);
+}
+
 .CE,
-.AB     { background-color: var(--verdict-ce); }
-.IE     { background-color: var(--verdict-ie); }
+.AB {
+    background-color: var(--verdict-ce);
+}
+
+.IE {
+    background-color: var(--verdict-ie);
+}
+
 .QU,
-.G      { background: var(--verdict-pending); }
+.G {
+    background: var(--verdict-pending);
+}
 
 /* Đang chờ / đang chấm: nhấp nháy opacity nhẹ (tắt khi reduced-motion) */
 @keyframes oj-pending-pulse {
-    0%, 100% { opacity: 1; }
-    50%      { opacity: 0.55; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.55;
+    }
 }
 
 .sub-result.QU .state,
@@ -877,15 +1022,32 @@ input[aria-busy="true"] {
 
 /* Verdict từng test (chữ + icon ✓/✗ trang chi tiết submission):
    tông TƯƠI (bão hoà cao) nhưng vẫn ≥ 4.6:1 trên mọi nền — tokens mục 1. */
-.case-AC                          { color: var(--case-ac); }
-.case-_AC                         { color: var(--case-partial); }
-.case-WA                          { color: var(--case-wa); }
+.case-AC {
+    color: var(--case-ac);
+}
+
+.case-_AC {
+    color: var(--case-partial);
+}
+
+.case-WA {
+    color: var(--case-wa);
+}
+
 .case-TLE,
-.case-MLE                         { color: var(--case-tle); }
+.case-MLE {
+    color: var(--case-tle);
+}
+
 .case-OLE,
 .case-RTE,
-.case-IR                          { color: var(--case-re); }
-.case-SC                          { color: var(--text-subtle); }
+.case-IR {
+    color: var(--case-re);
+}
+
+.case-SC {
+    color: var(--text-subtle);
+}
 
 #test-cases .case-info {
     border-color: var(--border);
@@ -908,7 +1070,7 @@ input[aria-busy="true"] {
    ========================================================================== */
 
 .submission-row,
-.submission-row > div,
+.submission-row>div,
 .submission-row .sub-result,
 .submission-row .sub-usage {
     border-color: var(--border);
@@ -989,7 +1151,7 @@ tr:target,
     color: var(--text-subtle);
 }
 
-.hide-solved-problems > span:before {
+.hide-solved-problems>span:before {
     background: var(--border);
 }
 
@@ -1012,13 +1174,13 @@ tr:target,
    11. PHÂN TRANG (ul.pagination)
    ========================================================================== */
 
-ul.pagination > li > a,
-ul.pagination > li > span {
+ul.pagination>li>a,
+ul.pagination>li>span {
     color: var(--text);
     background-color: var(--surface);
     border-color: var(--border-input);
     transition: background-color var(--dur-fast) var(--ease-out),
-                color var(--dur-fast) var(--ease-out);
+        color var(--dur-fast) var(--ease-out);
 }
 
 ul.pagination a:hover {
@@ -1026,15 +1188,15 @@ ul.pagination a:hover {
     color: var(--primary-active);
 }
 
-ul.pagination > .active-page > a,
-ul.pagination > .active-page > span {
+ul.pagination>.active-page>a,
+ul.pagination>.active-page>span {
     color: var(--text-on-primary);
     background-color: var(--primary);
     border-color: var(--primary);
 }
 
-ul.pagination > .disabled-page > a,
-ul.pagination > .disabled-page > span {
+ul.pagination>.disabled-page>a,
+ul.pagination>.disabled-page>span {
     color: var(--text-subtle);
     cursor: not-allowed;
 }
@@ -1048,15 +1210,53 @@ ul.pagination a:focus-visible {
    12. THÔNG BÁO: .alert-*, .messages, .badge, .close, .ws-closed, sidebox
    ========================================================================== */
 
-.alert-info    { color: var(--text); background-color: var(--info-soft);   border-color: var(--info); }
-.alert-warning { color: var(--text); background-color: var(--warn-soft);   border-color: var(--warn); }
-.alert-danger  { color: var(--text); background-color: var(--danger-soft); border-color: var(--danger); }
+.alert-info {
+    color: var(--text);
+    background-color: var(--info-soft);
+    border-color: var(--info);
+}
 
-.messages li.debug   { color: var(--text); background-color: var(--neutral-soft); border-color: var(--neutral); }
-.messages li.info    { color: var(--text); background-color: var(--info-soft);    border-color: var(--info); }
-.messages li.success { color: var(--text); background-color: var(--ok-soft);      border-color: var(--ok); }
-.messages li.warning { color: var(--text); background-color: var(--warn-soft);    border-color: var(--warn); }
-.messages li.error   { color: var(--text); background-color: var(--danger-soft);  border-color: var(--danger); }
+.alert-warning {
+    color: var(--text);
+    background-color: var(--warn-soft);
+    border-color: var(--warn);
+}
+
+.alert-danger {
+    color: var(--text);
+    background-color: var(--danger-soft);
+    border-color: var(--danger);
+}
+
+.messages li.debug {
+    color: var(--text);
+    background-color: var(--neutral-soft);
+    border-color: var(--neutral);
+}
+
+.messages li.info {
+    color: var(--text);
+    background-color: var(--info-soft);
+    border-color: var(--info);
+}
+
+.messages li.success {
+    color: var(--text);
+    background-color: var(--ok-soft);
+    border-color: var(--ok);
+}
+
+.messages li.warning {
+    color: var(--text);
+    background-color: var(--warn-soft);
+    border-color: var(--warn);
+}
+
+.messages li.error {
+    color: var(--text);
+    background-color: var(--danger-soft);
+    border-color: var(--danger);
+}
 
 .close,
 a.close:hover {
@@ -1095,8 +1295,8 @@ a.close:hover {
 }
 
 /* Tab: gốc đặt `outline: none` ở :focus → không có dấu hiệu focus */
-.tabs > ul > li > a:focus-visible,
-.tabs > ul > li > span:focus-visible {
+.tabs>ul>li>a:focus-visible,
+.tabs>ul>li>span:focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 2px;
 }
@@ -1181,7 +1381,8 @@ select:focus-visible {
 }
 
 #problem_submit .errorlist {
-    color: var(--text);     /* --danger trên --danger-soft (dark) chỉ ~4:1 */
+    color: var(--text);
+    /* --danger trên --danger-soft (dark) chỉ ~4:1 */
     background: var(--danger-soft);
     border-color: var(--danger);
 }
@@ -1356,7 +1557,7 @@ select:focus-visible {
     box-shadow: 0 0 0 2px var(--focus);
 }
 
-.django-ace-widget > div {
+.django-ace-widget>div {
     border-radius: inherit;
 }
 
@@ -1402,9 +1603,17 @@ select:focus-visible {
     background: var(--bg);
 }
 
-#banner a.date        { color: var(--link); }
-#banner a.date:hover  { color: var(--link-hover); }
-#banner a.date:active { color: var(--link-active); }
+#banner a.date {
+    color: var(--link);
+}
+
+#banner a.date:hover {
+    color: var(--link-hover);
+}
+
+#banner a.date:active {
+    color: var(--link-active);
+}
 
 #org-check-list-wrapper {
     background: var(--input-bg);
@@ -1420,9 +1629,17 @@ select:focus-visible {
    16. BLOG
    ========================================================================== */
 
-.blog-content .post .title a        { color: var(--link); }
-.blog-content .post .title a:hover  { color: var(--link-hover); }
-.blog-content .post .title a:active { color: var(--link-active); }
+.blog-content .post .title a {
+    color: var(--link);
+}
+
+.blog-content .post .title a:hover {
+    color: var(--link-hover);
+}
+
+.blog-content .post .title a:active {
+    color: var(--link-active);
+}
 
 .blog-content .post .comment-count-link {
     color: var(--text-subtle);
@@ -1473,7 +1690,7 @@ a.voted {
     color: var(--text-subtle);
 }
 
-.new-comments .comment:target > .comment-display {
+.new-comments .comment:target>.comment-display {
     border-color: var(--primary);
 }
 
@@ -1583,7 +1800,7 @@ div.ticket-title small,
     }
 
     /* Vạch ngăn giữa các mục (inset shadow → không đổi kích thước) */
-    #nav-list > li > a {
+    #nav-list>li>a {
         box-shadow: inset 0 -1px 0 var(--nav-border);
     }
 
@@ -1596,6 +1813,7 @@ div.ticket-title small,
 }
 
 @media (pointer: coarse) {
+
     .button,
     input[type=submit],
     input[type=button],
@@ -1619,7 +1837,8 @@ html.dark ul.pagination a:hover {
 }
 
 html.dark .badge {
-    color: var(--bg);     /* chữ trắng trên --danger (dark) không đủ tương phản */
+    color: var(--bg);
+    /* chữ trắng trên --danger (dark) không đủ tương phản */
 }
 
 html.dark .ws-closed,
@@ -1632,7 +1851,8 @@ html.dark .organization-tag a {
 }
 
 html.dark .problem-list-mode-toggle .toggle-btn.active {
-    color: var(--bg);    /* nền --oj-accent (dark) sáng → chữ tối */
+    color: var(--bg);
+    /* nền --oj-accent (dark) sáng → chữ tối */
 }
 
 html.dark a.voted {
@@ -1643,7 +1863,8 @@ html.dark .close-ticket,
 html.dark .vote-good,
 html.dark .open-ticket,
 html.dark .vote-norm {
-    color: var(--bg) !important;   /* gốc: color white !important; nền dark sáng → chữ tối */
+    color: var(--bg) !important;
+    /* gốc: color white !important; nền dark sáng → chữ tối */
 }
 
 
@@ -1653,6 +1874,7 @@ html.dark .vote-norm {
 
 /* !important: phải thắng mọi transition/animation khai báo rải rác */
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
@@ -1666,6 +1888,7 @@ html.dark .vote-norm {
 /* In đề bài: nền trắng, chữ đen, ẩn thanh điều hướng & nút.
    !important để thắng mọi màu theme / inline style khi in. */
 @media print {
+
     html,
     body,
     #page-container,
@@ -1701,7 +1924,8 @@ html.dark .vote-norm {
         text-decoration: underline;
     }
 
-    pre, code {
+    pre,
+    code {
         background: #fff !important;
         color: #000 !important;
         border: 1px solid #999;
